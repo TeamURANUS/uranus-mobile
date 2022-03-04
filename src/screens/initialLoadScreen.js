@@ -2,10 +2,17 @@ import * as React from 'react';
 import {useContext, useEffect} from 'react';
 import DefaultBackground from '../shared/defaultBackground';
 import {Text} from 'react-native';
+import FireBaseContext from '../context/fireBaseProvider';
 
 function InitialLoadScreen({navigation}) {
+  const {user} = useContext(FireBaseContext);
+
   useEffect(() => {
-    navigation.navigate('Initial Screen');
+    if (user) {
+      navigation.navigate('Home Container');
+    } else {
+      navigation.navigate('Initial Screen');
+    }
   });
 
   return (
