@@ -17,6 +17,84 @@ import InitialScreen from './src/screens/initialScreen';
 import InitialLoadScreen from './src/screens/initialLoadScreen';
 import SignUpScreen from './src/screens/authentication/signUpScreen';
 import SignInScreen from './src/screens/authentication/signInScreen';
+import HomeScreen from './src/screens/home/homeScreen';
+import CalendarScreen from './src/screens/home/calendarScreen';
+import NewsScreen from './src/screens/home/newsScreen';
+import NotificationScreen from './src/screens/home/notificationScreen';
+import ProfileScreen from './src/screens/home/profileScreen';
+
+function HomeContainer() {
+  return (
+    <NavigationTab.Navigator
+      initialRouteName="Home"
+      tabBarPosition="bottom"
+      initialLayout={{width: Dimensions.get('window').width}}
+      screenOptions={{
+        tabBarActiveTintColor: '#3B7AF9',
+        tabBarInactiveTintColor: 'white',
+        tabBarStyle: {backgroundColor: '#c0c0c0', height: 80},
+      }}>
+      <NavigationTab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: ({color}) => (
+            <MaterialCommunityIcons name="school" color={color} size={26} />
+          ),
+          tabBarShowLabel: false,
+        }}
+      />
+      <NavigationTab.Screen
+        name="Calendar"
+        component={CalendarScreen}
+        options={{
+          tabBarIcon: ({color}) => (
+            <MaterialCommunityIcons
+              name="calendar-month"
+              color={color}
+              size={26}
+            />
+          ),
+          tabBarShowLabel: false,
+        }}
+      />
+      <NavigationTab.Screen
+        name="News"
+        component={NewsScreen}
+        options={{
+          tabBarIcon: ({color}) => (
+            <MaterialCommunityIcons
+              name="newspaper-variant-multiple"
+              color={color}
+              size={26}
+            />
+          ),
+          tabBarShowLabel: false,
+        }}
+      />
+      <NavigationTab.Screen
+        name="Notification"
+        component={NotificationScreen}
+        options={{
+          tabBarIcon: ({color}) => (
+            <MaterialCommunityIcons name="bell" color={color} size={26} />
+          ),
+          tabBarShowLabel: false,
+        }}
+      />
+      <NavigationTab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          tabBarIcon: ({color}) => (
+            <MaterialCommunityIcons name="account" color={color} size={26} />
+          ),
+          tabBarShowLabel: false,
+        }}
+      />
+    </NavigationTab.Navigator>
+  );
+}
 
 const App: () => Node = () => {
   return (
@@ -40,6 +118,11 @@ const App: () => Node = () => {
         <NavigationStack.Screen
           name="SignIn"
           component={SignInScreen}
+          options={{headerShown: false}}
+        />
+        <NavigationStack.Screen
+          name="Home Container"
+          component={HomeContainer}
           options={{headerShown: false}}
         />
       </NavigationStack.Navigator>

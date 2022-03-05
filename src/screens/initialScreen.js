@@ -4,8 +4,6 @@ import DefaultBackground from '../shared/defaultBackground';
 import SignUpButton from '../shared/buttons/signUpButton';
 import SignInButton from '../shared/buttons/signInButton';
 
-import FireBaseContext from '../context/fireBaseProvider';
-
 function InitialScreen({navigation}) {
   return (
     <DefaultBackground>
