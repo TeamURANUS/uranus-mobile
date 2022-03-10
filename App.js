@@ -19,9 +19,11 @@ import SignUpScreen from './src/screens/authentication/signUpScreen';
 import SignInScreen from './src/screens/authentication/signInScreen';
 import HomeScreen from './src/screens/home/homeScreen';
 import CalendarScreen from './src/screens/home/calendarScreen';
-import NewsScreen from './src/screens/home/newsScreen';
 import NotificationScreen from './src/screens/home/notificationScreen';
 import ProfileScreen from './src/screens/home/profileScreen';
+import NewsScreen from './src/screens/home/newsScreen';
+import DetailedNewsScreen from './src/screens/home/detailedNewsScreen';
+import ContactsScreen from './src/screens/home/contactsScreen';
 
 function HomeContainer() {
   return (
@@ -83,6 +85,21 @@ function HomeContainer() {
         }}
       />
       <NavigationTab.Screen
+        name="Contacts"
+        component={ContactsScreen}
+        options={{
+          tabBarIcon: ({color}) => (
+            <MaterialCommunityIcons
+              name="message-text-outline"
+              color={color}
+              size={26}
+            />
+          ),
+          tabBarShowLabel: false,
+        }}
+      />
+
+      <NavigationTab.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
@@ -123,6 +140,11 @@ const App: () => Node = () => {
         <NavigationStack.Screen
           name="Home Container"
           component={HomeContainer}
+          options={{headerShown: false}}
+        />
+        <NavigationStack.Screen
+          name="Detailed News"
+          component={DetailedNewsScreen}
           options={{headerShown: false}}
         />
       </NavigationStack.Navigator>
