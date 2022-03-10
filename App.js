@@ -89,7 +89,11 @@ function HomeContainer() {
         component={ContactsScreen}
         options={{
           tabBarIcon: ({color}) => (
-            <MaterialCommunityIcons name="account" color={color} size={26} />
+            <MaterialCommunityIcons
+              name="message-text-outline"
+              color={color}
+              size={26}
+            />
           ),
           tabBarShowLabel: false,
         }}
