@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
 import NewsCard from '../../shared/newsCard';
-import DetailedNewsScreen from './detailedNewsScreen';
+import DefaultBackground from '../../shared/defaultBackground';
 
 var DATA = [
   {
@@ -88,64 +88,51 @@ var DATA = [
   },
 ];
 
+const ListItem = ({item, navigation}) => (
+  <TouchableOpacity
+    style={styles.newsItem}
+    onPress={() => navigation.navigate('Detailed News', {item: item})}>
+    <NewsCard
+      newsPicture={item.newsPicture}
+      newsTitle={item.newsTitle}
+      newsText={item.newsText}
+      newsDate={item.newsDate}
+    />
+  </TouchableOpacity>
+);
+
+const renderListItem = ({item, navigation}) => (
+  <ListItem item={item} navigation={navigation} />
+);
+
 export default function NewsScreen({navigation}) {
   return (
-    <View style={{backgroundColor: '#d7d7d7'}}>
-      <Text
-        style={{
-          fontSize: 45,
-          fontWeight: '900',
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start',
-          backgroundColor: 'white',
-          color: '#000000',
-          paddingBottom: 20,
-        }}>
-        Haberler
-      </Text>
-      <FlatList
-        data={DATA}
-        renderItem={({item, index}) => {
-          return (
-            <TouchableOpacity
-              style={{
-                backgroundColor: 'white',
-                display: 'flex',
-                marginBottom: 2,
-              }}
-              onPress={() =>
-                navigation.navigate('Detailed News', {item: item})
-              }>
-              <NewsCard
-                newsPicture={item.newsPicture}
-                newsTitle={item.newsTitle}
-                newsText={item.newsText}
-                newsDate={item.newsDate}
-              />
-            </TouchableOpacity>
-          );
-        }}
-      />
-    </View>
+    <DefaultBackground>
+      <View style={styles.container}>
+        <Text style={styles.header}>Haberler</Text>
+        <FlatList
+          data={DATA}
+          renderItem={({item}) => renderListItem({item, navigation})}
+        />
+      </View>
+    </DefaultBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  container: {backgroundColor: '#d7d7d7'},
+  header: {
+    fontSize: 45,
+    fontWeight: '900',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    backgroundColor: 'white',
+    color: '#000000',
+    paddingBottom: 20,
   },
-
-  firstNews: {
-    flex: 1,
-  },
-
-  firstImage: {
-    flex: 1,
-    width: null,
-    height: null,
-    resizeMode: 'contain',
+  newsItem: {
+    backgroundColor: 'white',
+    display: 'flex',
+    marginBottom: 2,
   },
 });
