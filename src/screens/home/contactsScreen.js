@@ -21,8 +21,10 @@ const DATA = [...Array(15).keys()].map((_, i) => {
   };
 });
 
-const ListItem = ({item}) => (
-  <TouchableOpacity style={styles.contact}>
+const ListItem = ({item, navigation}) => (
+  <TouchableOpacity
+    style={styles.contact}
+    onPress={() => navigation.navigate('Chat', {item: item})}>
     <Image source={{uri: item.picture}} style={styles.picture} />
     <View style={styles.info}>
       <Text style={styles.itemName}>{item.name}</Text>
@@ -32,14 +34,19 @@ const ListItem = ({item}) => (
   </TouchableOpacity>
 );
 
-const renderListItem = ({item}) => <ListItem item={item} />;
+const renderListItem = ({item, navigation}) => (
+  <ListItem item={item} navigation={navigation} />
+);
 
-export default function ContactsScreen() {
+export default function ContactsScreen({navigation}) {
   return (
     <DefaultBackground>
       <View style={styles.container}>
         <Text style={styles.header}>Kişiler</Text>
-        <FlatList data={DATA} renderItem={renderListItem} />
+        <FlatList
+          data={DATA}
+          renderItem={({item}) => renderListItem({item, navigation})}
+        />
       </View>
     </DefaultBackground>
   );

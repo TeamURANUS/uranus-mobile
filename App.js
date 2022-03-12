@@ -24,6 +24,7 @@ import ProfileScreen from './src/screens/home/profileScreen';
 import NewsScreen from './src/screens/home/newsScreen';
 import DetailedNewsScreen from './src/screens/home/detailedNewsScreen';
 import ContactsScreen from './src/screens/home/contactsScreen';
+import ChatScreen from './src/screens/chatScreen';
 
 function HomeContainer() {
   return (
@@ -145,6 +146,11 @@ const App: () => Node = () => {
         <NavigationStack.Screen
           name="Detailed News"
           component={DetailedNewsScreen}
+          options={{headerShown: false}}
+        />
+        <NavigationStack.Screen
+          name="Chat"
+          component={ChatScreen}
           options={{headerShown: false}}
         />
       </NavigationStack.Navigator>
