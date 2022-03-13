@@ -42,7 +42,7 @@ export default function ContactsScreen({navigation}) {
   return (
     <DefaultBackground>
       <View style={styles.container}>
-        <Text style={styles.header}>Kişiler</Text>
+        <Text style={styles.header}>Contacts</Text>
         <FlatList
           data={DATA}
           renderItem={({item}) => renderListItem({item, navigation})}
