@@ -25,7 +25,8 @@ import NewsScreen from './src/screens/home/newsScreen';
 import DetailedNewsScreen from './src/screens/home/detailedNewsScreen';
 import ContactsScreen from './src/screens/home/contactsScreen';
 import ChatScreen from './src/screens/chatScreen';
-import MessagessScreen from './src/screens/home/messagesScreen';
+import MessagesScreen from './src/screens/home/messagesScreen';
+//import firestore from '@react-native-firebase/firestore';
 
 function HomeContainer() {
   return (
@@ -88,7 +89,7 @@ function HomeContainer() {
       />
       <NavigationTab.Screen
         name="Messages"
-        component={MessagessScreen}
+        component={MessagesScreen}
         options={{
           tabBarIcon: ({color}) => (
             <MaterialCommunityIcons

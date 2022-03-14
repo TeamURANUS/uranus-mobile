@@ -55,8 +55,8 @@ export default function ContactsScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: '#d2d1d1'},
   header: {
-    fontSize: 45,
-    fontWeight: '900',
+    fontSize: 35,
+    fontWeight: '500',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     backgroundColor: 'white',

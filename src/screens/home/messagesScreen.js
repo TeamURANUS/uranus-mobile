@@ -13,8 +13,6 @@ import {FAB} from 'react-native-paper';
 const DATA = [...Array(3).keys()].map((_, i) => {
   return {
     key: i,
-    //image: `https://randomuser.me/api/portraits/women/30.jpg`,
-    //image: 'https://randomuser.me/api/portraits/men/.jpg',
     picture: `https://randomuser.me/api/portraits/men/${i}.jpg`,
     name: `Name${i} Lastname${i}`,
     lastMessage:
@@ -49,7 +47,7 @@ const renderListItem = ({item, navigation}) => (
   <ListItem item={item} navigation={navigation} />
 );
 
-export default function MessagessScreen({navigation}) {
+export default function MessagesScreen({navigation}) {
   return (
     <DefaultBackground>
       <View style={styles.container}>
@@ -72,8 +70,8 @@ export default function MessagessScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: '#ffffff'},
   header: {
-    fontSize: 45,
-    fontWeight: '900',
+    fontSize: 35,
+    fontWeight: '500',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     backgroundColor: 'white',
@@ -115,25 +113,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   floatingButton: {position: 'absolute', bottom: 16, right: 16},
-
-  newsTitle: {
-    fontSize: 13,
-    fontWeight: '700',
-    flex: 2,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    marginRight: 15,
-  },
-  newsDate: {
-    fontSize: 12,
-    fontWeight: '500',
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-  },
-  newsText: {fontSize: 10, opacity: 0.7},
   nameAndDate: {flexDirection: 'row', marginBottom: 10},
-
   messageInfo: {
     flexDirection: 'column',
     alignSelf: 'stretch',
