@@ -1,5 +1,12 @@
 import * as React from 'react';
-import {View, Text, FlatList, StyleSheet, Image} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 
 import DefaultBackground from '../../shared/defaultBackground';
 
@@ -34,8 +41,15 @@ const CLASS_DATA = [
   },
 ];
 
-const ListItem = ({item}) => (
-  <View style={styles.listItem}>
+const ListItem = ({item, navigation}) => (
+  <TouchableOpacity
+    style={styles.listItem}
+    onPress={() =>
+      navigation.navigate('Course', {
+        navigation: navigation,
+        course: item,
+      })
+    }>
     <Image
       style={styles.itemImage}
       source={{
@@ -46,12 +60,14 @@ const ListItem = ({item}) => (
       <Text style={styles.itemTitle}>{item.title}</Text>
       <Text style={styles.itemText}>{item.text}</Text>
     </View>
-  </View>
+  </TouchableOpacity>
 );
 
-const renderListItem = ({item}) => <ListItem item={item} />;
+const renderListItem = ({item, navigation}) => (
+  <ListItem item={item} navigation={navigation} />
+);
 
-function HomeScreen() {
+function HomeScreen({navigation}) {
   return (
     <DefaultBackground>
       <View style={styles.container}>
@@ -62,7 +78,7 @@ function HomeScreen() {
           <FlatList
             style={styles.list}
             data={CLASS_DATA}
-            renderItem={renderListItem}
+            renderItem={({item}) => renderListItem({item, navigation})}
             keyExtractor={item => item.id}
           />
         </View>
