@@ -122,8 +122,8 @@ export default function NewsScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {backgroundColor: '#d7d7d7'},
   header: {
-    fontSize: 45,
-    fontWeight: '900',
+    fontSize: 35,
+    fontWeight: '500',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     backgroundColor: 'white',

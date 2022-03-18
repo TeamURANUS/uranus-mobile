@@ -5,7 +5,7 @@ export default function DetailedNewsScreen({route, navigation}) {
   const {item} = route.params;
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView style={styles.scroll}>
         <Image source={{uri: item.newsPicture}} style={styles.picture} />
         <View>
           <Text style={styles.title}>{item.newsTitle}</Text>
@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
 
   scroll: {
     flex: 1,
+    marginBottom: 40,
   },
 
   title: {
