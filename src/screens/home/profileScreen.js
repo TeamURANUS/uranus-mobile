@@ -167,12 +167,10 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 10,
+    backgroundColor: 'white',
   },
   avatar: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginTop: 10,
   },
   signoutButton: {
     fontSize: 20,
@@ -235,6 +233,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 10,
+    backgroundColor: 'white',
   },
   icon: {
     backgroundColor: '#ccc',
@@ -256,8 +255,11 @@ const styles = StyleSheet.create({
     borderColor: '#7a7a7a',
   },
   profilePicture: {
+    marginTop: 10,
     height: 100,
     width: 100,
     borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
