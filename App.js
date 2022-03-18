@@ -26,7 +26,6 @@ import DetailedNewsScreen from './src/screens/home/detailedNewsScreen';
 import ContactsScreen from './src/screens/home/contactsScreen';
 import ChatScreen from './src/screens/chatScreen';
 import MessagesScreen from './src/screens/home/messagesScreen';
-//import firestore from '@react-native-firebase/firestore';
 
 function HomeContainer() {
   return (
