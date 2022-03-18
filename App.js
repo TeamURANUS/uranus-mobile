@@ -24,7 +24,7 @@ import ProfileScreen from './src/screens/home/profileScreen';
 import NewsScreen from './src/screens/home/newsScreen';
 import DetailedNewsScreen from './src/screens/home/detailedNewsScreen';
 import ContactsScreen from './src/screens/home/contactsScreen';
-import ChatScreen from './src/screens/chatScreen';
+import ChatScreen from './src/screens/home/chatScreen';
 import MessagesScreen from './src/screens/home/messagesScreen';
 
 function HomeContainer() {
