@@ -24,6 +24,8 @@ import ProfileScreen from './src/screens/home/profileScreen';
 import NewsScreen from './src/screens/home/newsScreen';
 import DetailedNewsScreen from './src/screens/home/detailedNewsScreen';
 import ContactsScreen from './src/screens/home/contactsScreen';
+import ChatScreen from './src/screens/home/chatScreen';
+import MessagesScreen from './src/screens/home/messagesScreen';
 
 function HomeContainer() {
   return (
@@ -85,8 +87,8 @@ function HomeContainer() {
         }}
       />
       <NavigationTab.Screen
-        name="Contacts"
-        component={ContactsScreen}
+        name="Messages"
+        component={MessagesScreen}
         options={{
           tabBarIcon: ({color}) => (
             <MaterialCommunityIcons
@@ -145,6 +147,17 @@ const App: () => Node = () => {
         <NavigationStack.Screen
           name="Detailed News"
           component={DetailedNewsScreen}
+          options={{headerShown: false}}
+        />
+        <NavigationStack.Screen
+          name="Chat"
+          component={ChatScreen}
+          options={{headerShown: false}}
+        />
+
+        <NavigationStack.Screen
+          name="Contacts"
+          component={ContactsScreen}
           options={{headerShown: false}}
         />
       </NavigationStack.Navigator>
