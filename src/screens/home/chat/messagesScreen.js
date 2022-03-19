@@ -7,7 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import DefaultBackground from '../../shared/defaultBackground';
+import DefaultBackground from '../../../shared/defaultBackground';
 import {FAB} from 'react-native-paper';
 
 const DATA = [...Array(3).keys()].map((_, i) => {
@@ -68,7 +68,10 @@ export default function MessagesScreen({navigation}) {
 }
 
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: '#ffffff'},
+  container: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+  },
   header: {
     fontSize: 35,
     fontWeight: '500',
@@ -92,7 +95,7 @@ const styles = StyleSheet.create({
   picture: {
     width: 55,
     height: 55,
-    borderRadius: 55,
+    borderRadius: 10,
     marginRight: 20,
     marginLeft: 10,
     marginTop: 0,
@@ -103,7 +106,10 @@ const styles = StyleSheet.create({
     marginRight: 15,
     flex: 2,
   },
-  itemLastMessage: {fontSize: 14, opacity: 0.7},
+  itemLastMessage: {
+    fontSize: 14,
+    opacity: 0.7,
+  },
   itemLastMessageDate: {
     fontSize: 14,
     opacity: 0.8,
@@ -112,8 +118,16 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
   },
-  floatingButton: {position: 'absolute', bottom: 16, right: 16},
-  nameAndDate: {flexDirection: 'row', marginBottom: 10},
+  floatingButton: {
+    position: 'absolute',
+    backgroundColor: '#3B7AF9',
+    bottom: 16,
+    right: 16,
+  },
+  nameAndDate: {
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
   messageInfo: {
     flexDirection: 'column',
     alignSelf: 'stretch',

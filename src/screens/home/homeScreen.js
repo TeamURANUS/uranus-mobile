@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   itemImage: {
     height: 50,
     width: 50,
-    borderRadius: 30,
+    borderRadius: 10,
   },
   itemText: {
     fontSize: 12,

@@ -7,7 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import DefaultBackground from '../../shared/defaultBackground';
+import DefaultBackground from '../../../shared/defaultBackground';
 
 const DATA = [...Array(15).keys()].map((_, i) => {
   return {

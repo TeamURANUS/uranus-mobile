@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
+    borderRadius: 10,
   },
   newsTitle: {
     fontSize: 13,

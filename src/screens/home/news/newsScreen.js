@@ -1,9 +1,9 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
-import NewsCard from '../../shared/newsCard';
-import DefaultBackground from '../../shared/defaultBackground';
+import NewsCard from '../../../shared/components/newsCard';
+import DefaultBackground from '../../../shared/defaultBackground';
 
-var DATA = [
+const DATA = [
   {
     id: '1',
     newsPicture: 'https://picsum.photos/100',
