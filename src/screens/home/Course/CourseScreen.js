@@ -1,11 +1,18 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  FlatList,
+  TextInput,
+} from 'react-native';
 
-import DefaultBackground from '../../shared/defaultBackground';
+import DefaultBackground from '../../../shared/defaultBackground';
 import {Dimensions} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import CheckBox from '@react-native-community/checkbox';
-import PostCard from '../../shared/postCard';
+import PostCard from './postCard';
+import RadioGroup from 'react-native-radio-buttons-group';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -19,6 +26,7 @@ var DATA = [
     postDate: '16.01.2022',
     isInstructorPost: true,
     isRead: true,
+    postOwner: 'Oğuz Ergin',
   },
   {
     id: '2',
@@ -29,6 +37,7 @@ var DATA = [
     postDate: '16.01.2022',
     isInstructorPost: false,
     isRead: true,
+    postOwner: 'Deniz Türkmen',
   },
   {
     id: '3',
@@ -38,13 +47,33 @@ var DATA = [
     postDate: '16.01.2022',
     isInstructorPost: true,
     isRead: false,
+    postOwner: 'Mucahid Kutlu',
+  },
+];
+
+const radioButtonsData = [
+  {
+    id: '1', // acts as primary key, should be unique and non-empty string
+    label: 'all',
+    value: 'option1',
+    selected: true,
+  },
+  {
+    id: '2',
+    label: 'instructor posts',
+    value: 'option2',
+  },
+  {
+    id: '3',
+    label: 'student posts',
+    value: 'option3',
   },
 ];
 
 const ListItem = ({item, navigation}) => (
   <TouchableOpacity
     style={styles.newsItem}
-    onPress={() => navigation.navigate('Detailed News', {item: item})}>
+    onPress={() => navigation.navigate('Detailed Post', {item: item})}>
     <PostCard item={item} />
   </TouchableOpacity>
 );
@@ -64,35 +93,63 @@ export default function CourseScreen({route, navigation}) {
   const {course} = route.params;
   const [showInstructorPosts, setShowInstructorPosts] = useState(true);
   const [showStudentPosts, setShowStudentPosts] = useState(true);
+  const [newPostButtonPressed, setNewPostButtonPressed] = useState(false);
+  const [radioButtons, setRadioButtons] = useState(radioButtonsData);
+
+  function newPostPressed() {
+    setNewPostButtonPressed(!newPostButtonPressed);
+  }
+
+  function onPressRadioButton(radioButtonsArray) {
+    setRadioButtons(radioButtonsArray);
+    setShowInstructorPosts(
+      radioButtonsArray[0].selected || radioButtonsArray[1].selected,
+    );
+    setShowStudentPosts(
+      radioButtonsArray[0].selected || radioButtonsArray[2].selected,
+    );
+  }
 
   return (
     <DefaultBackground>
       <View style={styles.container}>
         <View style={styles.topBar}>
           <Text style={styles.header}>{course.title}</Text>
-          <TouchableOpacity style={styles.newPostTO}>
-            <MaterialCommunityIcons name="plus" style={styles.plusButton} />
+          <TouchableOpacity style={styles.newPostTO} onPress={newPostPressed}>
+            <MaterialCommunityIcons name="plus" style={styles.plusIcon} />
             <Text style={styles.newPostTOText}>New Post</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.filterPanel}>
-          <View style={styles.checkboxGroup}>
-            <CheckBox
-              value={showInstructorPosts}
-              onValueChange={setShowInstructorPosts}
-              style={styles.checkbox}
+
+        {!newPostButtonPressed ? (
+          <View style={styles.radioButtonsView}>
+            <RadioGroup
+              radioButtons={radioButtons}
+              onPress={onPressRadioButton}
+              layout={'row'}
             />
-            <Text style={styles.checkboxText}>Instructor Posts</Text>
           </View>
-          <View style={styles.checkboxGroup}>
-            <CheckBox
-              value={showStudentPosts}
-              onValueChange={setShowStudentPosts}
-              style={(styles.checkbox, {marginLeft: 60})}
+        ) : (
+          <View style={styles.newPostView}>
+            <View style={styles.newPostButtonsView}>
+              <TouchableOpacity style={styles.newPostPostTO}>
+                <MaterialCommunityIcons name="plus" style={styles.plusIcon} />
+                <Text style={styles.newPostTOText}>Post</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.newPostCancelTO}>
+                <MaterialCommunityIcons name="plus" style={styles.plusIcon} />
+                <Text style={styles.newPostTOText}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+            <TextInput
+              placeholder={'Title'}
+              style={styles.newPostTitleTextBox}
             />
-            <Text style={styles.checkboxText}>Student Posts</Text>
+            <View style={styles.separator} />
+            <TextInput placeholder={'Body'} style={styles.newPostBodyTextBox} />
           </View>
-        </View>
+        )}
+
         <FlatList
           data={DATA}
           renderItem={({item}) =>
@@ -117,7 +174,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#a6a5a5',
-    color: '#000000',
+    color: '#fcfcfc',
   },
   newsItem: {
     backgroundColor: 'white',
@@ -148,7 +205,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginLeft: 5,
   },
-  plusButton: {
+  plusIcon: {
     alignSelf: 'center',
     justifyContent: 'center',
     marginLeft: 5,
@@ -181,4 +238,81 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 20,
   },
+
+  newPostView: {
+    backgroundColor: '#7b13dc',
+    borderWidth: 4,
+    borderColor: '#7b13dc',
+  },
+
+  newPostTitleTextBox: {
+    backgroundColor: '#ffffff',
+  },
+
+  newPostBodyTextBox: {
+    backgroundColor: '#ffffff',
+    height: 150,
+    textAlignVertical: 'top',
+  },
+
+  newPostButtonsView: {
+    flexDirection: 'row',
+    height: 40,
+    justifyContent: 'center',
+  },
+
+  newPostPostTO: {
+    backgroundColor: '#15a205',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    alignSelf: 'center',
+    width: '50%',
+    height: '100%',
+    flexDirection: 'row',
+  },
+
+  newPostCancelTO: {
+    backgroundColor: '#e72838',
+    borderRadius: 5,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    alignSelf: 'center',
+    width: '50%',
+    height: '100%',
+    flexDirection: 'row',
+  },
+
+  separator: {
+    borderBottomColor: 'black',
+    borderBottomWidth: 2,
+  },
+
+  radioButtonsView: {
+    backgroundColor: '#d3d3d3',
+    height: 40,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
 });
+
+/*
+
+<View style={styles.filterPanel}>
+            <View style={styles.checkboxGroup}>
+              <CheckBox
+                value={showInstructorPosts}
+                onValueChange={setShowInstructorPosts}
+                style={styles.checkbox}
+              />
+              <Text style={styles.checkboxText}>Instructor Posts</Text>
+            </View>
+            <View style={styles.checkboxGroup}>
+              <CheckBox
+                value={showStudentPosts}
+                onValueChange={setShowStudentPosts}
+                style={(styles.checkbox, {marginLeft: 60})}
+              />
+              <Text style={styles.checkboxText}>Student Posts</Text>
+            </View>
+          </View>
+ */

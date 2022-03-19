@@ -57,12 +57,17 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     marginRight: 15,
+    color: '#000000',
   },
   postDate: {
     fontSize: 12,
     fontWeight: '500',
   },
-  postBody: {fontSize: 12, opacity: 0.7},
+  postBody: {
+    fontSize: 12,
+    opacity: 0.7,
+    color: '#000000',
+  },
   titleDateIcon: {flexDirection: 'row'},
   dateIcon: {
     flexDirection: 'column',
@@ -83,6 +88,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginLeft: 8,
     textAlign: 'center',
+    borderRadius: 5,
   },
 });
 

@@ -26,7 +26,8 @@ import DetailedNewsScreen from './src/screens/home/detailedNewsScreen';
 import ContactsScreen from './src/screens/home/contactsScreen';
 import ChatScreen from './src/screens/home/chatScreen';
 import MessagesScreen from './src/screens/home/messagesScreen';
-import CourseScreen from './src/screens/home/CourseScreen';
+import CourseScreen from './src/screens/home/Course/CourseScreen';
+import DetailedPostScreen from './src/screens/home/Course/detailedCoursePost';
 
 function HomeContainer() {
   return (
@@ -165,6 +166,12 @@ const App: () => Node = () => {
         <NavigationStack.Screen
           name="Course"
           component={CourseScreen}
+          options={{headerShown: false}}
+        />
+
+        <NavigationStack.Screen
+          name="Detailed Post"
+          component={DetailedPostScreen}
           options={{headerShown: false}}
         />
       </NavigationStack.Navigator>
