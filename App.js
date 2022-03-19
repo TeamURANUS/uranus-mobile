@@ -36,7 +36,7 @@ function HomeContainer() {
       screenOptions={{
         tabBarActiveTintColor: '#3B7AF9',
         tabBarInactiveTintColor: 'white',
-        tabBarStyle: {backgroundColor: '#c0c0c0', height: 80},
+        tabBarStyle: {backgroundColor: '#c0c0c0', height: '10%'},
       }}>
       <NavigationTab.Screen
         name="Home"
@@ -147,12 +147,12 @@ const App: () => Node = () => {
         <NavigationStack.Screen
           name="Detailed News"
           component={DetailedNewsScreen}
-          options={{headerShown: false}}
+          options={({route}) => ({title: route.params.name})}
         />
         <NavigationStack.Screen
           name="Chat"
           component={ChatScreen}
-          options={{headerShown: false}}
+          options={({route}) => ({title: route.params.name})}
         />
 
         <NavigationStack.Screen

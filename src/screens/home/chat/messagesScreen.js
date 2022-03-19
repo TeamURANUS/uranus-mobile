@@ -24,7 +24,7 @@ const DATA = [...Array(3).keys()].map((_, i) => {
 const ListItem = ({item, navigation}) => (
   <TouchableOpacity
     style={styles.message}
-    onPress={() => navigation.navigate('Chat', {item: item})}>
+    onPress={() => navigation.navigate('Chat', {item: item, name: item.name})}>
     <Image source={{uri: item.picture}} style={styles.picture} />
     <View style={styles.messageInfo}>
       <View style={styles.nameAndDate}>
@@ -50,36 +50,30 @@ const renderListItem = ({item, navigation}) => (
 export default function MessagesScreen({navigation}) {
   return (
     <DefaultBackground>
-      <View style={styles.container}>
-        <Text style={styles.header}>Messages</Text>
-        <FlatList
-          data={DATA}
-          renderItem={({item}) => renderListItem({item, navigation})}
-        />
+      <Text style={styles.header}>Messages</Text>
+      <FlatList
+        data={DATA}
+        renderItem={({item}) => renderListItem({item, navigation})}
+      />
 
-        <FAB
-          icon="plus"
-          style={styles.floatingButton}
-          onPress={() => navigation.navigate('Contacts')}
-        />
-      </View>
+      <FAB
+        icon="plus"
+        style={styles.floatingButton}
+        onPress={() => navigation.navigate('Contacts')}
+      />
     </DefaultBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-  },
   header: {
     fontSize: 35,
     fontWeight: '500',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     backgroundColor: 'white',
-    color: '#000000',
     paddingBottom: 20,
+    margin: '3%',
   },
   info: {
     marginTop: 5,
@@ -90,7 +84,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
     marginBottom: 2,
-    backgroundColor: '#ffffff',
+    textAlign: 'center',
   },
   picture: {
     width: 55,

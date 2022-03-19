@@ -7,7 +7,9 @@ export default function DetailedNewsScreen({route, navigation}) {
   return (
     <DefaultBackground>
       <ScrollView style={styles.scroll}>
-        <Image source={{uri: item.newsPicture}} style={styles.picture} />
+        <View style={styles.pictureContainer}>
+          <Image source={{uri: item.newsPicture}} style={styles.picture} />
+        </View>
         <View>
           <Text style={styles.title}>{item.newsTitle}</Text>
           <Text style={styles.date}>{item.newsDate}</Text>
@@ -44,13 +46,12 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   picture: {
-    marginBottom: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center',
+    margin: 20,
     resizeMode: 'cover',
     height: 300,
-    width: '100%',
     borderRadius: 10,
+  },
+  pictureContainer: {
+    justifyContent: 'center',
   },
 });
