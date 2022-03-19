@@ -77,7 +77,9 @@ export default function ChatScreen() {
 
 const styles = StyleSheet.create({
   userNameStyle: {color: '#2994ff'},
-  listViewStyle: {backgroundColor: '#918e8e'},
+  listViewStyle: {
+    backgroundColor: 'rgba(0,0,0,0)',
+  },
   bubbleTextStyle: {
     right: {
       color: 'white',

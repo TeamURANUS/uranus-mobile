@@ -1,9 +1,19 @@
 import * as React from 'react';
 import DefaultBackground from '../../shared/defaultBackground';
-import {FlatList, Image, StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  Dimensions,
+} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import {setEventListView} from '../../services/calendar';
 import {useState} from 'react';
+
+const windowHeight = Dimensions.get('window').height;
 
 const events = [
   {
@@ -124,7 +134,7 @@ const styles = StyleSheet.create({
     margin: '3%',
   },
   searchBar: {
-    height: 40,
+    height: windowHeight * 0.07,
     margin: '3%',
     backgroundColor: '#d2d2d2',
     borderRadius: 10,
