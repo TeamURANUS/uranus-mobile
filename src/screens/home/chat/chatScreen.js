@@ -42,9 +42,9 @@ export default function ChatScreen() {
     );
   }, []);
 
-  const onSend = useCallback((messages = []) => {
+  const onSend = useCallback((messagesToSend = []) => {
     setMessages(previousMessages =>
-      GiftedChat.append(previousMessages, messages),
+      GiftedChat.append(previousMessages, messagesToSend),
     );
   }, []);
 
@@ -61,7 +61,7 @@ export default function ChatScreen() {
   return (
     <GiftedChat
       messages={messages}
-      onSend={messages => onSend(messages)}
+      onSend={messagesToSend => onSend(messagesToSend)}
       user={{
         _id: 1,
       }}
@@ -77,22 +77,20 @@ export default function ChatScreen() {
 
 const styles = StyleSheet.create({
   userNameStyle: {color: '#2994ff'},
-  listViewStyle: {backgroundColor: '#ffffff'},
-
+  listViewStyle: {
+    backgroundColor: 'rgba(0,0,0,0)',
+  },
   bubbleTextStyle: {
     right: {
       color: 'white',
-      fontFamily: 'CerebriSans-Book',
     },
     left: {
       color: 'black',
-      fontFamily: 'CerebriSans-Book',
     },
   },
-
   bubbleWrapperStyle: {
     left: {
-      backgroundColor: '#cbcbcb',
+      backgroundColor: '#ffffff',
       borderBottomRightRadius: 15,
       borderBottomLeftRadius: 0,
       borderTopRightRadius: 15,

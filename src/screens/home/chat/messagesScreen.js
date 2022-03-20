@@ -7,7 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import DefaultBackground from '../../shared/defaultBackground';
+import DefaultBackground from '../../../shared/defaultBackground';
 import {FAB} from 'react-native-paper';
 
 const DATA = [...Array(3).keys()].map((_, i) => {
@@ -24,7 +24,7 @@ const DATA = [...Array(3).keys()].map((_, i) => {
 const ListItem = ({item, navigation}) => (
   <TouchableOpacity
     style={styles.message}
-    onPress={() => navigation.navigate('Chat', {item: item})}>
+    onPress={() => navigation.navigate('Chat', {item: item, name: item.name})}>
     <Image source={{uri: item.picture}} style={styles.picture} />
     <View style={styles.messageInfo}>
       <View style={styles.nameAndDate}>
@@ -50,33 +50,30 @@ const renderListItem = ({item, navigation}) => (
 export default function MessagesScreen({navigation}) {
   return (
     <DefaultBackground>
-      <View style={styles.container}>
-        <Text style={styles.header}>Messages</Text>
-        <FlatList
-          data={DATA}
-          renderItem={({item}) => renderListItem({item, navigation})}
-        />
+      <Text style={styles.header}>Messages</Text>
+      <FlatList
+        data={DATA}
+        renderItem={({item}) => renderListItem({item, navigation})}
+      />
 
-        <FAB
-          icon="plus"
-          style={styles.floatingButton}
-          onPress={() => navigation.navigate('Contacts')}
-        />
-      </View>
+      <FAB
+        icon="plus"
+        style={styles.floatingButton}
+        onPress={() => navigation.navigate('Contacts')}
+      />
     </DefaultBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: '#ffffff'},
   header: {
     fontSize: 35,
     fontWeight: '500',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     backgroundColor: 'white',
-    color: '#000000',
     paddingBottom: 20,
+    margin: '3%',
   },
   info: {
     marginTop: 5,
@@ -87,12 +84,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
     marginBottom: 2,
-    backgroundColor: '#ffffff',
+    textAlign: 'center',
   },
   picture: {
     width: 55,
     height: 55,
-    borderRadius: 55,
+    borderRadius: 10,
     marginRight: 20,
     marginLeft: 10,
     marginTop: 0,
@@ -103,7 +100,10 @@ const styles = StyleSheet.create({
     marginRight: 15,
     flex: 2,
   },
-  itemLastMessage: {fontSize: 14, opacity: 0.7},
+  itemLastMessage: {
+    fontSize: 14,
+    opacity: 0.7,
+  },
   itemLastMessageDate: {
     fontSize: 14,
     opacity: 0.8,
@@ -112,8 +112,16 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
   },
-  floatingButton: {position: 'absolute', bottom: 16, right: 16},
-  nameAndDate: {flexDirection: 'row', marginBottom: 10},
+  floatingButton: {
+    position: 'absolute',
+    backgroundColor: '#3B7AF9',
+    bottom: 16,
+    right: 16,
+  },
+  nameAndDate: {
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
   messageInfo: {
     flexDirection: 'column',
     alignSelf: 'stretch',

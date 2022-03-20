@@ -21,11 +21,11 @@ import HomeScreen from './src/screens/home/homeScreen';
 import CalendarScreen from './src/screens/home/calendarScreen';
 import NotificationScreen from './src/screens/home/notificationScreen';
 import ProfileScreen from './src/screens/home/profileScreen';
-import NewsScreen from './src/screens/home/newsScreen';
-import DetailedNewsScreen from './src/screens/home/detailedNewsScreen';
-import ContactsScreen from './src/screens/home/contactsScreen';
-import ChatScreen from './src/screens/home/chatScreen';
-import MessagesScreen from './src/screens/home/messagesScreen';
+import NewsScreen from './src/screens/home/news/newsScreen';
+import DetailedNewsScreen from './src/screens/home/news/detailedNewsScreen';
+import ContactsScreen from './src/screens/home/chat/contactsScreen';
+import ChatScreen from './src/screens/home/chat/chatScreen';
+import MessagesScreen from './src/screens/home/chat/messagesScreen';
 
 function HomeContainer() {
   return (
@@ -36,7 +36,7 @@ function HomeContainer() {
       screenOptions={{
         tabBarActiveTintColor: '#3B7AF9',
         tabBarInactiveTintColor: 'white',
-        tabBarStyle: {backgroundColor: '#c0c0c0', height: 80},
+        tabBarStyle: {backgroundColor: '#c0c0c0', height: '10%'},
       }}>
       <NavigationTab.Screen
         name="Home"
@@ -147,12 +147,12 @@ const App: () => Node = () => {
         <NavigationStack.Screen
           name="Detailed News"
           component={DetailedNewsScreen}
-          options={{headerShown: false}}
+          options={({route}) => ({title: route.params.name})}
         />
         <NavigationStack.Screen
           name="Chat"
           component={ChatScreen}
-          options={{headerShown: false}}
+          options={({route}) => ({title: route.params.name})}
         />
 
         <NavigationStack.Screen
