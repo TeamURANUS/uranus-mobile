@@ -13,6 +13,7 @@ import {getTitleStyle} from '../../services/dynamicStyles';
 
 const COMMUNITY_DATA = [
   {
+    type: 'community',
     id: '1',
     title: 'EVT',
     text: 'ORTAM PARTİ',
@@ -20,6 +21,7 @@ const COMMUNITY_DATA = [
       'https://media.istockphoto.com/photos/man-holding-blue-helmet-close-up-picture-id1178982949?s=612x612',
   },
   {
+    type: 'community',
     id: '2',
     title: 'ASAT',
     text: 'AT AVRAT SİLAH',
@@ -27,6 +29,7 @@ const COMMUNITY_DATA = [
       'https://media.istockphoto.com/photos/man-holding-blue-helmet-close-up-picture-id1178982949?s=612x612',
   },
   {
+    type: 'community',
     id: '3',
     title: 'TOBB BİLGİSAYAR',
     text: 'ARADIĞINIZ KLUÜB BULUNAMADI',
@@ -37,6 +40,7 @@ const COMMUNITY_DATA = [
 
 const CLASS_DATA = [
   {
+    type: 'class',
     id: '1',
     title: 'BIL 496',
     text: 'lorem ipsum',
@@ -44,6 +48,7 @@ const CLASS_DATA = [
       'https://media.istockphoto.com/photos/man-holding-blue-helmet-close-up-picture-id1178982949?s=612x612',
   },
   {
+    type: 'class',
     id: '2',
     title: 'END 321',
     text: 'lorem ipsum',
@@ -51,6 +56,7 @@ const CLASS_DATA = [
       'https://media.istockphoto.com/photos/young-people-with-face-masks-back-at-work-or-school-in-office-after-picture-id1250279730?s=612x612',
   },
   {
+    type: 'class',
     id: '3',
     title: 'BIL 441',
     text: 'lorem ipsum',
@@ -58,6 +64,7 @@ const CLASS_DATA = [
       'https://media.istockphoto.com/photos/remote-working-from-home-freelancer-workplace-in-kitchen-with-laptop-picture-id1213497796?s=612x612',
   },
   {
+    type: 'class',
     id: '4',
     title: 'SOC 203',
     text: 'lorem ipsum',
@@ -65,6 +72,7 @@ const CLASS_DATA = [
       'https://media.istockphoto.com/photos/turner-worker-working-on-drill-bit-in-a-workshop-picture-id1128735755?s=612x612',
   },
   {
+    type: 'class',
     id: '5',
     title: 'BIL 441',
     text: 'lorem ipsum',
@@ -72,6 +80,7 @@ const CLASS_DATA = [
       'https://media.istockphoto.com/photos/remote-working-from-home-freelancer-workplace-in-kitchen-with-laptop-picture-id1213497796?s=612x612',
   },
   {
+    type: 'class',
     id: '6',
     title: 'SOC 203',
     text: 'lorem ipsum',
@@ -79,6 +88,7 @@ const CLASS_DATA = [
       'https://media.istockphoto.com/photos/turner-worker-working-on-drill-bit-in-a-workshop-picture-id1128735755?s=612x612',
   },
   {
+    type: 'class',
     id: '7',
     title: 'BIL 441',
     text: 'lorem ipsum',
@@ -86,6 +96,7 @@ const CLASS_DATA = [
       'https://media.istockphoto.com/photos/remote-working-from-home-freelancer-workplace-in-kitchen-with-laptop-picture-id1213497796?s=612x612',
   },
   {
+    type: 'class',
     id: '8',
     title: 'SOC 203',
     text: 'lorem ipsum',
@@ -94,8 +105,14 @@ const CLASS_DATA = [
   },
 ];
 
-const ListItem = ({item}) => (
-  <View style={styles.listItem}>
+const ListItem = ({item, navigation}) => (
+  <TouchableOpacity
+    style={styles.listItem}
+    onPress={() =>
+      item.type === 'class'
+        ? navigation.navigate('Class', {item: item, name: item.title})
+        : navigation.navigate('Community', {item: item, name: item.title})
+    }>
     <Image
       style={styles.itemImage}
       source={{
@@ -106,12 +123,14 @@ const ListItem = ({item}) => (
       <Text style={styles.itemTitle}>{item.title}</Text>
       <Text style={styles.itemText}>{item.text}</Text>
     </View>
-  </View>
+  </TouchableOpacity>
 );
 
-const renderListItem = ({item}) => <ListItem item={item} />;
+const renderListItem = ({item, navigation}) => (
+  <ListItem item={item} navigation={navigation} />
+);
 
-function HomeScreen() {
+function HomeScreen({navigation}) {
   const [showClasses, setShowClasses] = useState(true);
 
   return (
@@ -133,7 +152,7 @@ function HomeScreen() {
         <View>
           <FlatList
             data={CLASS_DATA}
-            renderItem={renderListItem}
+            renderItem={({item}) => renderListItem({item, navigation})}
             keyExtractor={item => item.id}
           />
         </View>
@@ -143,7 +162,7 @@ function HomeScreen() {
         <View>
           <FlatList
             data={COMMUNITY_DATA}
-            renderItem={renderListItem}
+            renderItem={({item}) => renderListItem({item, navigation})}
             keyExtractor={item => item.id}
           />
         </View>

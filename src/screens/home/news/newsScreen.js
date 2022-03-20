@@ -111,7 +111,7 @@ export default function NewsScreen({navigation}) {
   return (
     <DefaultBackground>
       <View style={styles.container}>
-        <Text style={styles.header}>Haberler</Text>
+        <Text style={styles.header}>News</Text>
         <FlatList
           data={DATA}
           renderItem={({item}) => renderListItem({item, navigation})}

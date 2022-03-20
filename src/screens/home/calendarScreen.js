@@ -97,7 +97,7 @@ function CalendarScreen() {
 
   return (
     <DefaultBackground>
-      <Text style={styles.title}>Takvim</Text>
+      <Text style={styles.title}>Calendar</Text>
       <View>
         <TextInput
           placeholder="Search"
