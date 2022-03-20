@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>583184460745-rkppgrsog5t7pk7gm5he0cdah0thufg2.apps.googleusercontent.com</string>
+	<string>641761728473-f15kvlipjltpeu1sri9f50jobvfv043i.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.583184460745-rkppgrsog5t7pk7gm5he0cdah0thufg2</string>
+	<string>com.googleusercontent.apps.641761728473-f15kvlipjltpeu1sri9f50jobvfv043i</string>
 	<key>API_KEY</key>
-	<string>AIzaSyA1BIRdcy9JxLX6R2WvEgCFk77SNCSXQHk</string>
+	<string>AIzaSyBdpO5wU4lKoh7XkNt_gU40gBTvzaKLhjw</string>
 	<key>GCM_SENDER_ID</key>
-	<string>583184460745</string>
+	<string>641761728473</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.uranus.uranusmobile</string>
+	<string>com.uranus.educatied</string>
 	<key>PROJECT_ID</key>
-	<string>uranus-aee47</string>
+	<string>educatied-7e9ca</string>
 	<key>STORAGE_BUCKET</key>
-	<string>uranus-aee47.appspot.com</string>
+	<string>educatied-7e9ca.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:583184460745:ios:dbba16e9f64dc6fb019618</string>
+	<string>1:641761728473:ios:7ea51c255f5602d962abc8</string>
 </dict>
 </plist>

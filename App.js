@@ -18,6 +18,7 @@ import InitialLoadScreen from './src/screens/initialLoadScreen';
 import SignUpScreen from './src/screens/authentication/signUpScreen';
 import SignInScreen from './src/screens/authentication/signInScreen';
 import HomeScreen from './src/screens/home/homeScreen';
+import ClassScreen from './src/screens/home/classAndCommunities/classScreen';
 import CalendarScreen from './src/screens/home/calendarScreen';
 import NotificationScreen from './src/screens/home/notificationScreen';
 import ProfileScreen from './src/screens/home/profileScreen';
@@ -154,11 +155,11 @@ const App: () => Node = () => {
           component={ChatScreen}
           options={({route}) => ({title: route.params.name})}
         />
-
+        <NavigationStack.Screen name="Contacts" component={ContactsScreen} />
         <NavigationStack.Screen
-          name="Contacts"
-          component={ContactsScreen}
-          options={{headerShown: false}}
+          name="Class"
+          component={ClassScreen}
+          options={({route}) => ({title: route.params.name})}
         />
       </NavigationStack.Navigator>
     </NavigationContainer>
