@@ -22,7 +22,6 @@ export function checkPasswordMatch({Popup, password, confirmationPassword}) {
 
 export async function checkAndRegisterUser({
   Popup,
-  userName,
   email,
   password,
   confirmationPassword,
@@ -36,7 +35,6 @@ export async function checkAndRegisterUser({
   });
   if (isMatch) {
     await registerUser({
-      userName: userName,
       email: email,
       password: password,
       navigation: navigation,
