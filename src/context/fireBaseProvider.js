@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import auth from '@react-native-firebase/auth';
+import auth, {firebase} from '@react-native-firebase/auth';
 
 import {Root, Popup} from 'popup-ui';
 import {showDangerPopup, showSuccessPopup} from '../services/popup';
@@ -73,6 +73,21 @@ export const FireBaseProvider = ({children}) => {
       });
   }
 
+  function passwordResetUser({email, navigation}) {
+    auth()
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        clearStackAndNavigate({navigation, screenName: 'SignIn'});
+      })
+      .catch(error => {
+        showDangerPopup({
+          Popup,
+          title: 'Password Reset Failed',
+          textBody: error.code,
+        });
+      });
+  }
+
   useEffect(() => {
     // noinspection UnnecessaryLocalVariableJS
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
@@ -89,6 +104,7 @@ export const FireBaseProvider = ({children}) => {
     Popup: Popup,
     registerUser: registerUser,
     logoutUser: logoutUser,
+    passwordResetUser: passwordResetUser,
     loginUser: loginUser,
   };
 
