@@ -13,6 +13,7 @@ import {Dimensions} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import PostCard from './postCard';
 import RadioGroup from 'react-native-radio-buttons-group';
+import OptionsMenu from 'react-native-option-menu';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -95,6 +96,28 @@ export default function CourseScreen({route, navigation}) {
   const [showStudentPosts, setShowStudentPosts] = useState(true);
   const [newPostButtonPressed, setNewPostButtonPressed] = useState(false);
   const [radioButtons, setRadioButtons] = useState(radioButtonsData);
+  const [newPostTitle, setNewPostTitle] = useState(radioButtonsData);
+  const [newPostBody, setNewPostBody] = useState(radioButtonsData);
+  let newPostTitleTextInput = React.createRef();
+  let newPostBodyTextInput = React.createRef();
+
+  function postNewPost() {
+    DATA.push({
+      id: DATA.length + 1,
+      postTitle: newPostTitle,
+      postBody: newPostBody,
+      postDate: '16.01.2022',
+      isInstructorPost: false,
+      isRead: true,
+      postOwner: 'Deniz Türkmen',
+    });
+    newPostTitleTextInput.clear();
+    newPostBodyTextInput.clear();
+    setNewPostTitle('');
+    setNewPostBody('');
+    setNewPostButtonPressed(!newPostButtonPressed);
+    console.log(DATA);
+  }
 
   function newPostPressed() {
     setNewPostButtonPressed(!newPostButtonPressed);
@@ -110,43 +133,67 @@ export default function CourseScreen({route, navigation}) {
     );
   }
 
+  const MoreIcon = require('../../../assets/hamburger.png');
+
   return (
     <DefaultBackground>
       <View style={styles.container}>
         <View style={styles.topBar}>
           <Text style={styles.header}>{course.title}</Text>
-          <TouchableOpacity style={styles.newPostTO} onPress={newPostPressed}>
-            <MaterialCommunityIcons name="plus" style={styles.plusIcon} />
-            <Text style={styles.newPostTOText}>New Post</Text>
-          </TouchableOpacity>
-        </View>
-
-        {!newPostButtonPressed ? (
-          <View style={styles.radioButtonsView}>
-            <RadioGroup
-              radioButtons={radioButtons}
-              onPress={onPressRadioButton}
-              layout={'row'}
+          <View style={styles.topBarButtons}>
+            <TouchableOpacity
+              style={[
+                styles.newPostTO,
+                newPostButtonPressed ? {backgroundColor: '#da3c3c'} : null,
+              ]}
+              onPress={newPostPressed}>
+              <MaterialCommunityIcons name="plus" style={styles.plusIcon} />
+              <Text style={styles.newPostTOText}>
+                {newPostButtonPressed ? 'Cancel' : 'New Post'}
+              </Text>
+            </TouchableOpacity>
+            <OptionsMenu
+              button={MoreIcon}
+              buttonStyle={styles.optionsMenu}
+              destructiveIndex={1}
+              options={['Class Info', 'Assignments']}
             />
           </View>
-        ) : (
+        </View>
+        <View style={styles.radioButtonsView}>
+          <RadioGroup
+            radioButtons={radioButtons}
+            onPress={onPressRadioButton}
+            layout={'row'}
+          />
+        </View>
+        {!newPostButtonPressed ? null : (
           <View style={styles.newPostView}>
             <View style={styles.newPostButtonsView}>
-              <TouchableOpacity style={styles.newPostPostTO}>
+              <TouchableOpacity
+                style={styles.newPostPostTO}
+                onPress={postNewPost}>
                 <MaterialCommunityIcons name="plus" style={styles.plusIcon} />
                 <Text style={styles.newPostTOText}>Post</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.newPostCancelTO}>
-                <MaterialCommunityIcons name="plus" style={styles.plusIcon} />
-                <Text style={styles.newPostTOText}>Cancel</Text>
               </TouchableOpacity>
             </View>
             <TextInput
               placeholder={'Title'}
               style={styles.newPostTitleTextBox}
+              onChangeText={setNewPostTitle}
+              ref={input => {
+                newPostTitleTextInput = input;
+              }}
             />
             <View style={styles.separator} />
-            <TextInput placeholder={'Body'} style={styles.newPostBodyTextBox} />
+            <TextInput
+              placeholder={'Body'}
+              style={styles.newPostBodyTextBox}
+              onChangeText={setNewPostBody}
+              ref={input => {
+                newPostBodyTextInput = input;
+              }}
+            />
           </View>
         )}
 
@@ -187,12 +234,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#a6a5a5',
   },
+
+  topBarButtons: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    alignContent: 'flex-end',
+    justifyContent: 'flex-end',
+    position: 'absolute',
+    right: 20,
+    width: '50%',
+  },
+
   newPostTO: {
     backgroundColor: '#0d92ff',
     borderRadius: 5,
     alignSelf: 'center',
-    position: 'absolute',
-    right: 20,
     width: 105,
     height: 30,
     flexDirection: 'row',
@@ -211,6 +267,33 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     color: '#ffffff',
     fontSize: 20,
+  },
+
+  menuTO: {
+    borderRadius: 5,
+    alignSelf: 'flex-start',
+    justifyContent: 'flex-start',
+    alignContent: 'flex-start',
+    alignItems: 'flex-start',
+    textAlign: 'flex-start',
+    height: 40,
+    flexDirection: 'column',
+    marginLeft: 10,
+  },
+
+  menuIcon: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    color: '#ffffff',
+    fontSize: 35,
+  },
+
+  optionsMenu: {
+    width: 30,
+    height: 30,
+    margin: 7.5,
+    resizeMode: 'contain',
+    marginLeft: 20,
   },
 
   filterPanel: {
@@ -266,7 +349,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     alignSelf: 'center',
-    width: '50%',
+    width: '100%',
     height: '100%',
     flexDirection: 'row',
   },
