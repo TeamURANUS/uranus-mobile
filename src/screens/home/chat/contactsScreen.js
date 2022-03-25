@@ -7,7 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import DefaultBackground from '../../shared/defaultBackground';
+import DefaultBackground from '../../../shared/defaultBackground';
 
 const DATA = [...Array(15).keys()].map((_, i) => {
   return {
@@ -42,7 +42,6 @@ export default function ContactsScreen({navigation}) {
   return (
     <DefaultBackground>
       <View style={styles.container}>
-        <Text style={styles.header}>Contacts</Text>
         <FlatList
           data={DATA}
           renderItem={({item}) => renderListItem({item, navigation})}

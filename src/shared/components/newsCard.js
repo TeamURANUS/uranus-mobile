@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
   newsBox: {
     flex: 1,
     flexDirection: 'row',
@@ -38,8 +37,9 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     height: 80,
+    borderBottomWidth: 2,
+    borderColor: '#9b9b9b',
   },
-
   contentBox: {
     flexDirection: 'column',
     alignSelf: 'stretch',
@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
     width: 310,
     marginBottom: 10,
   },
-
   picture: {
     width: 60,
     height: 60,
@@ -55,6 +54,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
+    borderRadius: 10,
   },
   newsTitle: {
     fontSize: 13,

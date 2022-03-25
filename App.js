@@ -18,6 +18,7 @@ import InitialLoadScreen from './src/screens/initialLoadScreen';
 import SignUpScreen from './src/screens/authentication/signUpScreen';
 import SignInScreen from './src/screens/authentication/signInScreen';
 import HomeScreen from './src/screens/home/homeScreen';
+import ClassScreen from './src/screens/home/classAndCommunities/classScreen';
 import CalendarScreen from './src/screens/home/calendarScreen';
 import NotificationScreen from './src/screens/home/notificationScreen';
 import ProfileScreen from './src/screens/home/profileScreen';
@@ -28,6 +29,11 @@ import ChatScreen from './src/screens/home/chatScreen';
 import MessagesScreen from './src/screens/home/messagesScreen';
 import CourseScreen from './src/screens/home/Course/CourseScreen';
 import DetailedPostScreen from './src/screens/home/Course/detailedCoursePost';
+import NewsScreen from './src/screens/home/news/newsScreen';
+import DetailedNewsScreen from './src/screens/home/news/detailedNewsScreen';
+import ContactsScreen from './src/screens/home/chat/contactsScreen';
+import ChatScreen from './src/screens/home/chat/chatScreen';
+import MessagesScreen from './src/screens/home/chat/messagesScreen';
 
 function HomeContainer() {
   return (
@@ -38,7 +44,7 @@ function HomeContainer() {
       screenOptions={{
         tabBarActiveTintColor: '#3B7AF9',
         tabBarInactiveTintColor: 'white',
-        tabBarStyle: {backgroundColor: '#c0c0c0', height: 80},
+        tabBarStyle: {backgroundColor: '#c0c0c0', height: '10%'},
       }}>
       <NavigationTab.Screen
         name="Home"
@@ -149,18 +155,18 @@ const App: () => Node = () => {
         <NavigationStack.Screen
           name="Detailed News"
           component={DetailedNewsScreen}
-          options={{headerShown: false}}
+          options={({route}) => ({title: route.params.name})}
         />
         <NavigationStack.Screen
           name="Chat"
           component={ChatScreen}
-          options={{headerShown: false}}
+          options={({route}) => ({title: route.params.name})}
         />
-
+        <NavigationStack.Screen name="Contacts" component={ContactsScreen} />
         <NavigationStack.Screen
-          name="Contacts"
-          component={ContactsScreen}
-          options={{headerShown: false}}
+          name="Class"
+          component={ClassScreen}
+          options={({route}) => ({title: route.params.name})}
         />
 
         <NavigationStack.Screen
