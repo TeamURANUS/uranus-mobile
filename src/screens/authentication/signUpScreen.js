@@ -19,13 +19,11 @@ import {checkAndRegisterUser} from '../../services/authentication';
 function SignUpScreen({navigation}) {
   const {registerUser, Popup} = useContext(FireBaseContext);
 
-  const [userName: string, setUserName] = useState('');
   const [email: string, setEmail] = useState('');
   const [password: string, setPassword] = useState('');
   const [confirmationPassword: string, setConfirmationPassword] = useState('');
   const [isAccepted: boolean, setAccepted] = useState(false);
 
-  const refInput2 = React.useRef();
   const refInput3 = React.useRef();
   const refInput4 = React.useRef();
 
@@ -36,17 +34,6 @@ function SignUpScreen({navigation}) {
 
         <View style={styles.formContainer}>
           <TextInput
-            placeholder="user name"
-            placeholderTextColor="grey"
-            autoCorrect={false}
-            autoCapitalize="none"
-            returnKeyType="next"
-            onChangeText={t => setUserName(t)}
-            onSubmitEditing={() => refInput2.current.focus()}
-            style={styles.input}
-          />
-
-          <TextInput
             placeholder="email"
             placeholderTextColor="grey"
             autoCorrect={false}
@@ -55,7 +42,6 @@ function SignUpScreen({navigation}) {
             onChangeText={t => {
               setEmail(t);
             }}
-            ref={refInput2}
             onSubmitEditing={() => refInput3.current.focus()}
             style={styles.input}
           />
@@ -109,7 +95,6 @@ function SignUpScreen({navigation}) {
             onPress={async () =>
               await checkAndRegisterUser({
                 Popup,
-                userName,
                 email,
                 password,
                 confirmationPassword,

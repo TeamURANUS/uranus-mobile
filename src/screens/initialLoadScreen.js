@@ -9,7 +9,12 @@ function InitialLoadScreen({navigation}) {
 
   useEffect(() => {
     if (user) {
-      navigation.navigate('Home Container');
+      if (user.emailVerified) {
+        // TODO check for additional information about users documents
+        navigation.navigate('Home Container');
+      } else {
+        navigation.navigate('Verification');
+      }
     } else {
       navigation.navigate('Initial Screen');
     }
