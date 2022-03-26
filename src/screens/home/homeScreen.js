@@ -110,8 +110,18 @@ const ListItem = ({item, navigation}) => (
     style={styles.listItem}
     onPress={() =>
       item.type === 'class'
-        ? navigation.navigate('Class', {item: item, name: item.title})
-        : navigation.navigate('Community', {item: item, name: item.title})
+        ? navigation.navigate('Course', {
+            navigation: navigation,
+            course: item,
+            name: item.title,
+            type: 'course',
+          })
+        : navigation.navigate('Course', {
+            navigation: navigation,
+            course: item,
+            name: item.title,
+            type: 'community',
+          })
     }>
     <Image
       style={styles.itemImage}

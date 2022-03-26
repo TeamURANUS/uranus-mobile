@@ -1,19 +1,10 @@
 import React, {useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  FlatList,
-  TextInput,
-} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
 
 import DefaultBackground from '../../../shared/defaultBackground';
 import {Dimensions} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import PostCard from './postCard';
-import RadioGroup from 'react-native-radio-buttons-group';
-import OptionsMenu from 'react-native-option-menu';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -52,25 +43,6 @@ var DATA = [
   },
 ];
 
-const radioButtonsData = [
-  {
-    id: '1', // acts as primary key, should be unique and non-empty string
-    label: 'all',
-    value: 'option1',
-    selected: true,
-  },
-  {
-    id: '2',
-    label: 'instructor posts',
-    value: 'option2',
-  },
-  {
-    id: '3',
-    label: 'student posts',
-    value: 'option3',
-  },
-];
-
 const ListItem = ({item, navigation}) => (
   <TouchableOpacity
     style={styles.newsItem}
@@ -79,76 +51,12 @@ const ListItem = ({item, navigation}) => (
   </TouchableOpacity>
 );
 
-const renderListItem = ({
-  item,
-  navigation,
-  showInstructorPosts,
-  showStudentPosts,
-}) =>
-  (showInstructorPosts && item.isInstructorPost) ||
-  (showStudentPosts && !item.isInstructorPost) ? (
-    <ListItem item={item} navigation={navigation} />
-  ) : null;
-
-export default function CourseScreen({route, navigation}) {
+const renderListItem = ({item, navigation}) => (
+  <ListItem item={item} navigation={navigation} />
+);
+export default function ClassInfo({route, navigation}) {
   const {course} = route.params;
-  const [showInstructorPosts, setShowInstructorPosts] = useState(true);
-  const [showStudentPosts, setShowStudentPosts] = useState(true);
   const [newPostButtonPressed, setNewPostButtonPressed] = useState(false);
-  const [radioButtons, setRadioButtons] = useState(radioButtonsData);
-  const [newPostTitle, setNewPostTitle] = useState('');
-  const [newPostBody, setNewPostBody] = useState('');
-  let newPostTitleTextInput = React.createRef();
-  let newPostBodyTextInput = React.createRef();
-
-  function postNewPost() {
-    DATA.push({
-      id: DATA.length + 1,
-      postTitle: newPostTitle,
-      postBody: newPostBody,
-      postDate: '16.01.2022',
-      isInstructorPost: false,
-      isRead: true,
-      postOwner: 'Deniz Türkmen',
-    });
-    newPostTitleTextInput.clear();
-    newPostBodyTextInput.clear();
-    setNewPostTitle('');
-    setNewPostBody('');
-    setNewPostButtonPressed(!newPostButtonPressed);
-    console.log(DATA);
-  }
-
-  function newPostPressed() {
-    setNewPostButtonPressed(!newPostButtonPressed);
-  }
-
-  function onPressRadioButton(radioButtonsArray) {
-    setRadioButtons(radioButtonsArray);
-    setShowInstructorPosts(
-      radioButtonsArray[0].selected || radioButtonsArray[1].selected,
-    );
-    setShowStudentPosts(
-      radioButtonsArray[0].selected || radioButtonsArray[2].selected,
-    );
-  }
-
-  function assignmentsPressed() {
-    console.log('hey');
-    navigation.navigate('Assignments', {
-      navigation: navigation,
-      course: course,
-    });
-    /*
-    () =>
-                  navigation.navigate('Assignments', {
-                    navigation: navigation,
-                    course: this.course,
-                  })
-     */
-  }
-
-  const MoreIcon = require('../../../assets/hamburger.png');
 
   return (
     <DefaultBackground>
@@ -160,67 +68,20 @@ export default function CourseScreen({route, navigation}) {
               style={[
                 styles.newPostTO,
                 newPostButtonPressed ? {backgroundColor: '#da3c3c'} : null,
-              ]}
-              onPress={newPostPressed}>
+              ]}>
               <MaterialCommunityIcons name="plus" style={styles.plusIcon} />
               <Text style={styles.newPostTOText}>
                 {newPostButtonPressed ? 'Cancel' : 'New Post'}
               </Text>
             </TouchableOpacity>
-            <OptionsMenu
-              button={MoreIcon}
-              buttonStyle={styles.optionsMenu}
-              destructiveIndex={1}
-              options={['Class Info', 'Assignments', '']}
-              actions={[assignmentsPressed, assignmentsPressed]}
-            />
           </View>
         </View>
-        <View style={styles.radioButtonsView}>
-          <RadioGroup
-            radioButtons={radioButtons}
-            onPress={onPressRadioButton}
-            layout={'row'}
-          />
-        </View>
-        {!newPostButtonPressed ? null : (
-          <View style={styles.newPostView}>
-            <View style={styles.newPostButtonsView}>
-              <TouchableOpacity
-                style={styles.newPostPostTO}
-                onPress={postNewPost}>
-                <MaterialCommunityIcons name="plus" style={styles.plusIcon} />
-                <Text style={styles.newPostTOText}>Post</Text>
-              </TouchableOpacity>
-            </View>
-            <TextInput
-              placeholder={'Title'}
-              style={styles.newPostTitleTextBox}
-              onChangeText={setNewPostTitle}
-              ref={input => {
-                newPostTitleTextInput = input;
-              }}
-            />
-            <View style={styles.separator} />
-            <TextInput
-              placeholder={'Body'}
-              style={styles.newPostBodyTextBox}
-              onChangeText={setNewPostBody}
-              ref={input => {
-                newPostBodyTextInput = input;
-              }}
-            />
-          </View>
-        )}
-
         <FlatList
           data={DATA}
           renderItem={({item}) =>
             renderListItem({
               item,
               navigation,
-              showInstructorPosts,
-              showStudentPosts,
             })
           }
         />
@@ -230,6 +91,7 @@ export default function CourseScreen({route, navigation}) {
 }
 
 const styles = StyleSheet.create({
+  container: {backgroundColor: '#d2d2d2'},
   header: {
     fontSize: 35,
     fontWeight: '500',
@@ -237,13 +99,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#a6a5a5',
     color: '#fcfcfc',
-    marginLeft: 10,
   },
   newsItem: {
     backgroundColor: 'white',
     display: 'flex',
-    borderBottomWidth: 2,
-    borderBottomColor: '#c4c4c4',
+    marginBottom: 2,
   },
   topBar: {
     width: windowWidth,
@@ -394,25 +254,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
-/*
-
-<View style={styles.filterPanel}>
-            <View style={styles.checkboxGroup}>
-              <CheckBox
-                value={showInstructorPosts}
-                onValueChange={setShowInstructorPosts}
-                style={styles.checkbox}
-              />
-              <Text style={styles.checkboxText}>Instructor Posts</Text>
-            </View>
-            <View style={styles.checkboxGroup}>
-              <CheckBox
-                value={showStudentPosts}
-                onValueChange={setShowStudentPosts}
-                style={(styles.checkbox, {marginLeft: 60})}
-              />
-              <Text style={styles.checkboxText}>Student Posts</Text>
-            </View>
-          </View>
- */

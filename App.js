@@ -22,11 +22,6 @@ import ClassScreen from './src/screens/home/classAndCommunities/classScreen';
 import CalendarScreen from './src/screens/home/calendarScreen';
 import NotificationScreen from './src/screens/home/notificationScreen';
 import ProfileScreen from './src/screens/home/profileScreen';
-import NewsScreen from './src/screens/home/newsScreen';
-import DetailedNewsScreen from './src/screens/home/detailedNewsScreen';
-import ContactsScreen from './src/screens/home/contactsScreen';
-import ChatScreen from './src/screens/home/chatScreen';
-import MessagesScreen from './src/screens/home/messagesScreen';
 import CourseScreen from './src/screens/home/Course/CourseScreen';
 import DetailedPostScreen from './src/screens/home/Course/detailedCoursePost';
 import NewsScreen from './src/screens/home/news/newsScreen';
@@ -34,6 +29,7 @@ import DetailedNewsScreen from './src/screens/home/news/detailedNewsScreen';
 import ContactsScreen from './src/screens/home/chat/contactsScreen';
 import ChatScreen from './src/screens/home/chat/chatScreen';
 import MessagesScreen from './src/screens/home/chat/messagesScreen';
+import CourseAssignments from './src/screens/home/Course/courseAssignments';
 
 function HomeContainer() {
   return (
@@ -178,6 +174,12 @@ const App: () => Node = () => {
         <NavigationStack.Screen
           name="Detailed Post"
           component={DetailedPostScreen}
+          options={{headerShown: false}}
+        />
+
+        <NavigationStack.Screen
+          name="Assignments"
+          component={CourseAssignments}
           options={{headerShown: false}}
         />
       </NavigationStack.Navigator>
