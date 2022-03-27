@@ -121,11 +121,27 @@ export const FireBaseProvider = ({children}) => {
       });
   }
 
+  function resetUsersPassword({email, navigation}) {
+    auth()
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        clearStackAndNavigate({navigation, screenName: 'SignIn'});
+      })
+      .catch(error => {
+        showDangerPopup({
+          Popup,
+          title: 'Password Reset Failed',
+          textBody: error.code,
+        });
+      });
+  }
+
   const actions = {
     user: user,
     Popup: Popup,
     registerUser: registerUser,
     logoutUser: logoutUser,
+    resetUsersPassword: resetUsersPassword,
     loginUser: loginUser,
     checkVerification: checkVerification,
     addUserDetails: addUserDetails,
