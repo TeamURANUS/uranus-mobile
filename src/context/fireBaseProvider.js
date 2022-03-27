@@ -136,17 +136,6 @@ export const FireBaseProvider = ({children}) => {
       });
   }
 
-  useEffect(() => {
-    // noinspection UnnecessaryLocalVariableJS
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (initializing) {
-    return null;
-  }
-
   const actions = {
     user: user,
     Popup: Popup,
