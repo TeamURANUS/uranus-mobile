@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import auth, {firebase} from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
 
 import {Root, Popup} from 'popup-ui';
 import {showDangerPopup, showSuccessPopup} from '../services/popup';
@@ -73,7 +73,7 @@ export const FireBaseProvider = ({children}) => {
       });
   }
 
-  function passwordResetUser({email, navigation}) {
+  function resetUsersPassword({email, navigation}) {
     auth()
       .sendPasswordResetEmail(email)
       .then(() => {
@@ -104,7 +104,7 @@ export const FireBaseProvider = ({children}) => {
     Popup: Popup,
     registerUser: registerUser,
     logoutUser: logoutUser,
-    passwordResetUser: passwordResetUser,
+    resetUsersPassword: resetUsersPassword,
     loginUser: loginUser,
   };
 

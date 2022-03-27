@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 
-function ForgotPasswordButton({displayText, onPress, disabled}) {
+function ForgotPasswordButton({displayText, onPress}) {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.button}>

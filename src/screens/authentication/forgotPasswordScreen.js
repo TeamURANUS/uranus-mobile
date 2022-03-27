@@ -9,7 +9,7 @@ import DefaultBackground from '../../shared/defaultBackground';
 import SignUpButton from '../../shared/buttons/signUpButton';
 
 function ForgotPasswordScreen({navigation}) {
-  const {passwordResetUser} = useContext(FireBaseContext);
+  const {resetUsersPassword} = useContext(FireBaseContext);
 
   const [email: string, setEmail] = useState('');
 
@@ -36,7 +36,7 @@ function ForgotPasswordScreen({navigation}) {
           <SignUpButton
             displayText="Reset my password!"
             onPress={async () =>
-              await passwordResetUser({
+              await resetUsersPassword({
                 email,
                 navigation,
               })
