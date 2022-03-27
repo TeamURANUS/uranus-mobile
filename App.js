@@ -18,6 +18,8 @@ import InitialLoadScreen from './src/screens/initialLoadScreen';
 import SignUpScreen from './src/screens/authentication/signUpScreen';
 import SignInScreen from './src/screens/authentication/signInScreen';
 import ForgotPasswordScreen from './src/screens/authentication/forgotPasswordScreen';
+import VerificationScreen from './src/screens/authentication/verificationScreen';
+import UserDetailsFormScreen from './src/screens/authentication/userDetailsFormScreen';
 import HomeScreen from './src/screens/home/homeScreen';
 import ClassScreen from './src/screens/home/classAndCommunities/classScreen';
 import CalendarScreen from './src/screens/home/calendarScreen';
@@ -135,6 +137,16 @@ const App: () => Node = () => {
           name="SignUp"
           component={SignUpScreen}
           options={{headerShown: false}}
+        />
+        <NavigationStack.Screen
+          name="Verification"
+          component={VerificationScreen}
+          options={{headerShown: false, gestureEnabled: false}}
+        />
+        <NavigationStack.Screen
+          name="User Details Form"
+          component={UserDetailsFormScreen}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <NavigationStack.Screen
           name="SignIn"
