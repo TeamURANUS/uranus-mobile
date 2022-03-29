@@ -62,8 +62,6 @@ function ProfileScreen({navigation}) {
 
   return (
     <DefaultBackground>
-      <Text style={styles.header}>PROFILE</Text>
-
       <KeyboardAvoidingView
         behavior={'position'}
         keyboardVerticalOffset={70}
