@@ -9,6 +9,7 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   View,
+  Switch,
 } from 'react-native';
 import {Avatar, Button, Subheading, Title} from 'react-native-paper';
 import DefaultBackground from '../../shared/defaultBackground';
@@ -24,7 +25,8 @@ function ProfileScreen({navigation}) {
   const [currentPassword, setCurrentPassword] = React.useState('');
   const [newPassword, setNewPassword] = React.useState('');
   const [photo, setPhoto] = React.useState(null);
-  const [verificationState, setVerificationState] = React.useState(false);
+  const [isEnabled, setIsEnabled] = React.useState(false);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
   const initials = user.displayName
     ? user.displayName
@@ -56,10 +58,6 @@ function ProfileScreen({navigation}) {
     }
   };
 
-  function verifyButtonPressed() {
-    setVerificationState(!verificationState);
-  }
-
   return (
     <DefaultBackground>
       <KeyboardAvoidingView
@@ -75,33 +73,18 @@ function ProfileScreen({navigation}) {
         <Title>{user.displayName}</Title>
         <Subheading>{user.email}</Subheading>
         <Button onPress={() => logoutUser({navigation})}>Sign Out</Button>
-        {verificationState ? (
-          <View style={styles.verifiedView}>
-            <Button
-              onPress={verifyButtonPressed}
-              style={styles.verifyButton}
-              color={'#04d72f'}
-              labelStyle={styles.verifyButtonLabel}>
-              Verified
-            </Button>
-            <MaterialCommunityIcons name="check" style={styles.checkIcon} />
-          </View>
-        ) : (
-          <View style={styles.verifiedView}>
-            <Button
-              onPress={verifyButtonPressed}
-              style={styles.verifyButton}
-              color={'#f54242'}
-              labelStyle={styles.verifyButtonLabel}>
-              Verify Profile
-            </Button>
-            <MaterialCommunityIcons
-              name="exclamation-thick"
-              size={28}
-              style={styles.exclamationIcon}
-            />
-          </View>
-        )}
+        <View style={styles.publicSwitch}>
+          <Switch
+            trackColor={{false: '#ff556e', true: '#57f619'}}
+            thumbColor={'#653bff'}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleSwitch}
+            value={isEnabled}
+          />
+          <Text style={styles.publicText}>
+            {isEnabled ? 'Public' : 'Private'}
+          </Text>
+        </View>
 
         <TouchableHighlight style={styles.addGoogleAccountButton}>
           <View style={styles.addGoogleAccountButtonView}>
@@ -284,5 +267,17 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  publicSwitch: {
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  publicText: {
+    fontWeight: '600',
+    backgroundColor: '#653bff',
+    color: '#ffffff',
+    width: 60,
+    borderRadius: 15,
+    textAlign: 'center',
   },
 });

@@ -6,8 +6,12 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
+  TextInput,
+  Dimensions,
 } from 'react-native';
 import DefaultBackground from '../../../shared/defaultBackground';
+
+const windowHeight = Dimensions.get('window').height;
 
 const DATA = [...Array(15).keys()].map((_, i) => {
   return {
@@ -34,17 +38,36 @@ const ListItem = ({item, navigation}) => (
   </TouchableOpacity>
 );
 
-const renderListItem = ({item, navigation}) => (
-  <ListItem item={item} navigation={navigation} />
-);
+/*
+const renderListItem = ({item, navigation, keyword}) =>
+  item.item.name.includes(keyword) ? (
+    <ListItem item={item} navigation={navigation} />
+  ) : null;
+ */
+
+function renderListItem(item, navigation, keyword) {
+  return item.name.includes(keyword) ? (
+    <ListItem item={item} navigation={navigation} />
+  ) : null;
+}
 
 export default function ContactsScreen({navigation}) {
+  const [searchText, setSearchText] = React.useState('Name');
+
   return (
     <DefaultBackground>
+      <View>
+        <TextInput
+          placeholder="Search"
+          placeholderTextColor="grey"
+          style={styles.searchBar}
+          onChangeText={newText => setSearchText(newText.toLowerCase())}
+        />
+      </View>
       <View style={styles.container}>
         <FlatList
           data={DATA}
-          renderItem={({item}) => renderListItem({item, navigation})}
+          renderItem={({item}) => renderListItem(item, navigation, searchText)}
         />
       </View>
     </DefaultBackground>
@@ -52,7 +75,7 @@ export default function ContactsScreen({navigation}) {
 }
 
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: '#d2d1d1'},
+  container: {flex: 1, backgroundColor: '#ffffff'},
   header: {
     fontSize: 35,
     fontWeight: '500',
@@ -68,8 +91,9 @@ const styles = StyleSheet.create({
   },
   contact: {
     flexDirection: 'row',
-    marginBottom: 2,
     backgroundColor: '#ffffff',
+    borderBottomWidth: 2,
+    borderColor: '#e0e0e0',
   },
   picture: {
     width: 55,
@@ -82,4 +106,12 @@ const styles = StyleSheet.create({
   itemName: {fontSize: 20, fontWeight: '700'},
   itemMajor: {fontSize: 14, opacity: 0.7},
   itemEmail: {fontSize: 14, opacity: 0.8, color: '#0099cc'},
+
+  searchBar: {
+    height: windowHeight * 0.07,
+    margin: '3%',
+    backgroundColor: '#d2d2d2',
+    borderRadius: 10,
+    paddingLeft: 20,
+  },
 });
