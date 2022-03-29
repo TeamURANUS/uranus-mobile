@@ -5,7 +5,6 @@ import {
   View,
   ScrollView,
   TextInput,
-  FlatList,
   TouchableOpacity,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -47,12 +46,11 @@ const ListItem = ({item}) => (
   </View>
 );
 
-const renderListItem = ({item}) => <ListItem item={item} />;
-
 export default function DetailedPostScreen({route}) {
   const {item} = route.params;
   const [commentText, setCommentText] = useState('');
   let commentTextInput = React.createRef();
+  let scrollViewRef = React.createRef();
   const username = 'dnztrkmn';
 
   function publishComment() {
@@ -65,12 +63,18 @@ export default function DetailedPostScreen({route}) {
     });
     commentTextInput.clear();
     setCommentText('');
+    //commentTextInput.focus();
+    //scrollViewRef.scrollTo({x: 0, y: 200, animated: false});
     console.log(PostComments);
   }
-
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.scroll}>
+      <ScrollView
+        style={styles.scroll}
+        ref={ref => {
+          scrollViewRef = ref;
+        }}
+        scrollToOverflowEnabled={true}>
         <View style={styles.postOwnerView}>
           <MaterialCommunityIcons name="account" style={styles.postOwnerIcon} />
           <Text style={styles.postOwner}>{item.postOwner}</Text>
@@ -81,15 +85,9 @@ export default function DetailedPostScreen({route}) {
           <Text style={styles.text}>{item.postBody}</Text>
         </View>
         <Text style={styles.commentsHeader}>Comments</Text>
-        <FlatList
-          style={styles.commentFlatList}
-          data={PostComments}
-          renderItem={({item}) =>
-            renderListItem({
-              item,
-            })
-          }
-        />
+        {PostComments.map((item, index) => {
+          return <ListItem item={item} />;
+        })}
         <View style={styles.writeCommentView}>
           <TextInput
             placeholder={'Comment'}
@@ -183,6 +181,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignContent: 'center',
     marginTop: 30,
+    marginBottom: 20,
     height: 50,
     borderRadius: 10,
     borderWidth: 2,
@@ -255,6 +254,7 @@ const styles = StyleSheet.create({
 
   commentFlatList: {
     backgroundColor: '#ffffff',
+    margin: 20,
   },
 
   commentsHeader: {

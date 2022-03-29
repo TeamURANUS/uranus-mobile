@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import DefaultBackground from '../../shared/defaultBackground';
 import {getTitleStyle} from '../../services/dynamicStyles';
+import {FAB} from 'react-native-paper';
 
 const COMMUNITY_DATA = [
   {
@@ -19,6 +20,7 @@ const COMMUNITY_DATA = [
     text: 'ORTAM PARTİ',
     imageUrl:
       'https://media.istockphoto.com/photos/man-holding-blue-helmet-close-up-picture-id1178982949?s=612x612',
+    admin: 'deniz türkmen',
   },
   {
     type: 'community',
@@ -27,6 +29,7 @@ const COMMUNITY_DATA = [
     text: 'AT AVRAT SİLAH',
     imageUrl:
       'https://media.istockphoto.com/photos/man-holding-blue-helmet-close-up-picture-id1178982949?s=612x612',
+    admin: 'deniz türkmen',
   },
   {
     type: 'community',
@@ -35,6 +38,7 @@ const COMMUNITY_DATA = [
     text: 'ARADIĞINIZ KLUÜB BULUNAMADI',
     imageUrl:
       'https://media.istockphoto.com/photos/man-holding-blue-helmet-close-up-picture-id1178982949?s=612x612',
+    admin: 'deniz türkmen',
   },
 ];
 
@@ -46,6 +50,7 @@ const CLASS_DATA = [
     text: 'lorem ipsum',
     imageUrl:
       'https://media.istockphoto.com/photos/man-holding-blue-helmet-close-up-picture-id1178982949?s=612x612',
+    admin: 'deniz türkmen',
   },
   {
     type: 'class',
@@ -54,6 +59,7 @@ const CLASS_DATA = [
     text: 'lorem ipsum',
     imageUrl:
       'https://media.istockphoto.com/photos/young-people-with-face-masks-back-at-work-or-school-in-office-after-picture-id1250279730?s=612x612',
+    admin: 'deniz türkmen',
   },
   {
     type: 'class',
@@ -62,6 +68,7 @@ const CLASS_DATA = [
     text: 'lorem ipsum',
     imageUrl:
       'https://media.istockphoto.com/photos/remote-working-from-home-freelancer-workplace-in-kitchen-with-laptop-picture-id1213497796?s=612x612',
+    admin: 'deniz türkmen',
   },
   {
     type: 'class',
@@ -70,6 +77,7 @@ const CLASS_DATA = [
     text: 'lorem ipsum',
     imageUrl:
       'https://media.istockphoto.com/photos/turner-worker-working-on-drill-bit-in-a-workshop-picture-id1128735755?s=612x612',
+    admin: 'deniz türkmen',
   },
   {
     type: 'class',
@@ -78,6 +86,7 @@ const CLASS_DATA = [
     text: 'lorem ipsum',
     imageUrl:
       'https://media.istockphoto.com/photos/remote-working-from-home-freelancer-workplace-in-kitchen-with-laptop-picture-id1213497796?s=612x612',
+    admin: 'deniz türkmen',
   },
   {
     type: 'class',
@@ -177,6 +186,11 @@ function HomeScreen({navigation}) {
           />
         </View>
       )}
+      <FAB
+        icon="plus"
+        style={styles.floatingButton}
+        onPress={() => navigation.navigate('Enroll Group')}
+      />
     </DefaultBackground>
   );
 }
@@ -209,6 +223,12 @@ const styles = StyleSheet.create({
   topListNavigator: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+  },
+  floatingButton: {
+    position: 'absolute',
+    backgroundColor: '#3B7AF9',
+    bottom: 16,
+    right: 16,
   },
 });
 

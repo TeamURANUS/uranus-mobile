@@ -159,6 +159,10 @@ export default function CourseAssignments({route, navigation}) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#f16969',
+    height: '100%',
+  },
   headerView: {
     marginLeft: 10,
     flexDirection: 'row',
@@ -192,8 +196,8 @@ const styles = StyleSheet.create({
   newsItem: {
     backgroundColor: 'white',
     display: 'flex',
-    borderBottomWidth: 2,
-    borderBottomColor: '#c4c4c4',
+    margin: 8,
+    borderRadius: 8,
   },
   topBar: {
     width: windowWidth,
@@ -235,22 +239,24 @@ const styles = StyleSheet.create({
   },
 
   newAssignmentView: {
-    backgroundColor: '#7b13dc',
+    backgroundColor: '#f16969',
     borderWidth: 4,
-    borderColor: '#7b13dc',
+    borderColor: '#f16969',
     height: '100%',
+    margin: 5,
   },
 
   newAssignmentTitleTextBox: {
     backgroundColor: '#ffffff',
     height: '10%',
-    borderBottomWidth: 2,
+    marginTop: 6,
   },
 
   newAssignmentInstructionsTextBox: {
     backgroundColor: '#ffffff',
     height: '30%',
     textAlignVertical: 'top',
+    marginTop: 3,
   },
 
   newAssignmentButtonsView: {
@@ -260,10 +266,10 @@ const styles = StyleSheet.create({
   },
 
   datePickerView: {
-    height: '36%',
+    height: '40%',
     width: '100%',
     backgroundColor: '#ffffff',
-    borderTopWidth: 2,
+    marginTop: 3,
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',

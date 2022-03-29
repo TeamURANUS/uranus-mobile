@@ -133,8 +133,14 @@ export default function CourseScreen({route, navigation}) {
     );
   }
 
+  function classInfoPressed() {
+    navigation.navigate('Class Info', {
+      navigation: navigation,
+      course: course,
+    });
+  }
+
   function assignmentsPressed() {
-    console.log('hey');
     navigation.navigate('Assignments', {
       navigation: navigation,
       course: course,
@@ -172,7 +178,7 @@ export default function CourseScreen({route, navigation}) {
               buttonStyle={styles.optionsMenu}
               destructiveIndex={1}
               options={['Class Info', 'Assignments', '']}
-              actions={[assignmentsPressed, assignmentsPressed]}
+              actions={[classInfoPressed, assignmentsPressed]}
             />
           </View>
         </View>
