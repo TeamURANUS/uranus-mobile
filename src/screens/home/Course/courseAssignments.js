@@ -98,8 +98,10 @@ export default function CourseAssignments({route, navigation}) {
     <DefaultBackground>
       <View style={styles.container}>
         <View style={styles.topBar}>
-          <Text style={styles.header}>Assignments</Text>
-          <Text style={styles.courseName}>{course.title}</Text>
+          <View style={styles.headerView}>
+            <Text style={styles.header}>Events</Text>
+            <Text style={styles.courseName}>{course.title}</Text>
+          </View>
           <View style={styles.topBarButtons}>
             <TouchableOpacity
               style={[styles.newAssignmentTO]}
@@ -164,7 +166,6 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   headerView: {
-    marginLeft: 10,
     flexDirection: 'row',
   },
   courseName: {
@@ -204,6 +205,8 @@ const styles = StyleSheet.create({
     height: 60,
     flexDirection: 'row',
     backgroundColor: '#a6a5a5',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 
   topBarButtons: {
@@ -211,9 +214,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignContent: 'flex-end',
     justifyContent: 'flex-end',
-    position: 'absolute',
-    right: 20,
     width: '50%',
+    marginRight: 15,
   },
 
   newAssignmentTO: {

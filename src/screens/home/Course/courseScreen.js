@@ -61,12 +61,12 @@ const radioButtonsData = [
   },
   {
     id: '2',
-    label: 'instructor posts',
+    label: 'admin posts',
     value: 'option2',
   },
   {
     id: '3',
-    label: 'student posts',
+    label: 'member posts',
     value: 'option3',
   },
 ];
@@ -145,13 +145,6 @@ export default function CourseScreen({route, navigation}) {
       navigation: navigation,
       course: course,
     });
-    /*
-    () =>
-                  navigation.navigate('Assignments', {
-                    navigation: navigation,
-                    course: this.course,
-                  })
-     */
   }
 
   const MoreIcon = require('../../../assets/hamburger.png');
@@ -256,6 +249,8 @@ const styles = StyleSheet.create({
     height: 60,
     flexDirection: 'row',
     backgroundColor: '#a6a5a5',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 
   topBarButtons: {
@@ -263,9 +258,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignContent: 'flex-end',
     justifyContent: 'flex-end',
-    position: 'absolute',
-    right: 20,
     width: '50%',
+    marginRight: 7,
   },
 
   newPostTO: {

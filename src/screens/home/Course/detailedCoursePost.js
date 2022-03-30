@@ -36,10 +36,13 @@ var PostComments = [
 const ListItem = ({item}) => (
   <View style={styles.commentContainer}>
     <View style={styles.commentTitle}>
-      <Text style={styles.commentOwner}>{item.commentOwner}</Text>
-      {item.isInstructorComment ? (
-        <Text style={styles.commentInstructorIcon}>instr</Text>
-      ) : null}
+      <View style={styles.commentOwnerView}>
+        <Text style={styles.commentOwner}>{item.commentOwner}</Text>
+        {item.isInstructorComment ? (
+          <Text style={styles.commentInstructorIcon}>admin</Text>
+        ) : null}
+      </View>
+
       <Text style={styles.commentDate}>{item.commentDate}</Text>
     </View>
     <Text style={styles.commentBody}>{item.comment}</Text>
@@ -50,7 +53,6 @@ export default function DetailedPostScreen({route}) {
   const {item} = route.params;
   const [commentText, setCommentText] = useState('');
   let commentTextInput = React.createRef();
-  let scrollViewRef = React.createRef();
   const username = 'dnztrkmn';
 
   function publishComment() {
@@ -69,12 +71,7 @@ export default function DetailedPostScreen({route}) {
   }
   return (
     <View style={styles.container}>
-      <ScrollView
-        style={styles.scroll}
-        ref={ref => {
-          scrollViewRef = ref;
-        }}
-        scrollToOverflowEnabled={true}>
+      <ScrollView style={styles.scroll} scrollToOverflowEnabled={true}>
         <View style={styles.postOwnerView}>
           <MaterialCommunityIcons name="account" style={styles.postOwnerIcon} />
           <Text style={styles.postOwner}>{item.postOwner}</Text>
@@ -224,6 +221,8 @@ const styles = StyleSheet.create({
   commentTitle: {
     flexDirection: 'row',
     margin: 5,
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   commentBody: {
     marginBottom: 5,
@@ -232,15 +231,12 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
 
-  commentDate: {
-    position: 'absolute',
-    right: 0,
-  },
+  commentDate: {},
 
   commentOwner: {
     fontWeight: '800',
   },
-
+  commentOwnerView: {flexDirection: 'row'},
   commentInstructorIcon: {
     fontWeight: '700',
     color: '#ffffff',
@@ -248,8 +244,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginLeft: 10,
     borderRadius: 2,
-    paddingLeft: 5,
-    paddingRight: 5,
+    paddingHorizontal: 5,
   },
 
   commentFlatList: {

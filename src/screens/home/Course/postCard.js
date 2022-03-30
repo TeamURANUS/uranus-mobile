@@ -17,7 +17,7 @@ export function PostCard({item}) {
           <View style={styles.dateIcon}>
             <Text style={styles.postDate}>{item.postDate}</Text>
             {item.isInstructorPost ? (
-              <Text style={styles.instructorPostIcon}>instructor</Text>
+              <Text style={styles.instructorPostIcon}>admin</Text>
             ) : null}
           </View>
         </View>
@@ -84,11 +84,11 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     alignSelf: 'center',
     justifyContent: 'center',
-    width: 70,
     marginTop: 5,
     marginLeft: 8,
     textAlign: 'center',
     borderRadius: 5,
+    paddingHorizontal: 5,
   },
 });
 

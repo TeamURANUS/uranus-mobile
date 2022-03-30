@@ -7,6 +7,7 @@ import {
   ScrollView,
   Dimensions,
   Alert,
+  Switch,
 } from 'react-native';
 
 import DefaultBackground from '../../../shared/defaultBackground';
@@ -55,6 +56,9 @@ const ListItem = ({item}) => (
 
 export default function ClassInfo({route, navigation}) {
   const {course} = route.params;
+  const [isSwitchEnabled, setIsSwitchEnabled] = React.useState(false);
+  const toggleSwitch = () =>
+    setIsSwitchEnabled(previousState => !previousState);
 
   async function leaveGroupPressed() {
     await AsyncAlert(
@@ -102,43 +106,64 @@ export default function ClassInfo({route, navigation}) {
 
   return (
     <DefaultBackground>
-      <ScrollView style={styles.container}>
-        <View style={styles.adminsHeaderView}>
-          <Text style={styles.sectionHeader}>Administrator(s):</Text>
+      <ScrollView>
+        <View style={styles.headerView}>
+          <Text style={styles.header}>Group Details</Text>
         </View>
+        <View style={styles.container}>
+          <View style={styles.adminsHeaderView}>
+            <Text style={styles.sectionHeader}>Administrator(s):</Text>
+          </View>
 
-        <View style={styles.adminCardView}>
-          <MaterialCommunityIcons name="account" style={styles.adminIconView} />
-          <Text style={styles.adminName}>{course.admin}</Text>
-        </View>
-
-        <View style={styles.membersHeaderView}>
-          <Text style={styles.sectionHeader}>Members ({MEMBERS.length})</Text>
-        </View>
-        {MEMBERS.map((item, index) => {
-          return <ListItem item={item} />;
-        })}
-
-        <View style={styles.decisionsHeaderView}>
-          <Text style={styles.sectionHeader}>Decisions</Text>
-        </View>
-
-        <View style={styles.buttonView}>
-          <TouchableOpacity
-            onPress={leaveGroupPressed}
-            style={styles.leaveButtonTO}>
-            <Text style={styles.leaveButtonText}>Leave</Text>
-            <MaterialCommunityIcons name="exit-run" style={styles.buttonIcon} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={shutdownGroupPressed}
-            style={styles.shutdownButtonTO}>
-            <Text style={styles.shutdownButtonText}>Shutdown</Text>
+          <View style={styles.adminCardView}>
             <MaterialCommunityIcons
-              name="grave-stone"
-              style={styles.buttonIcon}
+              name="account"
+              style={styles.adminIconView}
             />
-          </TouchableOpacity>
+            <Text style={styles.adminName}>{course.admin}</Text>
+          </View>
+
+          <View style={styles.membersHeaderView}>
+            <Text style={styles.sectionHeader}>Members ({MEMBERS.length})</Text>
+          </View>
+          {MEMBERS.map((item, index) => {
+            return <ListItem item={item} />;
+          })}
+
+          <View style={styles.decisionsHeaderView}>
+            <Text style={styles.sectionHeader}>Decisions</Text>
+          </View>
+
+          <View style={styles.buttonView}>
+            <TouchableOpacity
+              onPress={leaveGroupPressed}
+              style={styles.leaveButtonTO}>
+              <Text style={styles.leaveButtonText}>Leave</Text>
+              <MaterialCommunityIcons
+                name="exit-run"
+                style={styles.buttonIcon}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={shutdownGroupPressed}
+              style={styles.shutdownButtonTO}>
+              <Text style={styles.shutdownButtonText}>Shutdown</Text>
+              <MaterialCommunityIcons
+                name="grave-stone"
+                style={styles.buttonIcon}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.notificationView}>
+            <Text style={styles.notificationText}>Notifications: </Text>
+            <Switch
+              trackColor={{false: '#c5c5c5', true: '#c5c5c5'}}
+              thumbColor={'#676767'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={isSwitchEnabled}
+            />
+          </View>
         </View>
       </ScrollView>
     </DefaultBackground>
@@ -148,18 +173,22 @@ export default function ClassInfo({route, navigation}) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#ffffff',
-    marginTop: 20,
     marginBottom: 20,
     marginLeft: 10,
     marginRight: 10,
   },
+  headerView: {
+    backgroundColor: '#a6a5a5',
+    margin: 0,
+  },
   header: {
-    fontSize: 35,
+    fontSize: 30,
     fontWeight: '500',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#a6a5a5',
     color: '#fcfcfc',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
   },
   adminsHeaderView: {
     alignItems: 'flex-start',
@@ -186,7 +215,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10,
     borderRadius: 10,
-    borderWidth: 1,
     margin: 10,
   },
   adminIconView: {color: '#4b4b4b', fontSize: 25},
@@ -238,7 +266,7 @@ const styles = StyleSheet.create({
 
   shutdownButtonText: {fontWeight: '600', fontSize: 17, color: '#ffffff'},
   memberView: {
-    backgroundColor: '#c4c4c4',
+    backgroundColor: '#e1e1e1',
     borderRadius: 10,
     margin: 10,
     padding: 7,
@@ -250,5 +278,20 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: '#4b4b4b',
     marginLeft: 10,
+  },
+  notificationView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+    width: '80%',
+    alignSelf: 'center',
+    padding: 10,
+    borderRadius: 10,
+  },
+  notificationText: {
+    fontSize: 18,
+    fontWeight: '400',
+    color: 'black',
+    marginRight: 20,
   },
 });
