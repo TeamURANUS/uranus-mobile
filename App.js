@@ -29,6 +29,7 @@ import DetailedNewsScreen from './src/screens/home/news/detailedNewsScreen';
 import ContactsScreen from './src/screens/home/chat/contactsScreen';
 import ChatScreen from './src/screens/home/chat/chatScreen';
 import MessagesScreen from './src/screens/home/chat/messagesScreen';
+import EditProfileScreen from './src/screens/home/editProfileScreen';
 
 function HomeContainer() {
   return (
@@ -171,6 +172,11 @@ const App: () => Node = () => {
         <NavigationStack.Screen
           name="Class"
           component={ClassScreen}
+          options={({route}) => ({title: route.params.name})}
+        />
+        <NavigationStack.Screen
+          name="Account Settings"
+          component={EditProfileScreen}
           options={({route}) => ({title: route.params.name})}
         />
       </NavigationStack.Navigator>
