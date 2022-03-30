@@ -145,10 +145,6 @@ const ListItem = ({item, navigation, isCourse, joinButtonPressed}) => (
   </View>
 );
 
-const renderListItem = ({item, navigation}) => (
-  <ListItem item={item} navigation={navigation} />
-);
-
 export default function EnrollGroupScreen({navigation}) {
   const [showClasses, setShowClasses] = useState(true);
   const [searchText, setSearchText] = useState('');
@@ -156,8 +152,7 @@ export default function EnrollGroupScreen({navigation}) {
 
   function joinButtonPressed(item, isCourse) {
     console.log(item.title);
-    //console.log(isCourse);
-    let index = -1;
+    let index;
     if (isCourse) {
       index = CLASS_DATA.indexOf(item);
       CLASS_DATA.splice(index, 1);
@@ -176,31 +171,15 @@ export default function EnrollGroupScreen({navigation}) {
 
   return (
     <DefaultBackground>
-      <View style={{flexDirection: 'column'}}>
+      <View style={styles.topBar}>
+        <Text style={styles.header}>Enroll</Text>
         <TouchableOpacity
-          style={{
-            backgroundColor: '#0787ff',
-            borderRadius: 5,
-            alignItems: 'center',
-            justifyContent: 'center',
-            alignSelf: 'flex-end',
-            marginRight: 20,
-            marginTop: 15,
-            flexDirection: 'row',
-          }}
+          style={styles.createButtonTO}
           onPress={() =>
             navigation.navigate('Create Group', {navigation: navigation})
           }>
           <MaterialCommunityIcons name="plus" style={styles.plusIcon} />
-          <Text
-            style={{
-              color: '#ffffff',
-              fontWeight: '600',
-              fontSize: 15,
-              padding: 10,
-            }}>
-            Create Group
-          </Text>
+          <Text style={styles.createButtonText}>Create Group</Text>
         </TouchableOpacity>
       </View>
       <View>
@@ -349,5 +328,30 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     color: '#ffffff',
     fontSize: 25,
+  },
+  topBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#c9c9c9',
+    padding: 15,
+  },
+  createButtonTO: {
+    backgroundColor: '#0787ff',
+    borderRadius: 5,
+    marginRight: 20,
+    flexDirection: 'row',
+  },
+  header: {
+    fontSize: 28,
+    fontWeight: '600',
+    color: '#ffffff',
+  },
+  createButtonText: {
+    color: '#ffffff',
+    fontWeight: '600',
+    fontSize: 15,
+    padding: 10,
   },
 });

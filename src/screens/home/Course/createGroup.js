@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native';
 
 import DefaultBackground from '../../../shared/defaultBackground';
@@ -39,7 +40,24 @@ export default function CreateGroup({navigation}) {
     setRadioButtons(radioButtonsArray);
   }
 
-  function createPressed() {
+  const AsyncAlert = async (title, message) =>
+    new Promise(resolve => {
+      Alert.alert(title, message, [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => {
+            resolve('YES');
+          },
+        },
+      ]);
+    });
+
+  async function createPressed() {
     if (groupName.length < 2) {
       showWarningPopup({
         Popup: Popup,
@@ -48,56 +66,38 @@ export default function CreateGroup({navigation}) {
           'Group names should contain at least 2 alphanumeric characters',
       });
     }
-
+    let groupType = radioButtons[0].selected ? ' course' : ' community';
+    await AsyncAlert(
+      'You are about to create a ' +
+        groupType +
+        ' group named ' +
+        groupName +
+        '. Are you sure?',
+      '',
+    );
     showSuccessPopup({
       Popup: Popup,
-      title:
-        groupName +
-        (radioButtons[0].selected ? ' course' : ' community') +
-        ' group created succesfully',
+      title: groupName + groupType + ' group created succesfully',
       textBody: '',
     });
 
-    navigation.goBack();
+    //navigation.goBack();
+    navigation.navigate('Home Container');
   }
 
   return (
     <DefaultBackground>
-      <Text
-        style={{
-          fontSize: 25,
-          fontWeight: '600',
-          color: '#ffffff',
-          backgroundColor: '#d2d2d2',
-          padding: 10,
-        }}>
-        Create New Group
-      </Text>
-      <View
-        style={{
-          justifyContent: 'center',
-          flex: 1,
-          backgroundColor: '#ffffff',
-        }}>
-        <View
-          style={{
-            justifyContent: 'center',
-            alignContent: 'center',
-            alignItems: 'center',
-            alignSelf: 'center',
-            backgroundColor: '#f5ea4a',
-            height: windowHeight * 0.5,
-            width: windowWidth * 0.7,
-            borderRadius: 15,
-          }}>
+      <Text style={styles.header}>Create New Group</Text>
+      <View style={styles.container}>
+        <View style={styles.formView}>
           <RadioGroup
             radioButtons={radioButtons}
             onPress={onPressRadioButton}
             layout={'row'}
-            containerStyle={{marginBottom: 20}}
+            containerStyle={styles.radioGroup}
           />
           <TextInput
-            placeholder={'Grup Name'}
+            placeholder={'Group Name'}
             style={styles.groupName}
             onChangeText={setGroupName}
           />
@@ -107,28 +107,8 @@ export default function CreateGroup({navigation}) {
             onChangeText={setDescription}
           />
         </View>
-        <TouchableOpacity
-          style={{
-            marginTop: 20,
-            borderRadius: 10,
-            width: '30%',
-            alignSelf: 'center',
-            backgroundColor: '#000000',
-            height: 35,
-            justifyContent: 'center',
-          }}
-          onPress={createPressed}>
-          <Text
-            style={{
-              fontSize: 18,
-              fontWeight: '800',
-              color: '#ffffff',
-              width: '100%',
-              textAlign: 'center',
-              alignSelf: 'center',
-            }}>
-            Create
-          </Text>
+        <TouchableOpacity style={styles.createButtonTO} onPress={createPressed}>
+          <Text style={styles.createButtonText}>Create</Text>
         </TouchableOpacity>
       </View>
     </DefaultBackground>
@@ -136,6 +116,29 @@ export default function CreateGroup({navigation}) {
 }
 
 const styles = StyleSheet.create({
+  header: {
+    fontSize: 25,
+    fontWeight: '600',
+    color: '#ffffff',
+    backgroundColor: '#d2d2d2',
+    padding: 10,
+  },
+  container: {
+    justifyContent: 'center',
+    flex: 1,
+    backgroundColor: '#ffffff',
+  },
+  formView: {
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: '#f5ea4a',
+    height: windowHeight * 0.5,
+    width: windowWidth * 0.7,
+    borderRadius: 15,
+  },
+  radioGroup: {marginBottom: 20},
   groupName: {
     height: 40,
     width: '80%',
@@ -145,7 +148,6 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     marginBottom: 20,
   },
-
   groupDescription: {
     height: 80,
     width: '80%',
@@ -153,5 +155,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#d2d2d2',
     borderRadius: 10,
     paddingLeft: 20,
+  },
+  createButtonTO: {
+    marginTop: 20,
+    borderRadius: 10,
+    width: '30%',
+    alignSelf: 'center',
+    backgroundColor: '#000000',
+    height: 35,
+    justifyContent: 'center',
+  },
+  createButtonText: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#ffffff',
+    width: '100%',
+    textAlign: 'center',
+    alignSelf: 'center',
   },
 });
