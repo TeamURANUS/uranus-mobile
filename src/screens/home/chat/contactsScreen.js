@@ -16,8 +16,6 @@ const windowHeight = Dimensions.get('window').height;
 const DATA = [...Array(15).keys()].map((_, i) => {
   return {
     key: i,
-    //image: `https://randomuser.me/api/portraits/women/30.jpg`,
-    //image: 'https://randomuser.me/api/portraits/men/.jpg',
     picture: `https://randomuser.me/api/portraits/men/${i}.jpg`,
     name: `Name${i} Lastname${i}`,
     major: 'Computer Science',
@@ -37,13 +35,6 @@ const ListItem = ({item, navigation}) => (
     </View>
   </TouchableOpacity>
 );
-
-/*
-const renderListItem = ({item, navigation, keyword}) =>
-  item.item.name.includes(keyword) ? (
-    <ListItem item={item} navigation={navigation} />
-  ) : null;
- */
 
 function renderListItem(item, navigation, keyword) {
   return item.name.includes(keyword) ? (

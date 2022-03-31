@@ -9,6 +9,7 @@ const FireBaseContext = React.createContext();
 
 export const FireBaseProvider = ({children}) => {
   const [user, setUser] = useState();
+  const [userDetails, setUserDetails] = useState({});
   const [initializing, setInitializing] = useState(true);
 
   function onAuthStateChanged(user_data) {
@@ -16,6 +17,11 @@ export const FireBaseProvider = ({children}) => {
     if (initializing) {
       setInitializing(false);
     }
+  }
+
+  async function getUserDetails() {
+    const response = await userAPI.get(`${user.uid}`);
+    setUserDetails(response.data.data);
   }
 
   async function fetchUserChanges() {
@@ -145,6 +151,8 @@ export const FireBaseProvider = ({children}) => {
     loginUser: loginUser,
     checkVerification: checkVerification,
     addUserDetails: addUserDetails,
+    userDetails: userDetails,
+    getUserDetails: getUserDetails,
   };
 
   return (
