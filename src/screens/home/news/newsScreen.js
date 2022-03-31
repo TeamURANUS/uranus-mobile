@@ -2,13 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
 import NewsCard from '../../../shared/components/newsCard';
 import DefaultBackground from '../../../shared/defaultBackground';
-import {newsAPI} from '../../../api/utils';
-
-const options = {
-  year: 'numeric',
-  month: 'numeric',
-  day: 'numeric',
-};
+import {getAllNews} from '../../../services/news';
+import {getFormattedDateFromTimestamp} from '../../../services/time';
 
 const ListItem = ({item, navigation}) => (
   <TouchableOpacity
@@ -20,13 +15,10 @@ const ListItem = ({item, navigation}) => (
       })
     }>
     <NewsCard
-      newsPicture={item.documentContent[1]}
       newsTitle={item.documentContent[0]}
+      newsPicture={item.documentContent[1]}
       newsText={item.documentContent[2]}
-      newsDate={new Date(item.documentDate.seconds).toLocaleDateString(
-        'tr-TR',
-        options,
-      )}
+      newsDate={getFormattedDateFromTimestamp(item.documentDate.seconds)}
     />
   </TouchableOpacity>
 );
@@ -37,10 +29,17 @@ const renderListItem = ({item, navigation}) => (
 
 export default function NewsScreen({navigation}) {
   const [data, setData] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
 
   async function fetchNews() {
-    const response = await newsAPI.get('');
-    setData(response.data.data);
+    const newsData = await getAllNews();
+    setData(newsData);
+    setIsFetching(false);
+  }
+
+  async function onRefresh() {
+    setIsFetching(true);
+    fetchNews();
   }
 
   useEffect(() => {
@@ -53,6 +52,8 @@ export default function NewsScreen({navigation}) {
         <Text style={styles.header}>News</Text>
         <FlatList
           data={data}
+          onRefresh={onRefresh}
+          refreshing={isFetching}
           renderItem={({item}) => renderListItem({item, navigation})}
         />
       </View>
