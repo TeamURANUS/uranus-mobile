@@ -6,12 +6,13 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
-import DefaultBackground from '../../shared/defaultBackground';
-import {firebase} from '@react-native-firebase/auth';
-import {onChangePasswordPress} from '../../services/authentication';
+import DefaultBackground from '../../../shared/defaultBackground';
+import {onChangePasswordPress} from '../../../services/authentication';
+import {useContext} from 'react';
+import FireBaseContext from '../../../context/fireBaseProvider';
 
-function EditProfileScreen({navigation}) {
-  const user = firebase.auth().currentUser;
+function EditProfileScreen() {
+  const {user} = useContext(FireBaseContext);
   const [currentPassword, setCurrentPassword] = React.useState('');
   const [newPassword, setNewPassword] = React.useState('');
 

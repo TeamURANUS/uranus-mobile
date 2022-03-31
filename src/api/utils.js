@@ -9,3 +9,7 @@ export const authAPI = axios.create({
 export const userAPI = axios.create({
   baseURL: BASE_URL + 'api/users/',
 });
+
+export const newsAPI = axios.create({
+  baseURL: BASE_URL + 'api/news/',
+});

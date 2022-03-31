@@ -6,28 +6,22 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Switch,
   ScrollView,
   Dimensions,
 } from 'react-native';
-import DefaultBackground from '../../shared/defaultBackground';
-import FireBaseContext from '../../context/fireBaseProvider';
-import {firebase} from '@react-native-firebase/auth';
+import DefaultBackground from '../../../shared/defaultBackground';
+import FireBaseContext from '../../../context/fireBaseProvider';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {launchImageLibrary} from 'react-native-image-picker';
 
 const windowWidth = Dimensions.get('window').width;
 
 function ProfileScreen({navigation}) {
-  const {logoutUser} = useContext(FireBaseContext);
-  const user = firebase.auth().currentUser;
-  const phone = '+903246239466';
+  const {user, userDetails, logoutUser} = useContext(FireBaseContext);
   const [photo, setPhoto] = React.useState(null);
-  const [isEnabled, setIsEnabled] = React.useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
-  const initials = user.displayName
-    ? user.displayName
+  const initials = userDetails.userName
+    ? userDetails.userName
         .split(' ')
         .map(n => n[0])
         .join('')
@@ -47,20 +41,9 @@ function ProfileScreen({navigation}) {
       return <Image source={{uri: photo}} style={styles.profilePicture} />;
     } else {
       return (
-        <Text
-          style={{
-            width: windowWidth * 0.22,
-            height: windowWidth * 0.22,
-            backgroundColor: '#5129c7',
-            color: 'white',
-            fontSize: windowWidth * 0.1,
-            fontWeight: '700',
-            textAlign: 'center',
-            textAlignVertical: 'center',
-            borderRadius: windowWidth * 0.22,
-          }}>
-          {initials.toUpperCase()}
-        </Text>
+        <View style={styles.defaultProfilePicture}>
+          <Text style={styles.initials}>{initials.toUpperCase()}</Text>
+        </View>
       );
     }
   };
@@ -87,49 +70,27 @@ function ProfileScreen({navigation}) {
           </View>
 
           <View>
-            <Text style={styles.username}>{user.displayName}</Text>
-            <Text style={styles.email}>{user.email}</Text>
-            <Text style={styles.email}>{phone}</Text>
+            <Text style={styles.username}>
+              {userDetails.userName} {userDetails.userLastName}
+            </Text>
           </View>
         </View>
 
         <View style={styles.settingUnit}>
-          <Text style={styles.settingText}>Notifications</Text>
-          <Switch
-            trackColor={{false: '#c5c5c5', true: '#c5c5c5'}}
-            thumbColor={'#676767'}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch}
-            value={isEnabled}
-          />
-        </View>
-        <View style={styles.settingUnit}>
-          <Text style={styles.settingText}>Add Google Account</Text>
-          <TouchableOpacity style={styles.edit} onPress={handleChoosePhoto}>
-            <MaterialCommunityIcons
-              name="google"
-              size={30}
-              style={styles.googleIcon}
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.settingUnit}>
-          <Text style={styles.settingText}>Account Settings</Text>
-          <TouchableOpacity
-            style={styles.edit}
-            onPress={() =>
-              navigation.navigate('Account Settings', {navigation: navigation})
-            }>
-            <MaterialCommunityIcons
-              name="pen"
-              size={30}
-              style={styles.editIcon}
-            />
-          </TouchableOpacity>
+          <Text style={styles.settingText}>{user.email}</Text>
         </View>
 
+        <TouchableOpacity style={styles.googleUnit} onPress={handleChoosePhoto}>
+          <Text style={styles.googleText}>Add Google Account</Text>
+          <MaterialCommunityIcons
+            name="google"
+            size={30}
+            style={styles.googleIcon}
+          />
+        </TouchableOpacity>
+
         <TouchableOpacity onPress={() => logoutUser({navigation})}>
-          <Text style={styles.signoutButtonText}>Signout</Text>
+          <Text style={styles.signOutButtonText}>Sign Out</Text>
         </TouchableOpacity>
       </ScrollView>
     </DefaultBackground>
@@ -176,12 +137,15 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   settingUnit: {
+    backgroundColor: '#ffffff',
+    padding: 10,
+    borderRadius: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     alignContent: 'space-between',
     borderBottomWidth: 1,
-    borderColor: '#bdbdbd',
+    borderColor: '#000000',
     marginVertical: 10,
     paddingVertical: 10,
   },
@@ -199,21 +163,33 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   settingText: {
-    fontSize: 17,
-    fontWeight: '300',
+    fontSize: 19,
+    fontWeight: 'bold',
     color: '#000000',
+  },
+
+  googleUnit: {
+    backgroundColor: '#f8f8f8',
+    padding: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    alignContent: 'space-between',
+    marginVertical: 10,
+    paddingVertical: 10,
+    shadowOffset: {height: 5},
+    shadowColor: 'black',
+    shadowOpacity: 0.25,
+  },
+
+  googleText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#007dff',
   },
 
   googleIcon: {
-    color: '#000000',
-    borderRadius: 15,
-  },
-
-  edit: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 30,
-    width: 30,
+    color: '#ff0000',
     borderRadius: 15,
   },
   editIcon: {
@@ -228,6 +204,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  defaultProfilePicture: {
+    width: windowWidth * 0.22,
+    height: windowWidth * 0.22,
+    backgroundColor: '#fb84ff',
+    justifyContent: 'center',
+    borderRadius: windowWidth * 0.22,
+  },
   ppEdit: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -241,17 +224,23 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#7a7a7a',
   },
-
-  signoutButtonText: {
+  signOutButtonText: {
     fontSize: 25,
     fontWeight: '700',
     color: '#b01e1e',
     marginTop: 10,
+    marginLeft: 10,
   },
   passwordResetForm: {
     justifyContent: 'center',
     alignContent: 'center',
     alignItems: 'center',
     paddingBottom: 15,
+  },
+  initials: {
+    fontSize: windowWidth * 0.1,
+    fontWeight: '700',
+    color: 'white',
+    textAlign: 'center',
   },
 });

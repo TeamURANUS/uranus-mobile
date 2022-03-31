@@ -2,18 +2,32 @@ import React from 'react';
 import {StyleSheet, Text, View, Image, ScrollView} from 'react-native';
 import DefaultBackground from '../../../shared/defaultBackground';
 
-export default function DetailedNewsScreen({route, navigation}) {
+const options = {
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+};
+
+export default function DetailedNewsScreen({route}) {
   const {item} = route.params;
   return (
     <DefaultBackground>
       <ScrollView style={styles.scroll}>
         <View style={styles.pictureContainer}>
-          <Image source={{uri: item.newsPicture}} style={styles.picture} />
+          <Image
+            source={{uri: item.documentContent[1]}}
+            style={styles.picture}
+          />
         </View>
         <View>
-          <Text style={styles.title}>{item.newsTitle}</Text>
-          <Text style={styles.date}>{item.newsDate}</Text>
-          <Text style={styles.text}>{item.newsText}</Text>
+          <Text style={styles.title}>{item.documentContent[0]}</Text>
+          <Text style={styles.date}>
+            {new Date(item.documentDate.seconds).toLocaleDateString(
+              'tr-TR',
+              options,
+            )}
+          </Text>
+          <Text style={styles.text}>{item.documentContent[2]}</Text>
         </View>
       </ScrollView>
     </DefaultBackground>

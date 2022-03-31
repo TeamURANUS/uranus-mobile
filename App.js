@@ -24,13 +24,13 @@ import HomeScreen from './src/screens/home/homeScreen';
 import ClassScreen from './src/screens/home/classAndCommunities/classScreen';
 import CalendarScreen from './src/screens/home/calendarScreen';
 import NotificationScreen from './src/screens/home/notificationScreen';
-import ProfileScreen from './src/screens/home/profileScreen';
+import ProfileScreen from './src/screens/home/profile/profileScreen';
 import NewsScreen from './src/screens/home/news/newsScreen';
 import DetailedNewsScreen from './src/screens/home/news/detailedNewsScreen';
 import ContactsScreen from './src/screens/home/chat/contactsScreen';
 import ChatScreen from './src/screens/home/chat/chatScreen';
 import MessagesScreen from './src/screens/home/chat/messagesScreen';
-import EditProfileScreen from './src/screens/home/editProfileScreen';
+import EditProfileScreen from './src/screens/home/profile/editProfileScreen';
 
 function HomeContainer() {
   return (
@@ -181,7 +181,7 @@ const App: () => Node = () => {
           options={({route}) => ({title: route.params.name})}
         />
         <NavigationStack.Screen
-          name="Account Settings"
+          name="Edit Profile"
           component={EditProfileScreen}
           options={({route}) => ({title: route.params.name})}
         />

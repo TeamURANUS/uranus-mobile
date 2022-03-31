@@ -5,20 +5,21 @@ import {Text} from 'react-native';
 import FireBaseContext from '../context/fireBaseProvider';
 
 function InitialLoadScreen({navigation}) {
-  const {user} = useContext(FireBaseContext);
+  const {user, getUserDetails} = useContext(FireBaseContext);
 
   useEffect(() => {
     if (user) {
       if (user.emailVerified) {
         // TODO check for additional information about users documents
         navigation.navigate('Home Container');
+        getUserDetails();
       } else {
         navigation.navigate('Verification');
       }
     } else {
       navigation.navigate('Initial Screen');
     }
-  });
+  }, []);
 
   return (
     <DefaultBackground>
