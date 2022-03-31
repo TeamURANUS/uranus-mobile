@@ -1,4 +1,6 @@
-import {showWarningPopup} from './popup';
+import {showDangerPopup, showSuccessPopup, showWarningPopup} from './popup';
+import {firebase} from '@react-native-firebase/auth';
+import {Popup} from 'popup-ui';
 
 export function checkPasswordMatch({Popup, password, confirmationPassword}) {
   if (password.length <= 8) {
@@ -40,4 +42,42 @@ export async function checkAndRegisterUser({
       navigation: navigation,
     });
   }
+}
+
+export function reauthenticate(currentPassword, user) {
+  const cred = firebase.auth.EmailAuthProvider.credential(
+    user.email,
+    currentPassword,
+  );
+  return user.reauthenticateWithCredential(cred);
+}
+
+// Changes user's password...
+export function onChangePasswordPress(user, newPassword, currentPassword) {
+  reauthenticate(currentPassword, user)
+    .then(() => {
+      user
+        .updatePassword(newPassword)
+        .then(() => {
+          showSuccessPopup({
+            Popup,
+            title: 'Password changed succesfully',
+            textBody: '',
+          });
+        })
+        .catch(error => {
+          showDangerPopup({
+            Popup,
+            title: 'Password change failed',
+            textBody: error.message,
+          });
+        });
+    })
+    .catch(error => {
+      showDangerPopup({
+        Popup,
+        title: 'Password change failed',
+        textBody: error.message,
+      });
+    });
 }

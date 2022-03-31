@@ -24,14 +24,15 @@ import HomeScreen from './src/screens/home/homeScreen';
 import ClassScreen from './src/screens/home/classAndCommunities/classScreen';
 import CalendarScreen from './src/screens/home/calendarScreen';
 import NotificationScreen from './src/screens/home/notificationScreen';
-import ProfileScreen from './src/screens/home/profileScreen';
 import CourseScreen from './src/screens/home/Course/courseScreen';
 import DetailedPostScreen from './src/screens/home/Course/detailedCoursePost';
+import ProfileScreen from './src/screens/home/profile/profileScreen';
 import NewsScreen from './src/screens/home/news/newsScreen';
 import DetailedNewsScreen from './src/screens/home/news/detailedNewsScreen';
 import ContactsScreen from './src/screens/home/chat/contactsScreen';
 import ChatScreen from './src/screens/home/chat/chatScreen';
 import MessagesScreen from './src/screens/home/chat/messagesScreen';
+import EditProfileScreen from './src/screens/home/profile/editProfileScreen';
 import CourseAssignments from './src/screens/home/Course/courseAssignments';
 import EnrollGroupScreen from './src/screens/home/Course/enrollGroupScreen';
 import CreateGroup from './src/screens/home/Course/createGroup';
@@ -183,6 +184,11 @@ const App: () => Node = () => {
         <NavigationStack.Screen
           name="Class"
           component={ClassScreen}
+          options={({route}) => ({title: route.params.name})}
+        />
+        <NavigationStack.Screen
+          name="Edit Profile"
+          component={EditProfileScreen}
           options={({route}) => ({title: route.params.name})}
         />
 
