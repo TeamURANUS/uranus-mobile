@@ -14,6 +14,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import PostCard from './postCard';
 import RadioGroup from 'react-native-radio-buttons-group';
 import OptionsMenu from 'react-native-option-menu';
+import {FAB} from 'react-native-paper';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -90,7 +91,7 @@ const renderListItem = ({
     <ListItem item={item} navigation={navigation} />
   ) : null;
 
-export default function CourseScreen({route, navigation}) {
+export default function GroupScreen({route, navigation}) {
   const {course} = route.params;
   const [showInstructorPosts, setShowInstructorPosts] = useState(true);
   const [showStudentPosts, setShowStudentPosts] = useState(true);
@@ -151,79 +152,71 @@ export default function CourseScreen({route, navigation}) {
 
   return (
     <DefaultBackground>
-      <View style={styles.container}>
-        <View style={styles.topBar}>
-          <Text style={styles.header}>{course.title}</Text>
-          <View style={styles.topBarButtons}>
-            <TouchableOpacity
-              style={[
-                styles.newPostTO,
-                newPostButtonPressed ? {backgroundColor: '#da3c3c'} : null,
-              ]}
-              onPress={newPostPressed}>
-              <MaterialCommunityIcons name="plus" style={styles.plusIcon} />
-              <Text style={styles.newPostTOText}>
-                {newPostButtonPressed ? 'Cancel' : 'New Post'}
-              </Text>
-            </TouchableOpacity>
-            <OptionsMenu
-              button={MoreIcon}
-              buttonStyle={styles.optionsMenu}
-              destructiveIndex={1}
-              options={['Class Info', 'Assignments', '']}
-              actions={[classInfoPressed, assignmentsPressed]}
-            />
-          </View>
-        </View>
-        <View style={styles.radioButtonsView}>
-          <RadioGroup
-            radioButtons={radioButtons}
-            onPress={onPressRadioButton}
-            layout={'row'}
+      <View style={styles.topBar}>
+        <View style={styles.topBarButtons}>
+          <OptionsMenu
+            button={MoreIcon}
+            buttonStyle={styles.optionsMenu}
+            destructiveIndex={1}
+            options={['Class Info', 'Assignments', '']}
+            actions={[classInfoPressed, assignmentsPressed]}
           />
         </View>
-        {!newPostButtonPressed ? null : (
-          <View style={styles.newPostView}>
-            <View style={styles.newPostButtonsView}>
-              <TouchableOpacity
-                style={styles.newPostPostTO}
-                onPress={postNewPost}>
-                <MaterialCommunityIcons name="plus" style={styles.plusIcon} />
-                <Text style={styles.newPostTOText}>Post</Text>
-              </TouchableOpacity>
-            </View>
-            <TextInput
-              placeholder={'Title'}
-              style={styles.newPostTitleTextBox}
-              onChangeText={setNewPostTitle}
-              ref={input => {
-                newPostTitleTextInput = input;
-              }}
-            />
-            <View style={styles.separator} />
-            <TextInput
-              placeholder={'Body'}
-              style={styles.newPostBodyTextBox}
-              onChangeText={setNewPostBody}
-              ref={input => {
-                newPostBodyTextInput = input;
-              }}
-            />
-          </View>
-        )}
-
-        <FlatList
-          data={DATA}
-          renderItem={({item}) =>
-            renderListItem({
-              item,
-              navigation,
-              showInstructorPosts,
-              showStudentPosts,
-            })
-          }
+      </View>
+      <View style={styles.radioButtonsView}>
+        <RadioGroup
+          radioButtons={radioButtons}
+          onPress={onPressRadioButton}
+          layout={'row'}
         />
       </View>
+      {!newPostButtonPressed ? null : (
+        <View style={styles.newPostView}>
+          <View style={styles.newPostButtonsView}>
+            <TouchableOpacity
+              style={styles.newPostPostTO}
+              onPress={postNewPost}>
+              <MaterialCommunityIcons name="plus" style={styles.plusIcon} />
+              <Text style={styles.newPostTOText}>Post</Text>
+            </TouchableOpacity>
+          </View>
+          <TextInput
+            placeholder={'Title'}
+            style={styles.newPostTitleTextBox}
+            onChangeText={setNewPostTitle}
+            ref={input => {
+              newPostTitleTextInput = input;
+            }}
+          />
+          <View style={styles.separator} />
+          <TextInput
+            placeholder={'Body'}
+            style={styles.newPostBodyTextBox}
+            onChangeText={setNewPostBody}
+            ref={input => {
+              newPostBodyTextInput = input;
+            }}
+          />
+        </View>
+      )}
+
+      <FlatList
+        data={DATA}
+        renderItem={({item}) =>
+          renderListItem({
+            item,
+            navigation,
+            showInstructorPosts,
+            showStudentPosts,
+          })
+        }
+      />
+
+      <FAB
+        icon={newPostButtonPressed ? 'plus' : 'delete'}
+        style={styles.newPostButton}
+        onPress={newPostPressed}
+      />
     </DefaultBackground>
   );
 }
@@ -262,21 +255,23 @@ const styles = StyleSheet.create({
     marginRight: 7,
   },
 
-  newPostTO: {
-    backgroundColor: '#0b128c',
-    borderRadius: 5,
+  newPostButton: {
+    position: 'absolute',
+    backgroundColor: '#3B7AF9',
+    bottom: 50,
+    right: 30,
+    borderRadius: 30,
     alignSelf: 'center',
-    width: 105,
-    height: 30,
+    width: 70,
+    height: 70,
     flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   newPostTOText: {
-    fontSize: 15,
+    fontSize: 20,
     fontWeight: '500',
     color: '#ffffff',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    marginLeft: 5,
   },
   plusIcon: {
     alignSelf: 'center',
@@ -394,25 +389,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
-/*
-
-<View style={styles.filterPanel}>
-            <View style={styles.checkboxGroup}>
-              <CheckBox
-                value={showInstructorPosts}
-                onValueChange={setShowInstructorPosts}
-                style={styles.checkbox}
-              />
-              <Text style={styles.checkboxText}>Instructor Posts</Text>
-            </View>
-            <View style={styles.checkboxGroup}>
-              <CheckBox
-                value={showStudentPosts}
-                onValueChange={setShowStudentPosts}
-                style={(styles.checkbox, {marginLeft: 60})}
-              />
-              <Text style={styles.checkboxText}>Student Posts</Text>
-            </View>
-          </View>
- */

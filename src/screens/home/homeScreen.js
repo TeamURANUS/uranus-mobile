@@ -118,19 +118,11 @@ const ListItem = ({item, navigation}) => (
   <TouchableOpacity
     style={styles.listItem}
     onPress={() =>
-      item.type === 'class'
-        ? navigation.navigate('Course', {
-            navigation: navigation,
-            course: item,
-            name: item.title,
-            type: 'course',
-          })
-        : navigation.navigate('Course', {
-            navigation: navigation,
-            course: item,
-            name: item.title,
-            type: 'community',
-          })
+      navigation.navigate('Group', {
+        navigation: navigation,
+        course: item,
+        name: item.title,
+      })
     }>
     <Image
       style={styles.itemImage}

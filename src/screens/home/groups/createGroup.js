@@ -66,7 +66,7 @@ export default function CreateGroup({navigation}) {
           'Group names should contain at least 2 alphanumeric characters',
       });
     }
-    let groupType = radioButtons[0].selected ? ' course' : ' community';
+    let groupType = radioButtons[0].selected ? ' groups' : ' community';
     await AsyncAlert(
       'You are about to create a ' +
         groupType +
