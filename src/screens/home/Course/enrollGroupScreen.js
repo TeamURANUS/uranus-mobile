@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   joinButton: {
-    backgroundColor: '#d2f33f',
+    backgroundColor: '#011d83',
     borderRadius: 6,
     justifyContent: 'center',
     alignItems: 'center',
@@ -303,18 +303,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '900',
     marginLeft: 2,
-    color: '#1924c9',
+    color: '#ffffff',
   },
   topListNavigator: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
   },
-  floatingButton: {
-    position: 'absolute',
-    backgroundColor: '#3B7AF9',
-    bottom: 16,
-    right: 16,
-  },
+
   searchBar: {
     height: windowHeight * 0.07,
     margin: '3%',
@@ -338,7 +333,7 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   createButtonTO: {
-    backgroundColor: '#0787ff',
+    backgroundColor: '#0b128c',
     borderRadius: 5,
     marginRight: 20,
     flexDirection: 'row',

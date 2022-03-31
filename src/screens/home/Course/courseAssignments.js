@@ -44,7 +44,7 @@ var DATA = [
 ];
 
 const ListItem = ({item, navigation}) => (
-  <TouchableOpacity style={styles.newsItem}>
+  <TouchableOpacity style={styles.assignmentItem}>
     <AssignmentCard item={item} />
   </TouchableOpacity>
 );
@@ -162,7 +162,7 @@ export default function CourseAssignments({route, navigation}) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f16969',
+    backgroundColor: '#ffffff',
     height: '100%',
   },
   headerView: {
@@ -194,11 +194,11 @@ const styles = StyleSheet.create({
     color: '#fcfcfc',
     marginLeft: 10,
   },
-  newsItem: {
-    backgroundColor: 'white',
+  assignmentItem: {
     display: 'flex',
     margin: 8,
     borderRadius: 8,
+    backgroundColor: '#c4c4c4',
   },
   topBar: {
     width: windowWidth,
@@ -241,21 +241,21 @@ const styles = StyleSheet.create({
   },
 
   newAssignmentView: {
-    backgroundColor: '#f16969',
+    backgroundColor: '#ffffff',
     borderWidth: 4,
-    borderColor: '#f16969',
+    borderColor: '#ffffff',
     height: '100%',
     margin: 5,
   },
 
   newAssignmentTitleTextBox: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#cccccc',
     height: '10%',
     marginTop: 6,
   },
 
   newAssignmentInstructionsTextBox: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#eae9e9',
     height: '30%',
     textAlignVertical: 'top',
     marginTop: 3,
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
   datePickerView: {
     height: '40%',
     width: '100%',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#eae9e9',
     marginTop: 3,
     justifyContent: 'center',
     alignItems: 'center',

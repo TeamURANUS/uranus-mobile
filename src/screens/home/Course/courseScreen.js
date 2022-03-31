@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
   },
 
   newPostTO: {
-    backgroundColor: '#0d92ff',
+    backgroundColor: '#0b128c',
     borderRadius: 5,
     alignSelf: 'center',
     width: 105,

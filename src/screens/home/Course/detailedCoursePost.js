@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     flexGrow: 0,
     marginBottom: 15,
-    backgroundColor: '#ffbb66',
+    backgroundColor: '#e0e0e0',
     borderRadius: 10,
   },
 
