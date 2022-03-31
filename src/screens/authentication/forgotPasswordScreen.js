@@ -1,36 +1,22 @@
 import * as React from 'react';
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+import {StyleSheet, Text, TextInput, View} from 'react-native';
 import {useContext, useState} from 'react';
 
 import FireBaseContext from '../../context/fireBaseProvider';
 
-import CheckBox from '@react-native-community/checkbox';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import DefaultBackground from '../../shared/defaultBackground';
 import SignUpButton from '../../shared/buttons/signUpButton';
-import {checkAndRegisterUser} from '../../services/authentication';
 
-function SignUpScreen({navigation}) {
-  const {registerUser, Popup} = useContext(FireBaseContext);
+function ForgotPasswordScreen({navigation}) {
+  const {resetUsersPassword} = useContext(FireBaseContext);
 
   const [email: string, setEmail] = useState('');
-  const [password: string, setPassword] = useState('');
-  const [confirmationPassword: string, setConfirmationPassword] = useState('');
-  const [isAccepted: boolean, setAccepted] = useState(false);
-
-  const refInput3 = React.useRef();
-  const refInput4 = React.useRef();
 
   return (
     <DefaultBackground>
       <KeyboardAwareScrollView>
-        <Text style={styles.logoText}> Sign Up! </Text>
+        <Text style={styles.logoText}> Reset your password! </Text>
 
         <View style={styles.formContainer}>
           <TextInput
@@ -42,63 +28,16 @@ function SignUpScreen({navigation}) {
             onChangeText={t => {
               setEmail(t);
             }}
-            onSubmitEditing={() => refInput3.current.focus()}
             style={styles.input}
           />
-
-          <TextInput
-            placeholder="password"
-            placeholderTextColor="grey"
-            secureTextEntry={true}
-            autoCorrect={false}
-            autoCapitalize="none"
-            returnKeyType="next"
-            onChangeText={t => {
-              setPassword(t);
-            }}
-            ref={refInput3}
-            onSubmitEditing={() => refInput4.current.focus()}
-            style={styles.input}
-          />
-
-          <TextInput
-            placeholder="password again"
-            placeholderTextColor="grey"
-            secureTextEntry={true}
-            autoCorrect={false}
-            autoCapitalize="none"
-            returnKeyType="next"
-            onChangeText={t => {
-              setConfirmationPassword(t);
-            }}
-            ref={refInput4}
-            style={styles.input}
-          />
-
-          <View style={styles.agreementContainer}>
-            <CheckBox
-              value={isAccepted}
-              onValueChange={setAccepted}
-              style={styles.checkbox}
-            />
-            <TouchableOpacity>
-              <Text style={styles.agreementLink}>
-                I agree with privacy policy
-              </Text>
-            </TouchableOpacity>
-          </View>
         </View>
 
         <View style={styles.bottomContainer}>
           <SignUpButton
-            displayText="Sign Up!"
+            displayText="Reset my password!"
             onPress={async () =>
-              await checkAndRegisterUser({
-                Popup,
+              await resetUsersPassword({
                 email,
-                password,
-                confirmationPassword,
-                registerUser,
                 navigation,
               })
             }
@@ -166,4 +105,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUpScreen;
+export default ForgotPasswordScreen;
