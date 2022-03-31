@@ -17,6 +17,7 @@ import InitialScreen from './src/screens/initialScreen';
 import InitialLoadScreen from './src/screens/initialLoadScreen';
 import SignUpScreen from './src/screens/authentication/signUpScreen';
 import SignInScreen from './src/screens/authentication/signInScreen';
+import ForgotPasswordScreen from './src/screens/authentication/forgotPasswordScreen';
 import VerificationScreen from './src/screens/authentication/verificationScreen';
 import UserDetailsFormScreen from './src/screens/authentication/userDetailsFormScreen';
 import HomeScreen from './src/screens/home/homeScreen';
@@ -151,6 +152,11 @@ const App: () => Node = () => {
         <NavigationStack.Screen
           name="SignIn"
           component={SignInScreen}
+          options={{headerShown: false}}
+        />
+        <NavigationStack.Screen
+          name="ForgotPassword"
+          component={ForgotPasswordScreen}
           options={{headerShown: false}}
         />
         <NavigationStack.Screen

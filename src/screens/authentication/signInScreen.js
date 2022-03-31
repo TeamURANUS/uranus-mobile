@@ -3,6 +3,7 @@ import {useState, useContext} from 'react';
 import {View, StyleSheet, Text, TextInput} from 'react-native';
 import DefaultBackground from '../../shared/defaultBackground';
 import SignInButton from '../../shared/buttons/signInButton';
+import ForgotPasswordButton from '../../shared/buttons/forgotPasswordButton';
 import FireBaseContext from '../../context/fireBaseProvider';
 
 function SignInScreen({navigation}) {
@@ -55,6 +56,10 @@ function SignInScreen({navigation}) {
               navigation,
             })
           }
+        />
+        <ForgotPasswordButton
+          displayText="Forgot your password?"
+          onPress={() => navigation.navigate('ForgotPassword')}
         />
       </View>
     </DefaultBackground>
