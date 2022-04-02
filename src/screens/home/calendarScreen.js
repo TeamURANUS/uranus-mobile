@@ -11,7 +11,13 @@ import {
 } from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import {setEventListView} from '../../services/calendar';
-import {useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
+import FireBaseContext from '../../context/fireBaseProvider';
+import {getUserEvents} from '../../services/calendar';
+import {
+  getFormattedDateFromTimestamp,
+  getDateFromTimestamp,
+} from '../../services/time';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -74,26 +80,109 @@ const events = [
   },
 ];
 
+const monthToStringDict = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+
+const DateCard = ({date}) => (
+  <View
+    style={{
+      backgroundColor: '#f5b14a',
+      borderRadius: 30,
+      height: 60,
+      width: 60,
+    }}>
+    <Text
+      style={{
+        fontWeight: '600',
+        color: 'white',
+        textAlign: 'center',
+        fontSize: 25,
+        marginTop: -3,
+      }}>
+      {date.getDate()}
+    </Text>
+    <Text
+      style={{
+        fontWeight: '600',
+        color: 'white',
+        textAlign: 'center',
+        fontSize: 12,
+        marginTop: -7,
+      }}>
+      {monthToStringDict[date.getMonth()]}
+    </Text>
+    <Text
+      style={{
+        fontWeight: '600',
+        color: 'white',
+        textAlign: 'center',
+        fontSize: 12,
+        marginTop: -3,
+      }}>
+      {date.getFullYear()}
+    </Text>
+  </View>
+);
+
 const ListItem = ({item}) => (
   <View style={styles.listItem}>
-    <Image
-      style={styles.itemImage}
-      source={{
-        uri: item.imageUrl,
-      }}
-    />
+    <View>
+      <DateCard date={getDateFromTimestamp(item.eventDate.seconds)} />
+    </View>
     <View style={styles.listItemTextContainer}>
-      <Text style={styles.itemTitle}>{item.title}</Text>
-      <Text style={styles.itemText}>{item.text}</Text>
+      <Text style={styles.itemTitle}>{item.eventName}</Text>
+      <Text style={styles.itemText}>{item.eventDescription}</Text>
     </View>
   </View>
 );
 
 const renderListItem = ({item}) => <ListItem item={item} />;
 
-function CalendarScreen() {
+export default function CalendarScreen() {
   const [eventList, setEventList] = useState(events);
   const [markedDates, setMarkedDates] = useState({});
+  const {user, userDetails} = useContext(FireBaseContext);
+  const [eventsData, setEventsData] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
+
+  //console.log(user.uid);
+  //console.log(eventsData);
+
+  async function fetchEvents() {
+    const newsData = await getUserEvents(user.uid);
+    setEventsData(newsData);
+    setIsFetching(false);
+    eventsData.forEach(list => {
+      //console.log(list.eventName);
+      //console.log(getFormattedDateFromTimestamp(list.eventDate.seconds));
+      console.log(list.eventDate.seconds);
+    });
+
+    //console.log(eventsData);
+  }
+
+  async function onRefresh() {
+    setIsFetching(true);
+    fetchEvents();
+  }
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  //console.log(eventdata.eventParticipants[0]._key.path.segments[6]);
 
   return (
     <DefaultBackground>
@@ -110,16 +199,18 @@ function CalendarScreen() {
         onDayPress={day => {
           setEventListView({
             day,
-            events,
+            eventsData,
             markedDates,
             setMarkedDates,
-            setEventList,
+            setEventsData,
           });
         }}
       />
       <FlatList
         style={styles.list}
-        data={eventList}
+        data={eventsData}
+        onRefresh={onRefresh}
+        refreshing={isFetching}
         renderItem={renderListItem}
         keyExtractor={item => item.id}
       />
@@ -170,5 +261,3 @@ const styles = StyleSheet.create({
     height: '80%',
   },
 });
-
-export default CalendarScreen;
