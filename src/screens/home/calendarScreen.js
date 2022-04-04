@@ -2,98 +2,78 @@ import * as React from 'react';
 import DefaultBackground from '../../shared/defaultBackground';
 import {
   FlatList,
-  Image,
   StyleSheet,
   Text,
   TextInput,
   View,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
 import {Calendar} from 'react-native-calendars';
-import {setEventListView} from '../../services/calendar';
-import {useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
+import FireBaseContext from '../../context/fireBaseProvider';
+import {setEventListView, getUserEvents} from '../../services/calendar';
+import {getDateFromTimestamp, monthToStringDict} from '../../services/time';
 
 const windowHeight = Dimensions.get('window').height;
 
-const events = [
-  {
-    id: 1,
-    title: 'EVENT 1',
-    text: 'lorem ipsum annen baban xd xd',
-    imageUrl:
-      'https://media.istockphoto.com/photos/remote-working-from-home-freelancer-workplace-in-kitchen-with-laptop-picture-id1213497796?s=612x612',
-    dateString: '2022-03-16',
-  },
-  {
-    id: 2,
-    title: 'EVENT 2',
-    text: 'lorem ipsum annen baban xd xd',
-    dateString: '2022-03-16',
-    imageUrl:
-      'https://media.istockphoto.com/photos/remote-working-from-home-freelancer-workplace-in-kitchen-with-laptop-picture-id1213497796?s=612x612',
-  },
-  {
-    id: 3,
-    title: 'EVENT 3',
-    text: 'lorem ipsum annen baban xd xd',
-    imageUrl:
-      'https://media.istockphoto.com/photos/remote-working-from-home-freelancer-workplace-in-kitchen-with-laptop-picture-id1213497796?s=612x612',
-    dateString: '2022-03-17',
-  },
-  {
-    id: 4,
-    title: 'EVENT 4',
-    text: 'lorem ipsum annen baban xd xd',
-    imageUrl:
-      'https://media.istockphoto.com/photos/remote-working-from-home-freelancer-workplace-in-kitchen-with-laptop-picture-id1213497796?s=612x612',
-    dateString: '2022-03-18',
-  },
-  {
-    id: 5,
-    title: 'EVENT 5',
-    text: 'lorem ipsum annen baban xd xd',
-    imageUrl:
-      'https://media.istockphoto.com/photos/remote-working-from-home-freelancer-workplace-in-kitchen-with-laptop-picture-id1213497796?s=612x612',
-    dateString: '2022-03-19',
-  },
-  {
-    id: 6,
-    title: 'EVENT 6',
-    text: 'lorem 6ipsum annen baban xd xd',
-    imageUrl:
-      'https://media.istockphoto.com/photos/remote-working-from-home-freelancer-workplace-in-kitchen-with-laptop-picture-id1213497796?s=612x612',
-    dateString: '2022-03-20',
-  },
-  {
-    id: 7,
-    title: 'EVENT 7',
-    text: 'lorem ipsum annen baban xd xd',
-    imageUrl:
-      'https://media.istockphoto.com/photos/remote-working-from-home-freelancer-workplace-in-kitchen-with-laptop-picture-id1213497796?s=612x612',
-    dateString: '2022-03-20',
-  },
-];
+const DateCard = ({date}) => (
+  <View style={styles.dateCardView}>
+    <Text style={styles.eventDayText}>{date.getDate()}</Text>
+    <Text style={styles.eventMonthText}>
+      {monthToStringDict[date.getMonth()]}
+    </Text>
+  </View>
+);
 
 const ListItem = ({item}) => (
   <View style={styles.listItem}>
-    <Image
-      style={styles.itemImage}
-      source={{
-        uri: item.imageUrl,
-      }}
-    />
-    <View style={styles.listItemTextContainer}>
-      <Text style={styles.itemTitle}>{item.title}</Text>
-      <Text style={styles.itemText}>{item.text}</Text>
+    <View style={styles.eventLeftView}>
+      <View>
+        <DateCard date={getDateFromTimestamp(item.eventDate.seconds)} />
+      </View>
+      <View style={styles.listItemTextContainer}>
+        <Text numberOfLines={1} style={styles.itemTitle}>
+          {item.eventName}
+        </Text>
+        <Text numberOfLines={1} style={styles.itemText}>
+          {item.eventDescription}
+        </Text>
+      </View>
     </View>
+
+    <TouchableOpacity style={styles.eventRightView}>
+      <Text numberOfLines={1} style={styles.eventGroupNameText}>
+        {item.eventOrganizers}
+      </Text>
+    </TouchableOpacity>
   </View>
 );
 
 const renderListItem = ({item}) => <ListItem item={item} />;
 
-function CalendarScreen() {
-  const [eventList, setEventList] = useState(events);
+export default function CalendarScreen() {
   const [markedDates, setMarkedDates] = useState({});
+  const {user} = useContext(FireBaseContext);
+  const [events, setEvents] = useState([]);
+  const [visibleEventsData, setVisibleEventsData] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
+
+  async function fetchEvents() {
+    const eventData = await getUserEvents(user.uid);
+    setEvents(eventData);
+    setVisibleEventsData(eventData);
+    setIsFetching(false);
+  }
+
+  async function onRefresh() {
+    setIsFetching(true);
+    fetchEvents();
+  }
+
+  useEffect(() => {
+    fetchEvents();
+  }, []);
 
   return (
     <DefaultBackground>
@@ -110,16 +90,18 @@ function CalendarScreen() {
         onDayPress={day => {
           setEventListView({
             day,
-            events,
             markedDates,
             setMarkedDates,
-            setEventList,
+            setVisibleEventsData,
+            events,
           });
         }}
       />
       <FlatList
         style={styles.list}
-        data={eventList}
+        data={visibleEventsData}
+        onRefresh={onRefresh}
+        refreshing={isFetching}
         renderItem={renderListItem}
         keyExtractor={item => item.id}
       />
@@ -161,14 +143,49 @@ const styles = StyleSheet.create({
     height: 80,
     flexDirection: 'row',
     padding: 10,
-    borderBottomWidth: 1,
-    borderColor: '#c2b9b9',
+    borderBottomWidth: 3,
+    borderColor: '#ffffff',
+    justifyContent: 'space-between',
+    backgroundColor: '#f5f5f5',
+  },
+  eventLeftView: {flexDirection: 'row', width: '50%'},
+  eventRightView: {
+    backgroundColor: '#358fd0',
+    justifyContent: 'center',
+    height: 30,
+    borderRadius: 4,
+    width: '25%',
   },
   list: {
     borderTopWidth: 2,
-    borderColor: 'rgba(185,185,185,0.6)',
+    borderColor: 'rgba(253,253,253,0.6)',
     height: '80%',
   },
+  eventGroupNameText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: 'white',
+    textAlign: 'center',
+    padding: 3,
+    width: '100%',
+  },
+  dateCardView: {
+    backgroundColor: '#bbbbbb',
+    borderRadius: 30,
+    height: 60,
+    width: 60,
+  },
+  eventDayText: {
+    fontWeight: '600',
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 25,
+    marginTop: 5,
+  },
+  eventMonthText: {
+    fontWeight: '600',
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 14,
+  },
 });
-
-export default CalendarScreen;

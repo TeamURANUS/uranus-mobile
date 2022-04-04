@@ -5,5 +5,24 @@ const OPTIONS = {
 };
 
 export function getFormattedDateFromTimestamp(timestamp) {
-  return new Date(timestamp).toLocaleDateString('tr-TR', OPTIONS);
+  return new Date(timestamp * 1000).toLocaleDateString('tr-TR', OPTIONS);
 }
+
+export function getDateFromTimestamp(timestamp) {
+  return new Date(timestamp * 1000);
+}
+
+export const monthToStringDict = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
