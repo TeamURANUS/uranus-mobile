@@ -1,26 +1,33 @@
 import _ from 'lodash';
 import {eventsAPI} from '../api/utils';
+import {getFormattedDateFromTimestamp} from './time';
 
 export function filterEventsOnGivenDate({day, events}) {
   return _.filter(events, {dateString: day.dateString});
 }
 
-export async function setEventListView({
+export function setEventListView({
   day,
-  events,
   markedDates,
   setMarkedDates,
-  setEventList,
+  setVisibleEventsData,
+  events,
 }) {
   if (day.dateString in markedDates) {
     setMarkedDates({});
-    setEventList(events);
+    setVisibleEventsData(events);
     return;
   }
   const marks = {};
   marks[day.dateString] = {selected: true, selectedColor: '#2994ff'};
   setMarkedDates(marks);
-  setEventList(filterEventsOnGivenDate({day: day, events}));
+  setVisibleEventsData(
+    events.filter(
+      event =>
+        getFormattedDateFromTimestamp(event.eventDate.seconds) ===
+        getFormattedDateFromTimestamp(day.timestamp / 1000),
+    ),
+  );
 }
 
 export async function getUserEvents(userid) {

@@ -1,7 +1,12 @@
+import {Platform} from 'react-native';
 import axios from 'axios';
 
-//const BASE_URL = 'http://localhost:3000/';
-const BASE_URL = 'http://10.0.2.2:3000/';
+const DEV_ROUTES = {
+  android: 'http://10.0.2.2:3000/',
+  ios: 'http://localhost:3000/',
+};
+
+const BASE_URL = DEV_ROUTES[Platform.OS];
 
 export const authAPI = axios.create({
   baseURL: BASE_URL + 'api/auth/',

@@ -7,16 +7,13 @@ import {
   TextInput,
   View,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import {useContext, useEffect, useState} from 'react';
 import FireBaseContext from '../../context/fireBaseProvider';
-import {getUserEvents} from '../../services/calendar';
-import {
-  getFormattedDateFromTimestamp,
-  getDateFromTimestamp,
-  monthToStringDict,
-} from '../../services/time';
+import {setEventListView, getUserEvents} from '../../services/calendar';
+import {getDateFromTimestamp, monthToStringDict} from '../../services/time';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -26,7 +23,6 @@ const DateCard = ({date}) => (
     <Text style={styles.eventMonthText}>
       {monthToStringDict[date.getMonth()]}
     </Text>
-    <Text style={styles.eventYearText}>{date.getFullYear()}</Text>
   </View>
 );
 
@@ -46,11 +42,11 @@ const ListItem = ({item}) => (
       </View>
     </View>
 
-    <View style={styles.eventRightView}>
+    <TouchableOpacity style={styles.eventRightView}>
       <Text numberOfLines={1} style={styles.eventGroupNameText}>
         {item.eventOrganizers}
       </Text>
-    </View>
+    </TouchableOpacity>
   </View>
 );
 
@@ -59,14 +55,14 @@ const renderListItem = ({item}) => <ListItem item={item} />;
 export default function CalendarScreen() {
   const [markedDates, setMarkedDates] = useState({});
   const {user} = useContext(FireBaseContext);
-  const [eventsData, setEventsData] = useState([]);
+  const [events, setEvents] = useState([]);
   const [visibleEventsData, setVisibleEventsData] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
 
   async function fetchEvents() {
-    const newsData = await getUserEvents(user.uid);
-    setEventsData(newsData);
-    setVisibleEventsData(newsData);
+    const eventData = await getUserEvents(user.uid);
+    setEvents(eventData);
+    setVisibleEventsData(eventData);
     setIsFetching(false);
   }
 
@@ -78,24 +74,6 @@ export default function CalendarScreen() {
   useEffect(() => {
     fetchEvents();
   }, []);
-
-  function dayPressed(day) {
-    if (day.dateString in markedDates) {
-      setMarkedDates({});
-      setVisibleEventsData(eventsData);
-      return;
-    }
-    const marks = {};
-    marks[day.dateString] = {selected: true, selectedColor: '#2994ff'};
-    setMarkedDates(marks);
-    setVisibleEventsData(
-      eventsData.filter(
-        event =>
-          getFormattedDateFromTimestamp(event.eventDate.seconds) ==
-          getFormattedDateFromTimestamp(day.timestamp / 1000),
-      ),
-    );
-  }
 
   return (
     <DefaultBackground>
@@ -110,7 +88,13 @@ export default function CalendarScreen() {
       <Calendar
         markedDates={markedDates}
         onDayPress={day => {
-          dayPressed(day);
+          setEventListView({
+            day,
+            markedDates,
+            setMarkedDates,
+            setVisibleEventsData,
+            events,
+          });
         }}
       />
       <FlatList
@@ -162,11 +146,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 3,
     borderColor: '#ffffff',
     justifyContent: 'space-between',
-    backgroundColor: '#d7d7d7',
+    backgroundColor: '#f5f5f5',
   },
-  eventLeftView: {flexDirection: 'row', width: '60%'},
+  eventLeftView: {flexDirection: 'row', width: '50%'},
   eventRightView: {
-    backgroundColor: '#120183',
+    backgroundColor: '#358fd0',
     justifyContent: 'center',
     height: 30,
     borderRadius: 4,
@@ -174,7 +158,7 @@ const styles = StyleSheet.create({
   },
   list: {
     borderTopWidth: 2,
-    borderColor: 'rgba(185,185,185,0.6)',
+    borderColor: 'rgba(253,253,253,0.6)',
     height: '80%',
   },
   eventGroupNameText: {
@@ -186,7 +170,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   dateCardView: {
-    backgroundColor: '#f5b14a',
+    backgroundColor: '#bbbbbb',
     borderRadius: 30,
     height: 60,
     width: 60,
@@ -196,20 +180,12 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     fontSize: 25,
-    marginTop: -3,
+    marginTop: 5,
   },
   eventMonthText: {
     fontWeight: '600',
     color: 'white',
     textAlign: 'center',
-    fontSize: 12,
-    marginTop: -7,
-  },
-  eventYearText: {
-    fontWeight: '600',
-    color: 'white',
-    textAlign: 'center',
-    fontSize: 12,
-    marginTop: -3,
+    fontSize: 14,
   },
 });
