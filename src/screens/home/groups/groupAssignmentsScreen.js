@@ -52,8 +52,8 @@ const ListItem = ({item, navigation}) => (
 const renderListItem = ({item, navigation}) => (
   <ListItem item={item} navigation={navigation} />
 );
-export default function CourseAssignments({route, navigation}) {
-  const {course} = route.params;
+export default function GroupAssignmentsScreen({route, navigation}) {
+  const {group} = route.params;
   const [newAssignmentButtonPressed, setNewAssignmentButtonPressed] =
     useState(false);
   const [newAssignmentTitle, setNewAssignmentTitle] = useState('');
@@ -100,7 +100,7 @@ export default function CourseAssignments({route, navigation}) {
         <View style={styles.topBar}>
           <View style={styles.headerView}>
             <Text style={styles.header}>Events</Text>
-            <Text style={styles.courseName}>{course.title}</Text>
+            <Text style={styles.courseName}>{group.groupName}</Text>
           </View>
           <View style={styles.topBarButtons}>
             <TouchableOpacity

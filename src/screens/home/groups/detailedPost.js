@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {getFormattedDateFromTimestamp} from '../../../services/time';
 
 var PostComments = [
   {
@@ -50,7 +51,7 @@ const ListItem = ({item}) => (
 );
 
 export default function DetailedPostScreen({route}) {
-  const {item} = route.params;
+  const {post} = route.params;
   const [commentText, setCommentText] = useState('');
   let commentTextInput = React.createRef();
   const username = 'dnztrkmn';
@@ -65,8 +66,6 @@ export default function DetailedPostScreen({route}) {
     });
     commentTextInput.clear();
     setCommentText('');
-    //commentTextInput.focus();
-    //scrollViewRef.scrollTo({x: 0, y: 200, animated: false});
     console.log(PostComments);
   }
   return (
@@ -74,12 +73,14 @@ export default function DetailedPostScreen({route}) {
       <ScrollView style={styles.scroll} scrollToOverflowEnabled={true}>
         <View style={styles.postOwnerView}>
           <MaterialCommunityIcons name="account" style={styles.postOwnerIcon} />
-          <Text style={styles.postOwner}>{item.postOwner}</Text>
+          <Text style={styles.postOwner}>AUTHOR</Text>
         </View>
         <View style={styles.contentView}>
-          <Text style={styles.title}>{item.postTitle}</Text>
-          <Text style={styles.date}>{item.postDate}</Text>
-          <Text style={styles.text}>{item.postBody}</Text>
+          <Text style={styles.title}>{post.postTitle}</Text>
+          <Text style={styles.date}>
+            {getFormattedDateFromTimestamp(post.postDate.seconds)}
+          </Text>
+          <Text style={styles.text}>{post.postContent}</Text>
         </View>
         <Text style={styles.commentsHeader}>Comments</Text>
         {PostComments.map((item, index) => {

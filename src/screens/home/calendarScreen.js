@@ -44,7 +44,7 @@ const ListItem = ({item}) => (
 
     <TouchableOpacity style={styles.eventRightView}>
       <Text numberOfLines={1} style={styles.eventGroupNameText}>
-        {item.eventOrganizers}
+        {item.eventPlace}
       </Text>
     </TouchableOpacity>
   </View>

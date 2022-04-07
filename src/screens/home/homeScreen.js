@@ -1,148 +1,40 @@
 import * as React from 'react';
-import {useState} from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+import {useEffect, useState} from 'react';
+import {View, Text, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 import DefaultBackground from '../../shared/defaultBackground';
 import {getTitleStyle} from '../../services/dynamicStyles';
 import {FAB} from 'react-native-paper';
-
-const COMMUNITY_DATA = [
-  {
-    type: 'community',
-    id: '1',
-    title: 'EVT',
-    text: 'ORTAM PARTİ',
-    imageUrl:
-      'https://media.istockphoto.com/photos/man-holding-blue-helmet-close-up-picture-id1178982949?s=612x612',
-    admin: 'deniz türkmen',
-  },
-  {
-    type: 'community',
-    id: '2',
-    title: 'ASAT',
-    text: 'AT AVRAT SİLAH',
-    imageUrl:
-      'https://media.istockphoto.com/photos/man-holding-blue-helmet-close-up-picture-id1178982949?s=612x612',
-    admin: 'deniz türkmen',
-  },
-  {
-    type: 'community',
-    id: '3',
-    title: 'TOBB BİLGİSAYAR',
-    text: 'ARADIĞINIZ KLUÜB BULUNAMADI',
-    imageUrl:
-      'https://media.istockphoto.com/photos/man-holding-blue-helmet-close-up-picture-id1178982949?s=612x612',
-    admin: 'deniz türkmen',
-  },
-];
-
-const CLASS_DATA = [
-  {
-    type: 'class',
-    id: '1',
-    title: 'BIL 496',
-    text: 'lorem ipsum',
-    imageUrl:
-      'https://media.istockphoto.com/photos/man-holding-blue-helmet-close-up-picture-id1178982949?s=612x612',
-    admin: 'deniz türkmen',
-  },
-  {
-    type: 'class',
-    id: '2',
-    title: 'END 321',
-    text: 'lorem ipsum',
-    imageUrl:
-      'https://media.istockphoto.com/photos/young-people-with-face-masks-back-at-work-or-school-in-office-after-picture-id1250279730?s=612x612',
-    admin: 'deniz türkmen',
-  },
-  {
-    type: 'class',
-    id: '3',
-    title: 'BIL 441',
-    text: 'lorem ipsum',
-    imageUrl:
-      'https://media.istockphoto.com/photos/remote-working-from-home-freelancer-workplace-in-kitchen-with-laptop-picture-id1213497796?s=612x612',
-    admin: 'deniz türkmen',
-  },
-  {
-    type: 'class',
-    id: '4',
-    title: 'SOC 203',
-    text: 'lorem ipsum',
-    imageUrl:
-      'https://media.istockphoto.com/photos/turner-worker-working-on-drill-bit-in-a-workshop-picture-id1128735755?s=612x612',
-    admin: 'deniz türkmen',
-  },
-  {
-    type: 'class',
-    id: '5',
-    title: 'BIL 441',
-    text: 'lorem ipsum',
-    imageUrl:
-      'https://media.istockphoto.com/photos/remote-working-from-home-freelancer-workplace-in-kitchen-with-laptop-picture-id1213497796?s=612x612',
-    admin: 'deniz türkmen',
-  },
-  {
-    type: 'class',
-    id: '6',
-    title: 'SOC 203',
-    text: 'lorem ipsum',
-    imageUrl:
-      'https://media.istockphoto.com/photos/turner-worker-working-on-drill-bit-in-a-workshop-picture-id1128735755?s=612x612',
-  },
-  {
-    type: 'class',
-    id: '7',
-    title: 'BIL 441',
-    text: 'lorem ipsum',
-    imageUrl:
-      'https://media.istockphoto.com/photos/remote-working-from-home-freelancer-workplace-in-kitchen-with-laptop-picture-id1213497796?s=612x612',
-  },
-  {
-    type: 'class',
-    id: '8',
-    title: 'SOC 203',
-    text: 'lorem ipsum',
-    imageUrl:
-      'https://media.istockphoto.com/photos/turner-worker-working-on-drill-bit-in-a-workshop-picture-id1128735755?s=612x612',
-  },
-];
-
-const ListItem = ({item, navigation}) => (
-  <TouchableOpacity
-    style={styles.listItem}
-    onPress={() =>
-      navigation.navigate('Group', {
-        navigation: navigation,
-        course: item,
-        name: item.title,
-      })
-    }>
-    <Image
-      style={styles.itemImage}
-      source={{
-        uri: item.imageUrl,
-      }}
-    />
-    <View style={styles.listItemTextContainer}>
-      <Text style={styles.itemTitle}>{item.title}</Text>
-      <Text style={styles.itemText}>{item.text}</Text>
-    </View>
-  </TouchableOpacity>
-);
+import {getAllGroups} from '../../services/groups';
+import {groupBy} from 'lodash';
+import {GroupListItem} from '../../shared/components/groupListItem';
 
 const renderListItem = ({item, navigation}) => (
-  <ListItem item={item} navigation={navigation} />
+  <GroupListItem item={item} navigation={navigation} />
 );
 
 function HomeScreen({navigation}) {
+  const [classData, setClassData] = useState([]);
+  const [communityData, setCommunityData] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
+
   const [showClasses, setShowClasses] = useState(true);
+
+  async function fetchGroups() {
+    const groupsData = await getAllGroups();
+    const seperatedGroupsData = groupBy(groupsData, 'groupIsCommunity');
+    setClassData(seperatedGroupsData.false || []);
+    setCommunityData(seperatedGroupsData.true || []);
+    setIsFetching(false);
+  }
+
+  async function onRefresh() {
+    setIsFetching(true);
+    fetchGroups();
+  }
+
+  useEffect(() => {
+    fetchGroups();
+  }, []);
 
   return (
     <DefaultBackground>
@@ -162,7 +54,9 @@ function HomeScreen({navigation}) {
       {showClasses && (
         <View>
           <FlatList
-            data={CLASS_DATA}
+            data={classData}
+            onRefresh={onRefresh}
+            refreshing={isFetching}
             renderItem={({item}) => renderListItem({item, navigation})}
             keyExtractor={item => item.id}
           />
@@ -172,7 +66,9 @@ function HomeScreen({navigation}) {
       {!showClasses && (
         <View>
           <FlatList
-            data={COMMUNITY_DATA}
+            data={communityData}
+            onRefresh={onRefresh}
+            refreshing={isFetching}
             renderItem={({item}) => renderListItem({item, navigation})}
             keyExtractor={item => item.id}
           />
@@ -188,30 +84,6 @@ function HomeScreen({navigation}) {
 }
 
 const styles = StyleSheet.create({
-  itemImage: {
-    height: 50,
-    width: 50,
-    borderRadius: 10,
-  },
-  itemText: {
-    fontSize: 12,
-    marginLeft: 2,
-    color: 'grey',
-  },
-  itemTitle: {
-    fontSize: 20,
-    margin: 2,
-  },
-  listItemTextContainer: {
-    marginLeft: 10,
-  },
-  listItem: {
-    height: 80,
-    flexDirection: 'row',
-    padding: 10,
-    borderBottomWidth: 1,
-    borderColor: '#c2b9b9',
-  },
   topListNavigator: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',

@@ -25,7 +25,7 @@ import ClassScreen from './src/screens/home/classAndCommunities/classScreen';
 import CalendarScreen from './src/screens/home/calendarScreen';
 import NotificationScreen from './src/screens/home/notificationScreen';
 import GroupScreen from './src/screens/home/groups/groupScreen';
-import DetailedPostScreen from './src/screens/home/groups/detailedCoursePost';
+import DetailedPostScreen from './src/screens/home/groups/detailedPost';
 import ProfileScreen from './src/screens/home/profile/profileScreen';
 import NewsScreen from './src/screens/home/news/newsScreen';
 import DetailedNewsScreen from './src/screens/home/news/detailedNewsScreen';
@@ -33,10 +33,11 @@ import ContactsScreen from './src/screens/home/chat/contactsScreen';
 import ChatScreen from './src/screens/home/chat/chatScreen';
 import MessagesScreen from './src/screens/home/chat/messagesScreen';
 import EditProfileScreen from './src/screens/home/profile/editProfileScreen';
-import CourseAssignments from './src/screens/home/groups/courseAssignments';
+import GroupAssignmentsScreen from './src/screens/home/groups/groupAssignmentsScreen';
 import EnrollGroupScreen from './src/screens/home/groups/enrollGroupScreen';
 import CreateGroup from './src/screens/home/groups/createGroup';
-import ClassInfo from './src/screens/home/groups/classInfo';
+import GroupInfoScreen from './src/screens/home/groups/groupInfoScreen';
+import {GroupHeaderRight} from './src/shared/headers/groupHeaderRight';
 
 function HomeContainer() {
   return (
@@ -97,21 +98,6 @@ function HomeContainer() {
           tabBarShowLabel: false,
         }}
       />
-      <NavigationTab.Screen
-        name="Messages"
-        component={MessagesScreen}
-        options={{
-          tabBarIcon: ({color}) => (
-            <MaterialCommunityIcons
-              name="message-text-outline"
-              color={color}
-              size={26}
-            />
-          ),
-          tabBarShowLabel: false,
-        }}
-      />
-
       <NavigationTab.Screen
         name="Profile"
         component={ProfileScreen}
@@ -195,7 +181,10 @@ const App: () => Node = () => {
         <NavigationStack.Screen
           name="Group"
           component={GroupScreen}
-          options={({route}) => ({title: route.params.name})}
+          options={({route, navigation}) => ({
+            title: route.params.name,
+            headerRight: () => <GroupHeaderRight route={route} />,
+          })}
         />
 
         <NavigationStack.Screen
@@ -206,7 +195,7 @@ const App: () => Node = () => {
 
         <NavigationStack.Screen
           name="Assignments"
-          component={CourseAssignments}
+          component={GroupAssignmentsScreen}
           options={{headerShown: false}}
         />
 
@@ -223,8 +212,8 @@ const App: () => Node = () => {
         />
 
         <NavigationStack.Screen
-          name="Class Info"
-          component={ClassInfo}
+          name="Group Info"
+          component={GroupInfoScreen}
           options={{headerShown: false}}
         />
       </NavigationStack.Navigator>

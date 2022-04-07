@@ -1,32 +1,24 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {getFormattedDateFromTimestamp} from '../../../services/time';
 
 export function PostCard({item}) {
   return (
-    <View
-      style={
-        item.isRead
-          ? {backgroundColor: '#ffffff'}
-          : {backgroundColor: '#bef33f'}
-      }>
-      <View style={styles.contentBox}>
-        <View style={styles.titleDateIcon}>
-          <Text style={styles.postTitle} numberOfLines={2}>
-            {item.postTitle}
-          </Text>
-          <View style={styles.dateIcon}>
-            <Text style={styles.postDate}>{item.postDate}</Text>
-            {item.isInstructorPost ? (
-              <Text style={styles.instructorPostIcon}>admin</Text>
-            ) : null}
-          </View>
-        </View>
-
-        <View>
-          <Text style={styles.postBody} numberOfLines={3}>
-            {item.postBody}
+    <View style={styles.container}>
+      <View style={styles.postHeaderContainer}>
+        <Text style={styles.postTitle} numberOfLines={2}>
+          {item.postTitle}
+        </Text>
+        <View style={styles.date}>
+          <Text style={styles.postDate}>
+            {getFormattedDateFromTimestamp(item.postDate.seconds)}
           </Text>
         </View>
+      </View>
+      <View>
+        <Text style={styles.postBody} numberOfLines={3}>
+          {item.postContent}
+        </Text>
       </View>
     </View>
   );
@@ -34,13 +26,6 @@ export function PostCard({item}) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#bef33f',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  contentBox: {
     flexDirection: 'column',
     alignSelf: 'stretch',
     marginTop: 10,
@@ -49,7 +34,6 @@ const styles = StyleSheet.create({
     height: 100,
     flex: 1,
   },
-
   postTitle: {
     fontSize: 15,
     fontWeight: '700',
@@ -68,27 +52,15 @@ const styles = StyleSheet.create({
     opacity: 0.7,
     color: '#000000',
   },
-  titleDateIcon: {flexDirection: 'row'},
-  dateIcon: {
+  postHeaderContainer: {
+    flexDirection: 'row',
+  },
+  date: {
     flexDirection: 'column',
     height: 40,
     marginBottom: 7,
     flex: 1,
     alignItems: 'center',
-  },
-
-  instructorPostIcon: {
-    backgroundColor: '#ffa600',
-    fontSize: 13,
-    fontWeight: '900',
-    color: '#ffffff',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    marginTop: 5,
-    marginLeft: 8,
-    textAlign: 'center',
-    borderRadius: 5,
-    paddingHorizontal: 5,
   },
 });
 

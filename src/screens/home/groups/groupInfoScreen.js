@@ -54,20 +54,20 @@ const ListItem = ({item}) => (
   </View>
 );
 
-export default function ClassInfo({route, navigation}) {
-  const {course} = route.params;
+export default function GroupInfoScreen({route, navigation}) {
+  const {group} = route.params;
   const [isSwitchEnabled, setIsSwitchEnabled] = React.useState(false);
   const toggleSwitch = () =>
     setIsSwitchEnabled(previousState => !previousState);
 
   async function leaveGroupPressed() {
     await AsyncAlert(
-      'You are leaving group ' + course.title + '. Are you sure?',
+      `You are leaving group ${group.groupName} Are you sure?`,
       '',
     );
     showSuccessPopup({
       Popup: Popup,
-      title: 'You leaved group' + course.title + ' succesfully',
+      title: `You leaved group ${group.groupName} succesfully`,
       textBody: '',
     });
     navigation.navigate('Home Container');
@@ -93,12 +93,12 @@ export default function ClassInfo({route, navigation}) {
   async function shutdownGroupPressed() {
     //alertFunction().then();
     await AsyncAlert(
-      'You are shutting down group ' + course.title + '. Are you sure?',
+      'You are shutting down group ' + group.groupName + '. Are you sure?',
       'This will delete everything about this group irreversibly',
     );
     showSuccessPopup({
       Popup: Popup,
-      title: 'You shutdown group ' + course.title + ' succesfully',
+      title: 'You shutdown group ' + group.groupName + ' succesfully',
       textBody: '',
     });
     navigation.navigate('Home Container');
@@ -120,7 +120,7 @@ export default function ClassInfo({route, navigation}) {
               name="account"
               style={styles.adminIconView}
             />
-            <Text style={styles.adminName}>{course.admin}</Text>
+            <Text style={styles.adminName}>ADMIN HERE</Text>
           </View>
 
           <View style={styles.membersHeaderView}>
