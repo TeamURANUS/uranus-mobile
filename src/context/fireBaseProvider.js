@@ -21,7 +21,7 @@ export const FireBaseProvider = ({children}) => {
 
   async function getUserDetails() {
     const response = await userAPI.get(`${user.uid}`);
-    setUserDetails(response.data.data);
+    setUserDetails(response.data);
   }
 
   async function fetchUserChanges() {

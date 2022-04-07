@@ -15,19 +15,19 @@ export default function DetailedNewsScreen({route}) {
       <ScrollView style={styles.scroll}>
         <View style={styles.pictureContainer}>
           <Image
-            source={{uri: item.documentContent[1]}}
+            source={{uri: item.documentContent[0]}}
             style={styles.picture}
           />
         </View>
         <View>
-          <Text style={styles.title}>{item.documentContent[0]}</Text>
+          <Text style={styles.title}>{item.documentTitle}</Text>
           <Text style={styles.date}>
             {new Date(item.documentDate.seconds).toLocaleDateString(
               'tr-TR',
               options,
             )}
           </Text>
-          <Text style={styles.text}>{item.documentContent[2]}</Text>
+          <Text style={styles.text}>{item.documentContent[1]}</Text>
         </View>
       </ScrollView>
     </DefaultBackground>
