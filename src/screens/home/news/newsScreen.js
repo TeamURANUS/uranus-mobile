@@ -11,13 +11,13 @@ const ListItem = ({item, navigation}) => (
     onPress={() =>
       navigation.navigate('Detailed News', {
         item: item,
-        name: item.documentContent[0],
+        name: item.documentTitle,
       })
     }>
     <NewsCard
-      newsTitle={item.documentContent[0]}
-      newsPicture={item.documentContent[1]}
-      newsText={item.documentContent[2]}
+      newsTitle={item.documentTitle}
+      newsPicture={item.documentContent[0]}
+      newsText={item.documentContent[1]}
       newsDate={getFormattedDateFromTimestamp(item.documentDate.seconds)}
     />
   </TouchableOpacity>

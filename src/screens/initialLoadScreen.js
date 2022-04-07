@@ -11,8 +11,8 @@ function InitialLoadScreen({navigation}) {
     if (user) {
       if (user.emailVerified) {
         // TODO check for additional information about users documents
-        navigation.navigate('Home Container');
         getUserDetails();
+        navigation.navigate('Home Container');
       } else {
         navigation.navigate('Verification');
       }
