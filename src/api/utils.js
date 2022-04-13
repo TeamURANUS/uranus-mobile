@@ -31,3 +31,7 @@ export const groupsAPI = axios.create({
 export const postsAPI = axios.create({
   baseURL: BASE_URL + 'api/posts/',
 });
+
+export const commentsAPI = axios.create({
+  baseURL: BASE_URL + 'api/comments/',
+});

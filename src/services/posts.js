@@ -25,3 +25,19 @@ export async function addNewPost(post, Popup) {
       showWarningPopup({Popup, title: post.title + 'failed to post!'});
     });
 }
+
+export function getPostAuthorId(reference) {
+  return reference.postAuthor._key.path.segments[
+    reference.postAuthor._key.path.segments.length - 1
+  ];
+}
+
+export function getPostComments(references) {
+  const userIds = [];
+  references.forEach(reference => {
+    userIds.push(
+      reference._key.path.segments[reference._key.path.segments.length - 1],
+    );
+  });
+  return userIds;
+}
