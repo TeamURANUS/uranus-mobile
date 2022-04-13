@@ -12,3 +12,19 @@ export function groupInfoPressed({navigation, group}) {
 export function assignmentsPressed({navigation, group}) {
   navigation.navigate('Assignments', {group: group});
 }
+
+export function getGroupAdminId(reference) {
+  return reference.groupAdmin._key.path.segments[
+    reference.groupAdmin._key.path.segments.length - 1
+  ];
+}
+
+export function getGroupMembers(references) {
+  const userIds = [];
+  references.forEach(reference => {
+    userIds.push(
+      reference._key.path.segments[reference._key.path.segments.length - 1],
+    );
+  });
+  return userIds;
+}

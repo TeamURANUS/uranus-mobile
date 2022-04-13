@@ -31,7 +31,6 @@ import NewsScreen from './src/screens/home/news/newsScreen';
 import DetailedNewsScreen from './src/screens/home/news/detailedNewsScreen';
 import ContactsScreen from './src/screens/home/chat/contactsScreen';
 import ChatScreen from './src/screens/home/chat/chatScreen';
-import MessagesScreen from './src/screens/home/chat/messagesScreen';
 import EditProfileScreen from './src/screens/home/profile/editProfileScreen';
 import GroupAssignmentsScreen from './src/screens/home/groups/groupAssignmentsScreen';
 import EnrollGroupScreen from './src/screens/home/groups/enrollGroupScreen';
@@ -177,45 +176,35 @@ const App: () => Node = () => {
           component={EditProfileScreen}
           options={({route}) => ({title: route.params.name})}
         />
-
         <NavigationStack.Screen
           name="Group"
           component={GroupScreen}
-          options={({route, navigation}) => ({
+          options={({route}) => ({
             title: route.params.name,
             headerRight: () => <GroupHeaderRight route={route} />,
           })}
         />
-
         <NavigationStack.Screen
           name="Detailed Post"
           component={DetailedPostScreen}
           options={{headerShown: false}}
         />
-
         <NavigationStack.Screen
           name="Assignments"
           component={GroupAssignmentsScreen}
           options={{headerShown: false}}
         />
-
         <NavigationStack.Screen
           name="Enroll Group"
           component={EnrollGroupScreen}
           options={{headerShown: false}}
         />
-
         <NavigationStack.Screen
           name="Create Group"
           component={CreateGroup}
           options={{headerShown: false}}
         />
-
-        <NavigationStack.Screen
-          name="Group Info"
-          component={GroupInfoScreen}
-          options={{headerShown: false}}
-        />
+        <NavigationStack.Screen name="Group Info" component={GroupInfoScreen} />
       </NavigationStack.Navigator>
     </NavigationContainer>
   );

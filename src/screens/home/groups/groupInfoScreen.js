@@ -1,64 +1,86 @@
 import React from 'react';
+import {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
-  ScrollView,
   Dimensions,
   Alert,
   Switch,
+  FlatList,
 } from 'react-native';
 
 import DefaultBackground from '../../../shared/defaultBackground';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {showSuccessPopup} from '../../../services/popup';
 import {Popup} from 'popup-ui';
+import {getGroupAdminId, getGroupMembers} from '../../../services/groups';
+import {userAPI} from '../../../api/utils';
 
 const windowHWidth = Dimensions.get('window').width;
 
-var MEMBERS = [
-  {
-    id: '1',
-    name: 'name1 lastname1',
-  },
-  {
-    id: '2',
-    name: 'name2 lastname2',
-  },
-  {
-    id: '3',
-    name: 'name3 lastname3',
-  },
-  {
-    id: '4',
-    name: 'name4 lastname4',
-  },
-  {
-    id: '5',
-    name: 'name5 lastname5',
-  },
-  {
-    id: '6',
-    name: 'name6 lastname6',
-  },
-  {
-    id: '7',
-    name: 'name7 lastname7',
-  },
-];
-
 const ListItem = ({item}) => (
-  <View style={styles.memberView}>
-    <Text style={styles.memberName}>{item.name}</Text>
+  <View style={styles.userCardView}>
+    <MaterialCommunityIcons name="account" style={styles.userIconView} />
+    <Text style={styles.userInfoText}>
+      {item && item.userName}
+      {item && item.userLastName}
+    </Text>
   </View>
 );
 
+const renderListItem = ({item}) => {
+  return <ListItem item={item} />;
+};
+
 export default function GroupInfoScreen({route, navigation}) {
   const {group} = route.params;
-  const [isSwitchEnabled, setIsSwitchEnabled] = React.useState(false);
+  const groupAdminId = getGroupAdminId(group);
+
+  const [groupAdmin, setGroupAdmin] = useState();
+  const [groupMembers, setGroupMembers] = useState([]);
+  const [isSwitchEnabled, setIsSwitchEnabled] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
   const toggleSwitch = () =>
     setIsSwitchEnabled(previousState => !previousState);
+
+  async function fetchGroupAdmin() {
+    const response = await userAPI.get(groupAdminId);
+    setGroupAdmin(response.data[0]);
+  }
+
+  async function fetchAndAddGroupMember(userId, endFetching) {
+    const response = await userAPI.get(userId);
+    const newMember = response.data[0];
+    if (newMember) {
+      const exists = groupMembers.some(member => member.id === newMember.id);
+      if (!exists) {
+        setGroupMembers([...groupMembers, newMember]);
+      } else {
+        const index = groupMembers.findIndex(
+          member => member.id === newMember.id,
+        );
+        setGroupMembers(groupMembers.splice(index, 1, newMember));
+      }
+      setIsFetching(!endFetching);
+    }
+  }
+
+  function fetchGroupMembers() {
+    setIsFetching(true);
+    const groupMemberIds = getGroupMembers(group.groupMembers);
+    groupMemberIds.forEach((userId, index) => {
+      fetchAndAddGroupMember(userId, index === groupMemberIds.length - 1);
+    });
+  }
+
+  useEffect(() => {
+    setGroupMembers([]);
+    fetchGroupAdmin();
+    fetchGroupMembers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function leaveGroupPressed() {
     await AsyncAlert(
@@ -106,91 +128,69 @@ export default function GroupInfoScreen({route, navigation}) {
 
   return (
     <DefaultBackground>
-      <ScrollView>
-        <View style={styles.headerView}>
-          <Text style={styles.header}>Group Details</Text>
-        </View>
-        <View style={styles.container}>
-          <View style={styles.adminsHeaderView}>
-            <Text style={styles.sectionHeader}>Administrator(s):</Text>
-          </View>
+      <View style={styles.sectionHeaderContainer}>
+        <Text style={styles.sectionHeader}>Administrator(s):</Text>
+      </View>
 
-          <View style={styles.adminCardView}>
-            <MaterialCommunityIcons
-              name="account"
-              style={styles.adminIconView}
-            />
-            <Text style={styles.adminName}>ADMIN HERE</Text>
-          </View>
+      <View style={styles.userCardView}>
+        <MaterialCommunityIcons name="account" style={styles.userIconView} />
+        <Text style={styles.userInfoText}>
+          {groupAdmin && groupAdmin.userName}
+          {groupAdmin && groupAdmin.userLastName}
+        </Text>
+      </View>
 
-          <View style={styles.membersHeaderView}>
-            <Text style={styles.sectionHeader}>Members ({MEMBERS.length})</Text>
-          </View>
-          {MEMBERS.map((item, index) => {
-            return <ListItem item={item} />;
-          })}
+      <View style={styles.sectionHeaderContainer}>
+        <Text style={styles.sectionHeader}>
+          Members ({groupMembers.length})
+        </Text>
+      </View>
 
-          <View style={styles.decisionsHeaderView}>
-            <Text style={styles.sectionHeader}>Decisions</Text>
-          </View>
+      <FlatList
+        data={groupMembers}
+        onRefresh={fetchGroupMembers}
+        refreshing={isFetching}
+        renderItem={item => renderListItem(item)}
+        keyExtractor={item => item.id}
+      />
 
-          <View style={styles.buttonView}>
-            <TouchableOpacity
-              onPress={leaveGroupPressed}
-              style={styles.leaveButtonTO}>
-              <Text style={styles.leaveButtonText}>Leave</Text>
-              <MaterialCommunityIcons
-                name="exit-run"
-                style={styles.buttonIcon}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={shutdownGroupPressed}
-              style={styles.shutdownButtonTO}>
-              <Text style={styles.shutdownButtonText}>Shutdown</Text>
-              <MaterialCommunityIcons
-                name="grave-stone"
-                style={styles.buttonIcon}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.notificationView}>
-            <Text style={styles.notificationText}>Notifications: </Text>
-            <Switch
-              trackColor={{false: '#c5c5c5', true: '#c5c5c5'}}
-              thumbColor={'#676767'}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={toggleSwitch}
-              value={isSwitchEnabled}
-            />
-          </View>
-        </View>
-      </ScrollView>
+      <View style={styles.sectionHeaderContainer}>
+        <Text style={styles.sectionHeader}>Decisions</Text>
+      </View>
+
+      <View style={styles.buttonView}>
+        <TouchableOpacity
+          onPress={leaveGroupPressed}
+          style={styles.leaveButtonTO}>
+          <Text style={styles.leaveButtonText}>Leave</Text>
+          <MaterialCommunityIcons name="exit-run" style={styles.buttonIcon} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={shutdownGroupPressed}
+          style={styles.shutdownButtonTO}>
+          <Text style={styles.shutdownButtonText}>Shutdown</Text>
+          <MaterialCommunityIcons
+            name="grave-stone"
+            style={styles.buttonIcon}
+          />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.notificationView}>
+        <Text style={styles.notificationText}>Notifications: </Text>
+        <Switch
+          trackColor={{false: '#c5c5c5', true: '#c5c5c5'}}
+          thumbColor={'#676767'}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={toggleSwitch}
+          value={isSwitchEnabled}
+        />
+      </View>
     </DefaultBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#ffffff',
-    marginBottom: 20,
-    marginLeft: 10,
-    marginRight: 10,
-  },
-  headerView: {
-    backgroundColor: '#a6a5a5',
-    margin: 0,
-  },
-  header: {
-    fontSize: 30,
-    fontWeight: '500',
-    justifyContent: 'center',
-    alignItems: 'center',
-    color: '#fcfcfc',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-  },
-  adminsHeaderView: {
+  sectionHeaderContainer: {
     alignItems: 'flex-start',
     borderBottomWidth: 3,
     borderBottomColor: '#07198c',
@@ -198,47 +198,33 @@ const styles = StyleSheet.create({
   sectionHeader: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#ffffff',
-    borderBottomWidth: 2,
-    marginTop: 40,
-    backgroundColor: '#07198c',
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
+    color: '#07198c',
     padding: 5,
-    width: '50%',
     textAlign: 'center',
   },
-  adminCardView: {
+  userCardView: {
     flexDirection: 'row',
-    marginTop: 7,
-    backgroundColor: '#ffffff',
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    borderRadius: 10,
     margin: 10,
   },
-  adminIconView: {color: '#4b4b4b', fontSize: 25},
+  userIconView: {
+    color: '#4b4b4b',
+    fontSize: 25,
+  },
   buttonView: {
     flexDirection: 'row',
     alignContent: 'center',
     justifyContent: 'space-evenly',
     marginTop: 20,
   },
-  adminName: {
+  userInfoText: {
     fontSize: 18,
     fontWeight: '500',
     marginLeft: 7,
     color: '#4b4b4b',
   },
-  membersHeaderView: {
-    alignItems: 'flex-start',
-    borderBottomWidth: 3,
-    borderBottomColor: '#07198c',
-  },
-  decisionsHeaderView: {
-    alignItems: 'flex-start',
-    borderBottomWidth: 3,
-    borderBottomColor: '#07198c',
+  groupMember: {
+    flexDirection: 'row',
+    margin: 5,
   },
   leaveButtonTO: {
     backgroundColor: '#ff7979',
