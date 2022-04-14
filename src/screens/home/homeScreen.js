@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {View, Text, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 import DefaultBackground from '../../shared/defaultBackground';
 import {getTitleStyle} from '../../services/dynamicStyles';
@@ -7,12 +7,15 @@ import {FAB} from 'react-native-paper';
 import {getAllGroups} from '../../services/groups';
 import {groupBy} from 'lodash';
 import {GroupListItem} from '../../shared/components/groupListItem';
+import FireBaseContext from '../../context/fireBaseProvider';
 
 const renderListItem = ({item, navigation}) => (
   <GroupListItem item={item} navigation={navigation} />
 );
 
 function HomeScreen({navigation}) {
+  const {user} = useContext(FireBaseContext);
+
   const [classData, setClassData] = useState([]);
   const [communityData, setCommunityData] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
@@ -20,7 +23,7 @@ function HomeScreen({navigation}) {
   const [showClasses, setShowClasses] = useState(true);
 
   async function fetchGroups() {
-    const groupsData = await getAllGroups();
+    const groupsData = await getAllGroups(user.uid);
     const seperatedGroupsData = groupBy(groupsData, 'groupIsCommunity');
     setClassData(seperatedGroupsData.false || []);
     setCommunityData(seperatedGroupsData.true || []);
@@ -34,6 +37,7 @@ function HomeScreen({navigation}) {
 
   useEffect(() => {
     fetchGroups();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -54,6 +58,7 @@ function HomeScreen({navigation}) {
       {showClasses && (
         <View>
           <FlatList
+            height={'100%'}
             data={classData}
             onRefresh={onRefresh}
             refreshing={isFetching}
@@ -66,6 +71,7 @@ function HomeScreen({navigation}) {
       {!showClasses && (
         <View>
           <FlatList
+            height={'100%'}
             data={communityData}
             onRefresh={onRefresh}
             refreshing={isFetching}

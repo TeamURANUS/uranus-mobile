@@ -18,11 +18,11 @@ export async function addNewPost(post, Popup) {
       postId: Date.now().toString(), // this is temporary
     })
     .then(() => {
-      showSuccessPopup({Popup, title: post.title + 'posted!'});
+      showSuccessPopup({Popup, title: post.title + ' posted!'});
     })
     .catch(error => {
       console.log(error);
-      showWarningPopup({Popup, title: post.title + 'failed to post!'});
+      showWarningPopup({Popup, title: post.title + ' failed to post!'});
     });
 }
 

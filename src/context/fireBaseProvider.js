@@ -83,6 +83,7 @@ export const FireBaseProvider = ({children}) => {
     userColleague,
     userName,
     userLastName,
+    userPhoneNumber,
     navigation,
   }) {
     const dataJson = {
@@ -90,6 +91,7 @@ export const FireBaseProvider = ({children}) => {
       userId: user.uid,
       userLastName: userLastName,
       userName: userName,
+      userPhoneNumber: userPhoneNumber,
     };
     await userAPI
       .post('', dataJson)

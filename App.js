@@ -114,7 +114,7 @@ function HomeContainer() {
 const App: () => Node = () => {
   return (
     <NavigationContainer>
-      <NavigationStack.Navigator initialRouteName="Load Screen">
+      <NavigationStack.Navigator initialRouteName="User Details Screen">
         <NavigationStack.Screen
           name={'Load Screen'}
           component={InitialLoadScreen}

@@ -90,6 +90,10 @@ export default function DetailedPostScreen({route}) {
         </Text>
       </View>
 
+      <View style={styles.postContent}>
+        <Text style={styles.contextTextStyle}>{post.postContent}</Text>
+      </View>
+
       <FlatList
         data={comments}
         onRefresh={fetchComments}
@@ -121,6 +125,12 @@ const styles = StyleSheet.create({
     marginRight: 5,
     color: '#000000',
     fontSize: 30,
+  },
+  postContent: {
+    margin: 20,
+  },
+  contextTextStyle: {
+    fontSize: 20,
   },
   commentHeader: {
     margin: 17,

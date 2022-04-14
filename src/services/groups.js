@@ -1,8 +1,12 @@
 import {groupsAPI} from '../api/utils';
 
-export async function getAllGroups() {
+export async function getAllGroups(userId) {
   const response = await groupsAPI.get('');
-  return response.data.data;
+  return response.data.data.filter(group => {
+    const members = getGroupMembers(group.groupMembers);
+    console.log(members, group.groupIsCommunity, members.includes(userId));
+    return members.includes(userId);
+  });
 }
 
 export function groupInfoPressed({navigation, group}) {

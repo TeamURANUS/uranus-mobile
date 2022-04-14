@@ -1,6 +1,13 @@
 import * as React from 'react';
 import DefaultBackground from '../../shared/defaultBackground';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  Keyboard,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import VerificationButton from '../../shared/buttons/verificationButton';
 import {useContext, useState} from 'react';
 import FireBaseContext from '../../context/fireBaseProvider';
@@ -10,56 +17,79 @@ function UserDetailsFormScreen({navigation}) {
   const [userColleague, setUserColleague] = useState('');
   const [userName, setUserName] = useState('');
   const [userLastName, setUserLastName] = useState('');
+  const [userPhoneNumber, setUserPhoneNumber] = useState('');
 
   const refInput2 = React.useRef();
   const refInput3 = React.useRef();
+  const refInput4 = React.useRef();
 
   return (
     <DefaultBackground>
       <Text style={styles.logoText}> Enter Details! </Text>
 
-      <View style={styles.formContainer}>
-        <TextInput
-          placeholder="Colleague"
-          placeholderTextColor="grey"
-          autoCorrect={false}
-          returnKeyType="next"
-          onChangeText={t => {
-            setUserColleague(t);
-          }}
-          onSubmitEditing={() => refInput2.current.focus()}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="User Name"
-          placeholderTextColor="grey"
-          autoCorrect={false}
-          returnKeyType="next"
-          onChangeText={t => {
-            setUserName(t);
-          }}
-          ref={refInput2}
-          onSubmitEditing={() => refInput3.current.focus()}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="User Last Name"
-          placeholderTextColor="grey"
-          autoCorrect={false}
-          returnKeyType="next"
-          onChangeText={t => {
-            setUserLastName(t);
-          }}
-          ref={refInput3}
-          style={styles.input}
-        />
-      </View>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.formContainer}>
+          <TextInput
+            placeholder="Colleague"
+            placeholderTextColor="grey"
+            autoCorrect={false}
+            returnKeyType="next"
+            onChangeText={t => {
+              setUserColleague(t);
+            }}
+            onSubmitEditing={() => refInput2.current.focus()}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="User Name"
+            placeholderTextColor="grey"
+            autoCorrect={false}
+            returnKeyType="next"
+            onChangeText={t => {
+              setUserName(t);
+            }}
+            ref={refInput2}
+            onSubmitEditing={() => refInput3.current.focus()}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="User Last Name"
+            placeholderTextColor="grey"
+            autoCorrect={false}
+            returnKeyType="next"
+            onChangeText={t => {
+              setUserLastName(t);
+            }}
+            ref={refInput3}
+            onSubmitEditing={() => refInput4.current.focus()}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Phone Number (555 333 22 11)"
+            placeholderTextColor="grey"
+            autoCorrect={false}
+            returnKeyType="next"
+            onChangeText={t => {
+              setUserPhoneNumber(t);
+            }}
+            keyboardType="number-pad"
+            ref={refInput4}
+            style={styles.input}
+          />
+        </View>
+      </TouchableWithoutFeedback>
 
       <View style={styles.bottomContainer}>
         <VerificationButton
           displayText="Add Information & Sign In"
           onPress={() =>
-            addUserDetails({userColleague, userName, userLastName, navigation})
+            addUserDetails({
+              userColleague,
+              userName,
+              userLastName,
+              userPhoneNumber: '+90' + userPhoneNumber,
+              navigation,
+            })
           }
         />
       </View>
