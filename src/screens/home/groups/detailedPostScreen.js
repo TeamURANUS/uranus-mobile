@@ -25,8 +25,8 @@ const ListItem = ({item}) => {
     <View>
       <View style={styles.commentHeader}>
         <Text>
-          {commentAuthor && commentAuthor.userName}
-          {commentAuthor && commentAuthor.userLastName}
+          {commentAuthor && commentAuthor.userName}{' '}
+          {commentAuthor && commentAuthor.userLastname}
         </Text>
         <Text>{getFormattedDateFromTimestamp(item.commentDate.seconds)}</Text>
       </View>
@@ -85,8 +85,8 @@ export default function DetailedPostScreen({route}) {
       <View style={styles.postOwnerView}>
         <MaterialCommunityIcons name="account" style={styles.postOwnerIcon} />
         <Text style={styles.postOwner}>
-          {postAuthor && postAuthor.userName}
-          {postAuthor && postAuthor.userLastName}
+          {postAuthor && postAuthor.userName}{' '}
+          {postAuthor && postAuthor.userLastname}
         </Text>
       </View>
 

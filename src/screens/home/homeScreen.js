@@ -83,7 +83,7 @@ function HomeScreen({navigation}) {
       <FAB
         icon="plus"
         style={styles.floatingButton}
-        onPress={() => navigation.navigate('Enroll Group')}
+        onPress={() => console.log('open sheet')}
       />
     </DefaultBackground>
   );

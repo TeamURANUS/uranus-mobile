@@ -11,8 +11,7 @@ const ListItem = ({item}) => (
   <View style={styles.userCardView}>
     <MaterialCommunityIcons name="account" style={styles.userIconView} />
     <Text style={styles.userInfoText}>
-      {item && item.userName}
-      {item && item.userLastName}
+      {item && item.userName} {item && item.userLastname}
     </Text>
   </View>
 );
@@ -75,8 +74,8 @@ export default function GroupInfoScreen({route}) {
       <View style={styles.userCardView}>
         <MaterialCommunityIcons name="account" style={styles.userIconView} />
         <Text style={styles.userInfoText}>
-          {groupAdmin && groupAdmin.userName}
-          {groupAdmin && groupAdmin.userLastName}
+          {groupAdmin && groupAdmin.userName}{' '}
+          {groupAdmin && groupAdmin.userLastname}
         </Text>
       </View>
 

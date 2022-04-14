@@ -14,12 +14,14 @@ const ListItem = ({item, navigation}) => (
         name: item.documentTitle,
       })
     }>
-    <NewsCard
-      newsTitle={item.documentTitle}
-      newsPicture={item.documentContent[0]}
-      newsText={item.documentContent[1]}
-      newsDate={getFormattedDateFromTimestamp(item.documentDate.seconds)}
-    />
+    {item.documentContent && item.documentDate && (
+      <NewsCard
+        newsTitle={item.documentTitle}
+        newsPicture={item.documentContent[0]}
+        newsText={item.documentContent[1]}
+        newsDate={getFormattedDateFromTimestamp(item.documentDate.seconds)}
+      />
+    )}
   </TouchableOpacity>
 );
 

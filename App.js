@@ -33,7 +33,6 @@ import ContactsScreen from './src/screens/home/chat/contactsScreen';
 import ChatScreen from './src/screens/home/chat/chatScreen';
 import EditProfileScreen from './src/screens/home/profile/editProfileScreen';
 import GroupAssignmentsScreen from './src/screens/home/groups/groupAssignmentsScreen';
-import EnrollGroupScreen from './src/screens/home/groups/enrollGroupScreen';
 import CreateGroup from './src/screens/home/groups/createGroup';
 import GroupInfoScreen from './src/screens/home/groups/groupInfoScreen';
 import {GroupHeaderRight} from './src/shared/headers/groupHeaderRight';
@@ -191,11 +190,6 @@ const App: () => Node = () => {
         <NavigationStack.Screen
           name="Assignments"
           component={GroupAssignmentsScreen}
-          options={{headerShown: false}}
-        />
-        <NavigationStack.Screen
-          name="Enroll Group"
-          component={EnrollGroupScreen}
           options={{headerShown: false}}
         />
         <NavigationStack.Screen

@@ -20,12 +20,7 @@ function ProfileScreen({navigation}) {
   const {user, userDetails, logoutUser} = useContext(FireBaseContext);
   const [photo, setPhoto] = React.useState(null);
 
-  const initials = userDetails.userName
-    ? userDetails.userName
-        .split(' ')
-        .map(n => n[0])
-        .join('')
-    : '';
+  const initials = userDetails.userName ? userDetails.userName[0] : '';
 
   const handleChoosePhoto = () => {
     launchImageLibrary({noData: true}, response => {
@@ -71,7 +66,7 @@ function ProfileScreen({navigation}) {
 
           <View>
             <Text style={styles.username}>
-              {userDetails.userName} {userDetails.userLastName}
+              {userDetails.userName} {userDetails.userLastname}
             </Text>
           </View>
         </View>
