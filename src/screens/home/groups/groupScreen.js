@@ -13,14 +13,14 @@ import FireBaseContext from '../../../context/fireBaseProvider';
 
 const windowWidth = Dimensions.get('window').width;
 const defaultRadioButtons = [
-  {id: '1', label: 'all', value: 'option1', selected: true},
-  {id: '2', label: 'admin posts', value: 'option2'},
-  {id: '3', label: 'member posts', value: 'option3'},
+  {id: '1', label: 'All posts', value: 'option1', selected: true},
+  {id: '2', label: 'Admin posts', value: 'option2'},
+  {id: '3', label: 'Member posts', value: 'option3'},
 ];
 
 const ListItem = ({item, navigation}) => (
   <TouchableOpacity
-    style={styles.newsItem}
+    style={item.postSentByAdmin ? styles.adminPostItem : styles.postItem}
     onPress={() => navigation.navigate('Detailed Post', {post: item})}>
     <PostCard item={item} />
   </TouchableOpacity>
@@ -34,7 +34,10 @@ export default function GroupScreen({route, navigation}) {
   const {group} = route.params;
   const {user, Popup} = useContext(FireBaseContext);
 
+  const [currentData, setCurrentData] = useState([]);
   const [postData, setPostData] = useState([]);
+  const [adminPostData, setAdminPostData] = useState([]);
+  const [memberPostData, setMemberPostData] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
 
   const [radioButtons, setRadioButtons] = useState(defaultRadioButtons);
@@ -43,9 +46,23 @@ export default function GroupScreen({route, navigation}) {
 
   const bottomSheet = useRef();
 
+  function updatePostView(radioSelection) {
+    setRadioButtons(radioSelection);
+    if (radioSelection[0].selected) {
+      setCurrentData(postData);
+    } else if (radioSelection[1].selected) {
+      setCurrentData(adminPostData);
+    } else {
+      setCurrentData(memberPostData);
+    }
+  }
+
   async function fetchPosts() {
     const data = await getAllPosts();
     setPostData(data);
+    setAdminPostData(data.filter(post => post.postSentByAdmin));
+    setMemberPostData(data.filter(post => !post.postSentByAdmin));
+    updatePostView(radioButtons);
     setIsFetching(false);
   }
 
@@ -56,16 +73,21 @@ export default function GroupScreen({route, navigation}) {
 
   useEffect(() => {
     fetchPosts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <DefaultBackground>
       <View style={styles.radioButtonsView}>
-        <RadioGroup radioButtons={radioButtons} layout={'row'} />
+        <RadioGroup
+          radioButtons={radioButtons}
+          layout={'row'}
+          onPress={updatePostView}
+        />
       </View>
 
       <FlatList
-        data={postData}
+        data={currentData}
         onRefresh={onRefresh}
         refreshing={isFetching}
         keyExtractor={item => item.id}
@@ -122,7 +144,13 @@ const styles = StyleSheet.create({
     color: '#fcfcfc',
     marginLeft: 10,
   },
-  newsItem: {
+  adminPostItem: {
+    backgroundColor: '#eaeaea',
+    display: 'flex',
+    borderBottomWidth: 2,
+    borderBottomColor: '#e19a36',
+  },
+  postItem: {
     backgroundColor: 'white',
     display: 'flex',
     borderBottomWidth: 2,
