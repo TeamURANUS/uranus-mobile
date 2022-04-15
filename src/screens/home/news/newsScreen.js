@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
 import NewsCard from '../../../shared/components/newsCard';
 import DefaultBackground from '../../../shared/defaultBackground';
-import {getAllNews} from '../../../services/news';
+import {getAllNews, scrapeNews} from '../../../services/news';
 import {getFormattedDateFromTimestamp} from '../../../services/time';
 
 const ListItem = ({item, navigation}) => (
@@ -32,6 +32,7 @@ export default function NewsScreen({navigation}) {
   const [isFetching, setIsFetching] = useState(false);
 
   async function fetchNews() {
+    await scrapeNews();
     const newsData = await getAllNews();
     setData(newsData);
     setIsFetching(false);
