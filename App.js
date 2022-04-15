@@ -32,12 +32,8 @@ import MessagesScreen from './src/screens/home/chat/messagesScreen';
 import EditProfileScreen from './src/screens/home/profile/editProfileScreen';
 
 import firebase from '@react-native-firebase/app';
-import '@react-native-firebase/messaging';
-import PushNotification from 'react-native-push-notification';
-import {Platform} from 'react-native';
-import PushNotificationIOS from '@react-native-community/push-notification-ios';
-import {FirebaseMessagingTypes} from '@react-native-firebase/messaging';
 import {useEffect} from 'react';
+import {handlePushNotifications} from './src/services/notification';
 
 function HomeContainer() {
   return (
@@ -130,25 +126,9 @@ function HomeContainer() {
 const App: () => Node = () => {
   useEffect(() => {
     firebase.messaging().onMessage(response => {
-      console.log(JSON.stringify(response));
-      if (Platform.OS !== 'ios') {
-        showNotification(response.notification);
-        return;
-      }
-      PushNotificationIOS.requestPermissions().then(() =>
-        showNotification(response.notification),
-      );
+      handlePushNotifications(response);
     });
   }, []);
-  const showNotification = (
-    notification: FirebaseMessagingTypes.Notification,
-  ) => {
-    PushNotification.localNotification({
-      channelId: 'deneme3',
-      title: notification.title,
-      message: notification.body,
-    });
-  };
 
   return (
     <NavigationContainer>

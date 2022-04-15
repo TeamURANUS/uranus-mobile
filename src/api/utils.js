@@ -23,3 +23,11 @@ export const newsAPI = axios.create({
 export const eventsAPI = axios.create({
   baseURL: BASE_URL + 'api/events/',
 });
+
+export const notificationAPI = axios.create({
+  baseURL: BASE_URL + 'api/notifications/',
+});
+
+export const groupAPI = axios.create({
+  baseURL: BASE_URL + 'api/groups/',
+});
