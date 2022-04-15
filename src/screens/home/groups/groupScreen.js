@@ -62,7 +62,13 @@ export default function GroupScreen({route, navigation}) {
     setPostData(data);
     setAdminPostData(data.filter(post => post.postSentByAdmin));
     setMemberPostData(data.filter(post => !post.postSentByAdmin));
-    updatePostView(radioButtons);
+    if (radioButtons[0].selected) {
+      setCurrentData(data);
+    } else if (radioButtons[1].selected) {
+      setCurrentData(data.filter(post => post.postSentByAdmin));
+    } else {
+      setCurrentData(data.filter(post => !post.postSentByAdmin));
+    }
     setIsFetching(false);
   }
 
