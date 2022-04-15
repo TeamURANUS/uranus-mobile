@@ -5,6 +5,7 @@ import {Root, Popup} from 'popup-ui';
 import {authAPI, userAPI} from '../api/utils';
 import {showDangerPopup, showWarningPopup} from '../services/popup';
 import {clearStackAndNavigate} from '../services/navigation';
+import messaging from '@react-native-firebase/messaging';
 const FireBaseContext = React.createContext();
 
 export const FireBaseProvider = ({children}) => {
@@ -90,6 +91,7 @@ export const FireBaseProvider = ({children}) => {
       userId: user.uid,
       userLastName: userLastName,
       userName: userName,
+      fcmToken: await messaging().getToken(),
     };
     await userAPI
       .post('', dataJson)

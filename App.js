@@ -1,7 +1,6 @@
 import * as React from 'react';
 import type {Node} from 'react';
 import {Dimensions} from 'react-native';
-
 import {NavigationContainer} from '@react-navigation/native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -31,6 +30,14 @@ import ContactsScreen from './src/screens/home/chat/contactsScreen';
 import ChatScreen from './src/screens/home/chat/chatScreen';
 import MessagesScreen from './src/screens/home/chat/messagesScreen';
 import EditProfileScreen from './src/screens/home/profile/editProfileScreen';
+
+import firebase from '@react-native-firebase/app';
+import '@react-native-firebase/messaging';
+import PushNotification from 'react-native-push-notification';
+import {Platform} from 'react-native';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import {FirebaseMessagingTypes} from '@react-native-firebase/messaging';
+import {useEffect} from 'react';
 
 function HomeContainer() {
   return (
@@ -121,6 +128,28 @@ function HomeContainer() {
 }
 
 const App: () => Node = () => {
+  useEffect(() => {
+    firebase.messaging().onMessage(response => {
+      console.log(JSON.stringify(response));
+      if (Platform.OS !== 'ios') {
+        showNotification(response.notification);
+        return;
+      }
+      PushNotificationIOS.requestPermissions().then(() =>
+        showNotification(response.notification),
+      );
+    });
+  }, []);
+  const showNotification = (
+    notification: FirebaseMessagingTypes.Notification,
+  ) => {
+    PushNotification.localNotification({
+      channelId: 'deneme3',
+      title: notification.title,
+      message: notification.body,
+    });
+  };
+
   return (
     <NavigationContainer>
       <NavigationStack.Navigator initialRouteName="Load Screen">
