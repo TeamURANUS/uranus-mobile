@@ -35,7 +35,6 @@ const renderListItem = ({item, navigation}) => (
 function HomeScreen({navigation}) {
   const {user} = useContext(FireBaseContext);
 
-  console.log(user);
   const [allGroupData, setAllGroup] = useState([]);
   const [classData, setClassData] = useState([]);
   const [communityData, setCommunityData] = useState([]);
