@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   },
   subHeader: {
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 15,
   },
   subContent: {
     marginTop: 5,
