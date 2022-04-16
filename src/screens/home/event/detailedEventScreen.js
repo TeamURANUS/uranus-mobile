@@ -37,22 +37,6 @@ export default function DetailedEventScreen({route}) {
   );
 }
 
-/*
-{
-    "eventCapacity": 31,
-    "eventDate": [Object],
-    "eventDescription": "Event with link",
-    "eventDuration": 35,
-    "eventId": "f90d814e-3b73-4273-9efd-878dae17f4c1",
-    "eventLink": "https://www.google.com/calendar/event?eid=dGtvaTRhZTczNnNldGgzODJqMnI0MnIyamcgMGMwcDM5NmMza3RiMmRuMzkxamg2cDJxaWtAZw",
-    "eventOrganizers": [Array],
-    "eventParticipants": [Array],
-    "eventPlace": "TM-217",
-    "id": "f90d814e-3b73-4273-9efd-878dae17f4c1",
-    "organizerName": "Bil264L"
-}
- */
-
 const styles = StyleSheet.create({
   eventTitle: {
     marginTop: 20,
