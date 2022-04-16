@@ -17,7 +17,8 @@ import {launchImageLibrary} from 'react-native-image-picker';
 const windowWidth = Dimensions.get('window').width;
 
 function ProfileScreen({navigation}) {
-  const {user, userDetails, logoutUser} = useContext(FireBaseContext);
+  const {user, userDetails, logoutUser, linkGoogleAccount} =
+    useContext(FireBaseContext);
   const [photo, setPhoto] = React.useState(null);
 
   const initials = userDetails.userName ? userDetails.userName[0] : '';
@@ -34,6 +35,10 @@ function ProfileScreen({navigation}) {
   const insertProfilePic = () => {
     if (photo) {
       return <Image source={{uri: photo}} style={styles.profilePicture} />;
+    } else if (user.photoURL) {
+      return (
+        <Image source={{uri: user.photoURL}} style={styles.profilePicture} />
+      );
     } else {
       return (
         <View style={styles.defaultProfilePicture}>
@@ -75,7 +80,11 @@ function ProfileScreen({navigation}) {
           <Text style={styles.settingText}>{user.email}</Text>
         </View>
 
-        <TouchableOpacity style={styles.googleUnit} onPress={handleChoosePhoto}>
+        <TouchableOpacity
+          style={styles.googleUnit}
+          onPress={() => {
+            linkGoogleAccount();
+          }}>
           <Text style={styles.googleText}>Add Google Account</Text>
           <MaterialCommunityIcons
             name="google"
