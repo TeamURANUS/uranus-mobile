@@ -26,8 +26,10 @@ const DateCard = ({date}) => (
   </View>
 );
 
-const ListItem = ({item}) => (
-  <View style={styles.listItem}>
+const ListItem = ({item, navigation}) => (
+  <TouchableOpacity
+    onPress={() => navigation.navigate('Detailed Event', {event: item})}
+    style={styles.listItem}>
     <View style={styles.eventLeftView}>
       <View>
         <DateCard date={getDateFromTimestamp(item.eventDate.seconds)} />
@@ -41,18 +43,19 @@ const ListItem = ({item}) => (
         </Text>
       </View>
     </View>
-
     <TouchableOpacity style={styles.eventRightView}>
       <Text numberOfLines={1} style={styles.eventGroupNameText}>
         {item.eventPlace}
       </Text>
     </TouchableOpacity>
-  </View>
+  </TouchableOpacity>
 );
 
-const renderListItem = ({item}) => <ListItem item={item} />;
+const renderListItem = ({item, navigation}) => (
+  <ListItem item={item} navigation={navigation} />
+);
 
-export default function CalendarScreen() {
+export default function CalendarScreen({navigation}) {
   const [markedDates, setMarkedDates] = useState({});
   const {user} = useContext(FireBaseContext);
   const [events, setEvents] = useState([]);
@@ -102,7 +105,7 @@ export default function CalendarScreen() {
         data={visibleEventsData}
         onRefresh={onRefresh}
         refreshing={isFetching}
-        renderItem={renderListItem}
+        renderItem={({item}) => renderListItem({item, navigation})}
         keyExtractor={item => item.id}
       />
     </DefaultBackground>
