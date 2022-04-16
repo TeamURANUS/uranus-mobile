@@ -26,7 +26,9 @@ export function GroupListItem({item, navigation}) {
       <Image
         style={styles.itemImage}
         source={{
-          uri: 'https://images.unsplash.com/photo-1417325384643-aac51acc9e5d',
+          uri: item.groupIsCommunity
+            ? 'https://newsroom.unl.edu/announce/files/file117032.png'
+            : 'https://www.freeiconspng.com/uploads/courses-icon-28.png',
         }}
       />
       <View style={styles.listItemTextContainer}>

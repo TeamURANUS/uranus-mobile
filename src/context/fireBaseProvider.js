@@ -99,7 +99,7 @@ export const FireBaseProvider = ({children}) => {
     const dataJson = {
       userColleague: userColleague,
       userId: user.uid,
-      userLastName: userLastName,
+      userLastname: userLastName,
       userName: userName,
       userPhoneNumber: userPhoneNumber,
     };
