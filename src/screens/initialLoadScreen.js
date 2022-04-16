@@ -19,6 +19,7 @@ function InitialLoadScreen({navigation}) {
     } else {
       navigation.navigate('Initial Screen');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -1,9 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 import {Root, Popup} from 'popup-ui';
 import {authAPI, userAPI} from '../api/utils';
-import {showDangerPopup, showWarningPopup} from '../services/popup';
+import {
+  showDangerPopup,
+  showSuccessPopup,
+  showWarningPopup,
+} from '../services/popup';
 import {clearStackAndNavigate} from '../services/navigation';
 const FireBaseContext = React.createContext();
 
@@ -30,6 +35,11 @@ export const FireBaseProvider = ({children}) => {
   }
 
   useEffect(() => {
+    GoogleSignin.configure({
+      scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+      webClientId:
+        '641761728473-2hf089r2v3esj1put929vsgtac1rrr0n.apps.googleusercontent.com',
+    });
     // noinspection UnnecessaryLocalVariableJS
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
@@ -112,6 +122,7 @@ export const FireBaseProvider = ({children}) => {
       .signInWithEmailAndPassword(email, password)
       .then(() => {
         clearStackAndNavigate({navigation, screenName: 'Home Container'});
+        showSuccessPopup({Popup, title: 'Welcome!', textBody: ''});
       })
       .catch(error => {
         showDangerPopup({Popup, title: 'Sign In Failed', textBody: error.code});
@@ -144,6 +155,14 @@ export const FireBaseProvider = ({children}) => {
       });
   }
 
+  async function linkGoogleAccount() {
+    await GoogleSignin.hasPlayServices({
+      showPlayServicesUpdateDialog: true,
+    });
+    const userInfo = await GoogleSignin.signIn();
+    await auth().currentUser.linkWithCredential(userInfo.user);
+  }
+
   const actions = {
     user: user,
     Popup: Popup,
@@ -155,6 +174,7 @@ export const FireBaseProvider = ({children}) => {
     addUserDetails: addUserDetails,
     userDetails: userDetails,
     getUserDetails: getUserDetails,
+    linkGoogleAccount: linkGoogleAccount,
   };
 
   return (
