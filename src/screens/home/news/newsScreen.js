@@ -3,7 +3,7 @@ import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
 import NewsCard from '../../../shared/components/newsCard';
 import DefaultBackground from '../../../shared/defaultBackground';
 import {getAllNews} from '../../../services/news';
-import {getFormattedDateFromTimestamp} from '../../../services/time';
+import {getMaybeDate} from '../../../services/time';
 
 const ListItem = ({item, navigation}) => (
   <TouchableOpacity
@@ -14,12 +14,14 @@ const ListItem = ({item, navigation}) => (
         name: item.documentTitle,
       })
     }>
-    <NewsCard
-      newsTitle={item.documentTitle}
-      newsPicture={item.documentContent[0]}
-      newsText={item.documentContent[1]}
-      newsDate={getFormattedDateFromTimestamp(item.documentDate.seconds)}
-    />
+    {item.documentContent && item.documentDate && (
+      <NewsCard
+        newsTitle={item.documentTitle}
+        newsPicture={item.documentContent[0]}
+        newsText={item.documentContent[1]}
+        newsDate={getMaybeDate(item.documentDate)}
+      />
+    )}
   </TouchableOpacity>
 );
 

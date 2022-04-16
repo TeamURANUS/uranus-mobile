@@ -23,3 +23,15 @@ export const newsAPI = axios.create({
 export const eventsAPI = axios.create({
   baseURL: BASE_URL + 'api/events/',
 });
+
+export const groupsAPI = axios.create({
+  baseURL: BASE_URL + 'api/groups/',
+});
+
+export const postsAPI = axios.create({
+  baseURL: BASE_URL + 'api/posts/',
+});
+
+export const commentsAPI = axios.create({
+  baseURL: BASE_URL + 'api/comments/',
+});
