@@ -2,7 +2,7 @@ import * as React from 'react';
 import DefaultBackground from '../../shared/defaultBackground';
 import {StyleSheet, Text, View} from 'react-native';
 import VerificationButton from '../../shared/buttons/verificationButton';
-import LogoutButton from '../../shared/buttons/logoutButton';
+import RedButton from '../../shared/buttons/redButton';
 import {useContext} from 'react';
 import FireBaseContext from '../../context/fireBaseProvider';
 
@@ -22,7 +22,7 @@ function VerificationScreen({navigation}) {
           displayText="Verified, let me pass :)"
           onPress={() => checkVerification({navigation})}
         />
-        <LogoutButton
+        <RedButton
           onPress={() => logoutUser({navigation})}
           displayText="Logout"
         />

@@ -1,11 +1,15 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {useState, useEffect} from 'react';
 import {StyleSheet, Text, View, FlatList} from 'react-native';
 
 import DefaultBackground from '../../../shared/defaultBackground';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {getGroupAdminId, getGroupMembers} from '../../../services/groups';
-import {userAPI} from '../../../api/utils';
+import {groupsAPI, userAPI} from '../../../api/utils';
+import RedButton from '../../../shared/buttons/redButton';
+import FireBaseContext from '../../../context/fireBaseProvider';
+import {showDangerPopup, showSuccessPopup} from '../../../services/popup';
+import {clearStackAndNavigate} from '../../../services/navigation';
 
 const ListItem = ({item}) => (
   <View style={styles.userCardView}>
@@ -20,7 +24,8 @@ const renderListItem = ({item}) => {
   return <ListItem item={item} />;
 };
 
-export default function GroupInfoScreen({route}) {
+export default function GroupInfoScreen({route, navigation}) {
+  const {user, Popup} = useContext(FireBaseContext);
   const {group} = route.params;
   const groupAdminId = getGroupAdminId(group);
 
@@ -81,6 +86,31 @@ export default function GroupInfoScreen({route}) {
         refreshing={isFetching}
         renderItem={item => renderListItem(item)}
         keyExtractor={item => item.id}
+      />
+
+      <RedButton
+        displayText="Leave"
+        onPress={() => {
+          const members = getGroupMembers(group.groupMembers);
+          const index = members.indexOf(user.uid);
+          members.splice(index, 1);
+          groupsAPI
+            .put(group.id, {
+              ...group,
+              groupMembers: members,
+            })
+            .then(() =>
+              showSuccessPopup({
+                Popup,
+                title: 'Successfully Left',
+                textBody: '',
+              }),
+            )
+            .catch(() =>
+              showDangerPopup({Popup, title: 'Unable to leave', textBody: ''}),
+            );
+          clearStackAndNavigate({navigation, screenName: 'Home Container'});
+        }}
       />
     </DefaultBackground>
   );
