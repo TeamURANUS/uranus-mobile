@@ -1,12 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View, Image, ScrollView} from 'react-native';
 import DefaultBackground from '../../../shared/defaultBackground';
-
-const options = {
-  year: 'numeric',
-  month: 'numeric',
-  day: 'numeric',
-};
+import {getMaybeDate} from '../../../services/time';
 
 export default function DetailedNewsScreen({route}) {
   const {item} = route.params;
@@ -21,13 +16,8 @@ export default function DetailedNewsScreen({route}) {
         </View>
         <View>
           <Text style={styles.title}>{item.documentTitle}</Text>
-          <Text style={styles.date}>
-            {new Date(item.documentDate.seconds).toLocaleDateString(
-              'tr-TR',
-              options,
-            )}
-          </Text>
-          <Text style={styles.text}>{item.documentContent[1]}</Text>
+          <Text style={styles.date}>{getMaybeDate(item.documentDate)}</Text>
+          <Text style={styles.text}>{item.documentContent[1].trim()}</Text>
         </View>
       </ScrollView>
     </DefaultBackground>
