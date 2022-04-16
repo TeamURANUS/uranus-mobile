@@ -26,6 +26,7 @@ import CalendarScreen from './src/screens/home/calendarScreen';
 import NotificationScreen from './src/screens/home/notificationScreen';
 import GroupScreen from './src/screens/home/groups/groupScreen';
 import DetailedPostScreen from './src/screens/home/groups/detailedPostScreen';
+import DetailedEventScreen from './src/screens/home/event/detailedEventScreen';
 import ProfileScreen from './src/screens/home/profile/profileScreen';
 import NewsScreen from './src/screens/home/news/newsScreen';
 import DetailedNewsScreen from './src/screens/home/news/detailedNewsScreen';
@@ -186,6 +187,10 @@ const App: () => Node = () => {
         <NavigationStack.Screen
           name="Detailed Post"
           component={DetailedPostScreen}
+        />
+        <NavigationStack.Screen
+          name="Detailed Event"
+          component={DetailedEventScreen}
         />
         <NavigationStack.Screen
           name="Assignments"
