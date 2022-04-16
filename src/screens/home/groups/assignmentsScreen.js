@@ -5,7 +5,9 @@ import {eventsAPI} from '../../../api/utils';
 import {getFormattedDateFromTimestamp} from '../../../services/time';
 
 const ListItem = ({item, navigation}) => (
-  <TouchableOpacity style={styles.eventContainer}>
+  <TouchableOpacity
+    onPress={() => navigation.navigate('Detailed Event', {event: item})}
+    style={styles.eventContainer}>
     <Text style={styles.eventDescription}>{item.eventDescription}</Text>
     <Text style={styles.eventCapacity}>Capacity: {item.eventCapacity}</Text>
     <Text style={styles.eventPlace}>{item.eventPlace}</Text>
