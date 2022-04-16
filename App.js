@@ -32,10 +32,10 @@ import DetailedNewsScreen from './src/screens/home/news/detailedNewsScreen';
 import ContactsScreen from './src/screens/home/chat/contactsScreen';
 import ChatScreen from './src/screens/home/chat/chatScreen';
 import EditProfileScreen from './src/screens/home/profile/editProfileScreen';
-import GroupAssignmentsScreen from './src/screens/home/groups/groupAssignmentsScreen';
 import CreateGroup from './src/screens/home/groups/createGroup';
 import GroupInfoScreen from './src/screens/home/groups/groupInfoScreen';
 import {GroupHeaderRight} from './src/shared/headers/groupHeaderRight';
+import AssignmentsScreen from './src/screens/home/groups/assignmentsScreen';
 
 function HomeContainer() {
   return (
@@ -189,8 +189,7 @@ const App: () => Node = () => {
         />
         <NavigationStack.Screen
           name="Assignments"
-          component={GroupAssignmentsScreen}
-          options={{headerShown: false}}
+          component={AssignmentsScreen}
         />
         <NavigationStack.Screen
           name="Create Group"

@@ -1,9 +1,11 @@
 import {postsAPI} from '../api/utils';
 import {showSuccessPopup, showWarningPopup} from './popup';
 
-export async function getAllPosts() {
+export async function getAllPosts(groupId) {
   const response = await postsAPI.get('');
-  return response.data.data;
+  return response.data.data.filter(post => {
+    return getGroupId(post) === groupId;
+  });
 }
 
 export async function addNewPost(post, Popup) {
@@ -24,6 +26,12 @@ export async function addNewPost(post, Popup) {
       console.log(error);
       showWarningPopup({Popup, title: post.title + ' failed to post!'});
     });
+}
+
+export function getGroupId(reference) {
+  return reference.postGroupId._key.path.segments[
+    reference.postGroupId._key.path.segments.length - 1
+  ];
 }
 
 export function getPostAuthorId(reference) {

@@ -58,7 +58,7 @@ export default function GroupScreen({route, navigation}) {
   }
 
   async function fetchPosts() {
-    const data = await getAllPosts();
+    const data = await getAllPosts(group.groupId);
     setPostData(data);
     setAdminPostData(data.filter(post => post.postSentByAdmin));
     setMemberPostData(data.filter(post => !post.postSentByAdmin));

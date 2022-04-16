@@ -33,29 +33,19 @@ export default function GroupInfoScreen({route}) {
     setGroupAdmin(response.data[0]);
   }
 
-  async function fetchAndAddGroupMember(userId, endFetching) {
-    const response = await userAPI.get(userId);
-    const newMember = response.data[0];
-    if (newMember) {
-      const exists = groupMembers.some(member => member.id === newMember.id);
-      if (!exists) {
-        setGroupMembers([...groupMembers, newMember]);
-      } else {
-        const index = groupMembers.findIndex(
-          member => member.id === newMember.id,
-        );
-        setGroupMembers(groupMembers.splice(index, 1, newMember));
-      }
-      setIsFetching(!endFetching);
-    }
-  }
-
-  function fetchGroupMembers() {
+  async function fetchGroupMembers() {
     setIsFetching(true);
+    let memberList = [];
     const groupMemberIds = getGroupMembers(group.groupMembers);
-    groupMemberIds.forEach((userId, index) => {
-      fetchAndAddGroupMember(userId, index === groupMemberIds.length - 1);
-    });
+    for (let i = 0; i < groupMemberIds.length; i++) {
+      const response = await userAPI.get(groupMemberIds[i]);
+      const newMember = response.data[0];
+      if (newMember) {
+        memberList = [...memberList, newMember];
+      }
+    }
+    setGroupMembers(memberList);
+    setIsFetching(false);
   }
 
   useEffect(() => {
