@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image, ScrollView} from 'react-native';
+import {StyleSheet, Text, View, Image, ScrollView, Linking} from 'react-native';
 import DefaultBackground from '../../../shared/defaultBackground';
 import {getMaybeDate} from '../../../services/time';
 
@@ -16,6 +16,11 @@ export default function DetailedNewsScreen({route}) {
         </View>
         <View>
           <Text style={styles.title}>{item.documentTitle}</Text>
+          <Text
+            style={styles.newLink}
+            onPress={() => Linking.openURL(item.documentId)}>
+            - Original link of the new -
+          </Text>
           <Text style={styles.date}>{getMaybeDate(item.documentDate)}</Text>
           <Text style={styles.text}>{item.documentContent[1].trim()}</Text>
         </View>
@@ -57,5 +62,10 @@ const styles = StyleSheet.create({
   },
   pictureContainer: {
     justifyContent: 'center',
+  },
+  newLink: {
+    color: 'blue',
+    alignSelf: 'center',
+    margin: 10,
   },
 });
