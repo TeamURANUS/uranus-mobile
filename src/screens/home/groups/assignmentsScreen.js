@@ -80,6 +80,8 @@ export default function AssignmentsScreen({route, navigation}) {
 
   useEffect(() => {
     fetchAssignments();
+    console.log(group.groupName);
+    setOrganizerName(group.groupName);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -126,16 +128,7 @@ export default function AssignmentsScreen({route, navigation}) {
               }}
               style={styles.input}
             />
-            <TextInput
-              placeholder="Organizer Name"
-              placeholderTextColor="grey"
-              autoCorrect={false}
-              returnKeyType="next"
-              onChangeText={t => {
-                setOrganizerName(t);
-              }}
-              style={styles.input}
-            />
+
             <TextInput
               placeholder="Event Capacity"
               placeholderTextColor="grey"
@@ -172,7 +165,7 @@ export default function AssignmentsScreen({route, navigation}) {
             <DatePicker date={eventDate} onDateChange={setEventDate} />
             <SignUpButton
               displayText="Add Assignment / Event"
-              onPress={() => addEvent()}
+              onPress={addEvent}
             />
           </View>
         </TouchableWithoutFeedback>
