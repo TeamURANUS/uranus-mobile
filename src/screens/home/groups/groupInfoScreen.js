@@ -4,7 +4,11 @@ import {StyleSheet, Text, View, FlatList} from 'react-native';
 
 import DefaultBackground from '../../../shared/defaultBackground';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {getGroupAdminId, getGroupMembers} from '../../../services/groups';
+import {
+  getGroupAdminId,
+  getGroupMembers,
+  getNonMutantGroupObject,
+} from '../../../services/groups';
 import {groupsAPI, userAPI} from '../../../api/utils';
 import RedButton from '../../../shared/buttons/redButton';
 import FireBaseContext from '../../../context/fireBaseProvider';
@@ -96,7 +100,7 @@ export default function GroupInfoScreen({route, navigation}) {
           members.splice(index, 1);
           groupsAPI
             .put(group.id, {
-              ...group,
+              ...getNonMutantGroupObject(group),
               groupMembers: members,
             })
             .then(() =>

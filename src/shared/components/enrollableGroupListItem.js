@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import * as React from 'react';
-import {getGroupMembers} from '../../services/groups';
+import {getGroupMembers, getNonMutantGroupObject} from '../../services/groups';
 import {useContext} from 'react';
 import FireBaseContext from '../../context/fireBaseProvider';
 import {groupsAPI} from '../../api/utils';
@@ -40,7 +40,10 @@ export function EnrollableGroupListItem({item, bottomSheet, onSheetRefresh}) {
           const members = getGroupMembers(item.groupMembers);
           members.push(user.uid);
           await groupsAPI
-            .put(item.id, {...item, groupMembers: members})
+            .put(item.id, {
+              ...getNonMutantGroupObject(item),
+              groupMembers: members,
+            })
             .then(() =>
               showSuccessPopup({
                 Popup,
