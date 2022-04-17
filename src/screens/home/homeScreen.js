@@ -1,137 +1,75 @@
 import * as React from 'react';
-import {useState} from 'react';
+import {useContext, useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
   FlatList,
   StyleSheet,
-  Image,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import DefaultBackground from '../../shared/defaultBackground';
 import {getTitleStyle} from '../../services/dynamicStyles';
+import {FAB} from 'react-native-paper';
+import {getAllGroups, getNonmemberGroups} from '../../services/groups';
+import {groupBy} from 'lodash';
+import {GroupListItem} from '../../shared/components/groupListItem';
+import {EnrollableGroupListItem} from '../../shared/components/enrollableGroupListItem';
+import FireBaseContext from '../../context/fireBaseProvider';
+import BottomSheet from 'react-native-gesture-bottom-sheet';
 
-const COMMUNITY_DATA = [
-  {
-    type: 'community',
-    id: '1',
-    title: 'EVT',
-    text: 'ORTAM PARTİ',
-    imageUrl:
-      'https://media.istockphoto.com/photos/man-holding-blue-helmet-close-up-picture-id1178982949?s=612x612',
-  },
-  {
-    type: 'community',
-    id: '2',
-    title: 'ASAT',
-    text: 'AT AVRAT SİLAH',
-    imageUrl:
-      'https://media.istockphoto.com/photos/man-holding-blue-helmet-close-up-picture-id1178982949?s=612x612',
-  },
-  {
-    type: 'community',
-    id: '3',
-    title: 'TOBB BİLGİSAYAR',
-    text: 'ARADIĞINIZ KLUÜB BULUNAMADI',
-    imageUrl:
-      'https://media.istockphoto.com/photos/man-holding-blue-helmet-close-up-picture-id1178982949?s=612x612',
-  },
-];
+const windowHeight = Dimensions.get('window').height;
 
-const CLASS_DATA = [
-  {
-    type: 'class',
-    id: '1',
-    title: 'BIL 496',
-    text: 'lorem ipsum',
-    imageUrl:
-      'https://media.istockphoto.com/photos/man-holding-blue-helmet-close-up-picture-id1178982949?s=612x612',
-  },
-  {
-    type: 'class',
-    id: '2',
-    title: 'END 321',
-    text: 'lorem ipsum',
-    imageUrl:
-      'https://media.istockphoto.com/photos/young-people-with-face-masks-back-at-work-or-school-in-office-after-picture-id1250279730?s=612x612',
-  },
-  {
-    type: 'class',
-    id: '3',
-    title: 'BIL 441',
-    text: 'lorem ipsum',
-    imageUrl:
-      'https://media.istockphoto.com/photos/remote-working-from-home-freelancer-workplace-in-kitchen-with-laptop-picture-id1213497796?s=612x612',
-  },
-  {
-    type: 'class',
-    id: '4',
-    title: 'SOC 203',
-    text: 'lorem ipsum',
-    imageUrl:
-      'https://media.istockphoto.com/photos/turner-worker-working-on-drill-bit-in-a-workshop-picture-id1128735755?s=612x612',
-  },
-  {
-    type: 'class',
-    id: '5',
-    title: 'BIL 441',
-    text: 'lorem ipsum',
-    imageUrl:
-      'https://media.istockphoto.com/photos/remote-working-from-home-freelancer-workplace-in-kitchen-with-laptop-picture-id1213497796?s=612x612',
-  },
-  {
-    type: 'class',
-    id: '6',
-    title: 'SOC 203',
-    text: 'lorem ipsum',
-    imageUrl:
-      'https://media.istockphoto.com/photos/turner-worker-working-on-drill-bit-in-a-workshop-picture-id1128735755?s=612x612',
-  },
-  {
-    type: 'class',
-    id: '7',
-    title: 'BIL 441',
-    text: 'lorem ipsum',
-    imageUrl:
-      'https://media.istockphoto.com/photos/remote-working-from-home-freelancer-workplace-in-kitchen-with-laptop-picture-id1213497796?s=612x612',
-  },
-  {
-    type: 'class',
-    id: '8',
-    title: 'SOC 203',
-    text: 'lorem ipsum',
-    imageUrl:
-      'https://media.istockphoto.com/photos/turner-worker-working-on-drill-bit-in-a-workshop-picture-id1128735755?s=612x612',
-  },
-];
-
-const ListItem = ({item, navigation}) => (
-  <TouchableOpacity
-    style={styles.listItem}
-    onPress={() =>
-      item.type === 'class'
-        ? navigation.navigate('Class', {item: item, name: item.title})
-        : navigation.navigate('Community', {item: item, name: item.title})
-    }>
-    <Image
-      style={styles.itemImage}
-      source={{
-        uri: item.imageUrl,
-      }}
-    />
-    <View style={styles.listItemTextContainer}>
-      <Text style={styles.itemTitle}>{item.title}</Text>
-      <Text style={styles.itemText}>{item.text}</Text>
-    </View>
-  </TouchableOpacity>
+const renderSheetListItem = ({item, bottomSheet, onSheetRefresh}) => (
+  <EnrollableGroupListItem
+    item={item}
+    bottomSheet={bottomSheet}
+    onSheetRefresh={onSheetRefresh}
+  />
 );
 
 const renderListItem = ({item, navigation}) => (
-  <ListItem item={item} navigation={navigation} />
+  <GroupListItem item={item} navigation={navigation} />
 );
 
 function HomeScreen({navigation}) {
+  const {user} = useContext(FireBaseContext);
+
+  const [allGroupData, setAllGroup] = useState([]);
+  const [classData, setClassData] = useState([]);
+  const [communityData, setCommunityData] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
+  const [isSheetFetching, setIsSheetFetching] = useState(false);
+
   const [showClasses, setShowClasses] = useState(true);
+
+  const bottomSheet = useRef();
+
+  async function fetchGroups() {
+    const nonMemberGroupData = await getNonmemberGroups(user.uid);
+    const groupsData = await getAllGroups(user.uid);
+    const seperatedGroupsData = groupBy(groupsData, 'groupIsCommunity');
+    setAllGroup(nonMemberGroupData);
+    setClassData(seperatedGroupsData.false || []);
+    setCommunityData(seperatedGroupsData.true || []);
+    setIsFetching(false);
+    setIsSheetFetching(false);
+  }
+
+  async function onRefresh() {
+    setIsFetching(true);
+    fetchGroups();
+  }
+
+  async function onSheetRefresh() {
+    setIsSheetFetching(true);
+    fetchGroups();
+  }
+
+  useEffect(() => {
+    fetchGroups();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <DefaultBackground>
@@ -149,56 +87,62 @@ function HomeScreen({navigation}) {
       </View>
 
       {showClasses && (
-        <View>
-          <FlatList
-            data={CLASS_DATA}
-            renderItem={({item}) => renderListItem({item, navigation})}
-            keyExtractor={item => item.id}
-          />
-        </View>
+        <FlatList
+          height={'100%'}
+          data={classData}
+          onRefresh={onRefresh}
+          refreshing={isFetching}
+          renderItem={({item}) => renderListItem({item, navigation})}
+          keyExtractor={item => item.id}
+        />
       )}
 
       {!showClasses && (
-        <View>
-          <FlatList
-            data={COMMUNITY_DATA}
-            renderItem={({item}) => renderListItem({item, navigation})}
-            keyExtractor={item => item.id}
-          />
-        </View>
+        <FlatList
+          height={'100%'}
+          data={communityData}
+          onRefresh={onRefresh}
+          refreshing={isFetching}
+          renderItem={({item}) => renderListItem({item, navigation})}
+          keyExtractor={item => item.id}
+        />
       )}
+      <FAB
+        icon="plus"
+        style={styles.floatingButton}
+        onPress={() => bottomSheet.current.show()}
+      />
+
+      <BottomSheet
+        hasDraggableIcon
+        ref={bottomSheet}
+        height={windowHeight * 0.8}
+        sheetBackgroundColor={'#e5e5e5'}>
+        <FlatList
+          height={'100%'}
+          data={allGroupData}
+          onRefresh={onSheetRefresh}
+          refreshing={isSheetFetching}
+          renderItem={({item}) =>
+            renderSheetListItem({item, bottomSheet, onSheetRefresh})
+          }
+          keyExtractor={item => item.id}
+        />
+      </BottomSheet>
     </DefaultBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  itemImage: {
-    height: 50,
-    width: 50,
-    borderRadius: 10,
-  },
-  itemText: {
-    fontSize: 12,
-    marginLeft: 2,
-    color: 'grey',
-  },
-  itemTitle: {
-    fontSize: 20,
-    margin: 2,
-  },
-  listItemTextContainer: {
-    marginLeft: 10,
-  },
-  listItem: {
-    height: 80,
-    flexDirection: 'row',
-    padding: 10,
-    borderBottomWidth: 1,
-    borderColor: '#c2b9b9',
-  },
   topListNavigator: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+  },
+  floatingButton: {
+    position: 'absolute',
+    backgroundColor: '#3B7AF9',
+    bottom: 16,
+    right: 16,
   },
 });
 

@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
 import NewsCard from '../../../shared/components/newsCard';
 import DefaultBackground from '../../../shared/defaultBackground';
-import {getAllNews} from '../../../services/news';
-import {getFormattedDateFromTimestamp} from '../../../services/time';
+import {getAllNews, scrapeNews} from '../../../services/news';
+import {getMaybeDate} from '../../../services/time';
 
 const ListItem = ({item, navigation}) => (
   <TouchableOpacity
@@ -14,12 +14,14 @@ const ListItem = ({item, navigation}) => (
         name: item.documentTitle,
       })
     }>
-    <NewsCard
-      newsTitle={item.documentTitle}
-      newsText={'text'}
-      newsPicture={item.documentContent[0]}
-      newsDate={getFormattedDateFromTimestamp(item.documentDate.seconds)}
-    />
+    {item.documentContent && item.documentDate && (
+      <NewsCard
+        newsTitle={item.documentTitle}
+        newsPicture={item.documentContent[0]}
+        newsText={item.documentContent[1].trim()}
+        newsDate={getMaybeDate(item.documentDate)}
+      />
+    )}
   </TouchableOpacity>
 );
 
@@ -27,13 +29,27 @@ const renderListItem = ({item, navigation}) => (
   <ListItem item={item} navigation={navigation} />
 );
 
+function compare(a, b) {
+  let date1 = parseInt(a.documentDate.split(' ')[0]);
+  let date2 = parseInt(b.documentDate.split(' ')[0]);
+
+  if (date1 < date2) {
+    return -1;
+  }
+  if (date1 > date2) {
+    return 1;
+  }
+  return 0;
+}
+
 export default function NewsScreen({navigation}) {
   const [data, setData] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
 
   async function fetchNews() {
+    await scrapeNews();
     const newsData = await getAllNews();
-    setData(newsData);
+    setData(newsData.sort(compare));
     setIsFetching(false);
   }
 

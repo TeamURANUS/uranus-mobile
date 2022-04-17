@@ -34,6 +34,16 @@ export function getTimeDate(timestamp) {
   return result;
 }
 
+export function getMaybeDate(timestamp) {
+  if (typeof timestamp === 'string') {
+    return timestamp;
+  }
+  return new Date(timestamp.seconds * 1000).toLocaleDateString(
+    'tr-TR',
+    OPTIONS,
+  );
+}
+
 export function getFormattedDateFromTimestamp(timestamp) {
   return new Date(timestamp * 1000).toLocaleDateString('tr-TR', OPTIONS);
 }

@@ -2,8 +2,8 @@ import * as React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-function LogoutButton({displayText, onPress, disabled}) {
-  const gradientColors = ['#ff1616', '#c42727', '#860f0f'];
+function PostButton({displayText, onPress, disabled}) {
+  const gradientColors = ['#004de5', '#2964ff', '#00c5ff'];
   const gradientStart = {x: 0, y: 0};
   const gradientEnd = {x: 1, y: 0};
 
@@ -44,4 +44,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LogoutButton;
+export default PostButton;
