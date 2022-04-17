@@ -64,7 +64,7 @@ export default function AssignmentsScreen({route, navigation}) {
       eventLink,
       eventDate,
       eventOrganizers: [group.id],
-      eventParticipants: [getGroupMembers(group.groupMembers)],
+      eventParticipants: getGroupMembers(group.groupMembers),
     });
     bottomSheet.current.close();
     fetchAssignments();
