@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
-
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {Root, Popup} from 'popup-ui';
 import {authAPI, userAPI} from '../api/utils';
 import {
