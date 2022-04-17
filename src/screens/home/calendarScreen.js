@@ -12,7 +12,11 @@ import {
 import {Calendar} from 'react-native-calendars';
 import {useContext, useEffect, useState} from 'react';
 import FireBaseContext from '../../context/fireBaseProvider';
-import {setEventListView, getUserEvents} from '../../services/calendar';
+import {
+  setEventListView,
+  getUserEvents,
+  getEventDayObjects,
+} from '../../services/calendar';
 import {getDateFromTimestamp, monthToStringDict} from '../../services/time';
 
 const windowHeight = Dimensions.get('window').height;
@@ -66,6 +70,8 @@ export default function CalendarScreen({navigation}) {
     const eventData = await getUserEvents(user.uid);
     setEvents(eventData);
     setVisibleEventsData(eventData);
+    const datesToMark = getEventDayObjects(events);
+    setMarkedDates(datesToMark);
     setIsFetching(false);
   }
 

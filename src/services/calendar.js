@@ -6,6 +6,31 @@ export function filterEventsOnGivenDate({day, events}) {
   return _.filter(events, {dateString: day.dateString});
 }
 
+function getEventDateString(seconds) {
+  const date = new Date(seconds * 1000);
+  let month = date.getMonth() + 1;
+  let day = date.getDate();
+  if (month.toString().length === 1) {
+    month = '0' + month;
+  }
+
+  if (day.toString().length === 1) {
+    day = '0' + day;
+  }
+  return date.getFullYear() + '-' + month + '-' + day;
+}
+
+export function getEventDayObjects(events) {
+  const days = {};
+  for (let i = 0; i < events.length; i++) {
+    days[getEventDateString(events[i].eventDate.seconds)] = {
+      selected: true,
+      selectedColor: '#fcba2a',
+    };
+  }
+  return days;
+}
+
 export function setEventListView({
   day,
   markedDates,
@@ -13,9 +38,14 @@ export function setEventListView({
   setVisibleEventsData,
   events,
 }) {
-  if (day.dateString in markedDates) {
-    setMarkedDates({});
+  if (
+    day.dateString in markedDates &&
+    markedDates[day.dateString].selectedColor === '#2994ff'
+  ) {
+    //setMarkedDates({});
     setVisibleEventsData(events);
+    const datesToMark = getEventDayObjects(events);
+    setMarkedDates(datesToMark);
     return;
   }
   const marks = {};
