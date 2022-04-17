@@ -49,3 +49,13 @@ export function getPostComments(references) {
   });
   return userIds;
 }
+
+export function getNonMutantPostObject(mutantPostObject) {
+  return {
+    ...mutantPostObject,
+    postDate: new Date(mutantPostObject.postDate.seconds),
+    postAuthor: getPostAuthorId(mutantPostObject),
+    postComments: getPostComments(mutantPostObject.postComments),
+    postGroupId: getGroupId(mutantPostObject),
+  };
+}

@@ -1,11 +1,24 @@
-import React, {useEffect, useState} from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import BottomSheet from 'react-native-gesture-bottom-sheet';
 import DefaultBackground from '../../../shared/defaultBackground';
-import {getPostAuthorId, getPostComments} from '../../../services/posts';
-import {commentsAPI, userAPI} from '../../../api/utils';
+import {
+  getNonMutantPostObject,
+  getPostAuthorId,
+  getPostComments,
+} from '../../../services/posts';
+import {commentsAPI, postsAPI, userAPI} from '../../../api/utils';
 import {getFormattedDateFromTimestamp} from '../../../services/time';
-import {getCommentAuthorId} from '../../../services/comments';
+import {addComment, getCommentAuthorId} from '../../../services/comments';
+import {FAB} from 'react-native-paper';
 
 const ListItem = ({item}) => {
   const [commentAuthor, setCommentAuthor] = useState();
@@ -42,8 +55,24 @@ const renderListItem = ({item}) => {
 export default function DetailedPostScreen({route}) {
   const [postAuthor, setPostAuthor] = useState();
   const [comments, setComments] = useState([]);
+  const [commentValue, setCommentValue] = useState('');
   const [isFetching, setIsFetching] = useState(false);
   const {post} = route.params;
+
+  const bottomSheet = useRef();
+
+  async function addCommentToPost() {
+    const commentId = await addComment({
+      commentAuthorId: getPostAuthorId(post),
+      commentContent: commentValue,
+      commentDate: new Date(),
+    });
+    const postObject = getNonMutantPostObject(post);
+    postObject.postComments.push(commentId);
+    await postsAPI.put(postObject.id, postObject);
+    bottomSheet.current.close();
+    fetchComments();
+  }
 
   async function fetchPostAdmin() {
     const postAuthorId = await getPostAuthorId(post);
@@ -52,7 +81,9 @@ export default function DetailedPostScreen({route}) {
   }
 
   async function fetchComments() {
-    const postCommentIds = getPostComments(post.postComments);
+    const postResponse = await postsAPI.get(post.id);
+    const postToUse = postResponse.data.data;
+    const postCommentIds = getPostComments(postToUse.postComments);
     let newCommentArray = comments;
     setIsFetching(true);
 
@@ -91,7 +122,9 @@ export default function DetailedPostScreen({route}) {
       </View>
 
       <View style={styles.postContent}>
-        <Text style={styles.contextTextStyle}>{post.postContent}</Text>
+        <ScrollView style={styles.postContentContainer}>
+          <Text style={styles.contextTextStyle}>{post.postContent}</Text>
+        </ScrollView>
       </View>
 
       <FlatList
@@ -101,6 +134,33 @@ export default function DetailedPostScreen({route}) {
         renderItem={item => renderListItem(item)}
         keyExtractor={item => item.commentId}
       />
+
+      <FAB
+        icon={'plus'}
+        style={styles.newCommentButton}
+        onPress={() => bottomSheet.current.show()}
+      />
+
+      <BottomSheet
+        hasDraggableIcon
+        ref={bottomSheet}
+        height={600}
+        sheetBackgroundColor={'#e5e5e5'}>
+        <TextInput
+          placeholder="Enter your comment"
+          placeholderTextColor="grey"
+          autoCorrect={false}
+          multiline={true}
+          numberOfLines={10}
+          value={commentValue}
+          onChangeText={t => {
+            setCommentValue(t);
+          }}
+          onSubmitEditing={addCommentToPost}
+          style={styles.commentInput}
+          returnKeyType="go"
+        />
+      </BottomSheet>
     </DefaultBackground>
   );
 }
@@ -126,6 +186,9 @@ const styles = StyleSheet.create({
     color: '#000000',
     fontSize: 30,
   },
+  postContentContainer: {
+    height: 250,
+  },
   postContent: {
     margin: 20,
   },
@@ -150,6 +213,34 @@ const styles = StyleSheet.create({
     fontSize: 20,
     padding: 10,
     margin: 10,
+    color: 'black',
+    shadowOffset: {height: 5},
+    shadowColor: 'black',
+    shadowOpacity: 0.2,
+  },
+  newCommentButton: {
+    position: 'absolute',
+    backgroundColor: '#3B7AF9',
+    bottom: 50,
+    right: 30,
+    borderRadius: 30,
+    alignSelf: 'center',
+    width: 70,
+    height: 70,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  commentInput: {
+    elevation: 11,
+    borderBottomWidth: 5,
+    borderColor: '#3B7AF9',
+    fontSize: 20,
+    height: 120,
+    padding: 10,
+    margin: 10,
+    width: '95%',
+    backgroundColor: '#eeeeee',
     color: 'black',
     shadowOffset: {height: 5},
     shadowColor: 'black',
