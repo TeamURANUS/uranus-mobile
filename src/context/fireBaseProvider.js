@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-
 import {Root, Popup} from 'popup-ui';
 import {authAPI, userAPI} from '../api/utils';
 import {
@@ -10,6 +9,7 @@ import {
   showWarningPopup,
 } from '../services/popup';
 import {clearStackAndNavigate} from '../services/navigation';
+import messaging from '@react-native-firebase/messaging';
 const FireBaseContext = React.createContext();
 
 export const FireBaseProvider = ({children}) => {
@@ -101,6 +101,7 @@ export const FireBaseProvider = ({children}) => {
       userId: user.uid,
       userLastname: userLastName,
       userName: userName,
+      fcmToken: await messaging().getToken(),
       userPhoneNumber: userPhoneNumber,
     };
     await userAPI
