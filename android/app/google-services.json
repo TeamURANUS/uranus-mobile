@@ -1,84 +1,40 @@
 {
   "project_info": {
-    "project_number": "583184460745",
-    "project_id": "uranus-aee47",
-    "storage_bucket": "uranus-aee47.appspot.com"
+    "project_number": "641761728473",
+    "project_id": "educatied-7e9ca",
+    "storage_bucket": "educatied-7e9ca.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:583184460745:android:9818cde42f3b86fe019618",
-        "android_client_info": {
-          "package_name": "com.uranus.uranusmobile"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "583184460745-i64cbrm38d9r0j18cqodk1ei9ts7h89l.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.uranus.uranusmobile",
-            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
-          }
-        },
-        {
-          "client_id": "583184460745-5s2kdfq1e7eb5hesh9vsnh5kai2tc9a3.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAZotHgBFaizY6sTwfWLpAtzhGft8W1N8w"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "583184460745-5s2kdfq1e7eb5hesh9vsnh5kai2tc9a3.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "583184460745-rkppgrsog5t7pk7gm5he0cdah0thufg2.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.uranus.uranusmobile"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:583184460745:android:df7e50b4d28d0ff2019618",
+        "mobilesdk_app_id": "1:641761728473:android:4efd93c601f1d7d262abc8",
         "android_client_info": {
           "package_name": "com.uranusmobile"
         }
       },
       "oauth_client": [
         {
-          "client_id": "583184460745-5s2kdfq1e7eb5hesh9vsnh5kai2tc9a3.apps.googleusercontent.com",
+          "client_id": "641761728473-2hf089r2v3esj1put929vsgtac1rrr0n.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAZotHgBFaizY6sTwfWLpAtzhGft8W1N8w"
+          "current_key": "AIzaSyDhqKIDDMIz0-uC6yIIdheD-bHKMrOj2bQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "583184460745-5s2kdfq1e7eb5hesh9vsnh5kai2tc9a3.apps.googleusercontent.com",
+              "client_id": "641761728473-2hf089r2v3esj1put929vsgtac1rrr0n.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "583184460745-rkppgrsog5t7pk7gm5he0cdah0thufg2.apps.googleusercontent.com",
+              "client_id": "641761728473-f15kvlipjltpeu1sri9f50jobvfv043i.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.uranus.uranusmobile"
+                "bundle_id": "com.uranus.educatied"
               }
             }
           ]

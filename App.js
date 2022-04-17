@@ -1,7 +1,6 @@
 import * as React from 'react';
 import type {Node} from 'react';
 import {Dimensions} from 'react-native';
-
 import {NavigationContainer} from '@react-navigation/native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -37,6 +36,10 @@ import CreateGroup from './src/screens/home/groups/createGroup';
 import GroupInfoScreen from './src/screens/home/groups/groupInfoScreen';
 import {GroupHeaderRight} from './src/shared/headers/groupHeaderRight';
 import AssignmentsScreen from './src/screens/home/groups/assignmentsScreen';
+
+import firebase from '@react-native-firebase/app';
+import {useEffect} from 'react';
+import {handlePushNotifications} from './src/services/notification';
 
 function HomeContainer() {
   return (
@@ -112,6 +115,12 @@ function HomeContainer() {
 }
 
 const App: () => Node = () => {
+  useEffect(() => {
+    firebase.messaging().onMessage(response => {
+      handlePushNotifications(response);
+    });
+  }, []);
+
   return (
     <NavigationContainer>
       <NavigationStack.Navigator initialRouteName="User Details Screen">
