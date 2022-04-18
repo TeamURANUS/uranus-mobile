@@ -95,6 +95,10 @@ function ProfileScreen({navigation}) {
           <Text style={styles.settingText}>{userDetails.userColleague}</Text>
         </View>
 
+        <View style={styles.settingUnit}>
+          <Text style={styles.settingText}>{userDetails.userPhoneNumber}</Text>
+        </View>
+
         <TouchableOpacity
           style={styles.googleUnit}
           onPress={() => {
