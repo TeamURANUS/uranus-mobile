@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {
   FlatList,
   ScrollView,
@@ -19,6 +19,7 @@ import {commentsAPI, postsAPI, userAPI} from '../../../api/utils';
 import {getFormattedDateFromTimestamp} from '../../../services/time';
 import {addComment, getCommentAuthorId} from '../../../services/comments';
 import {FAB} from 'react-native-paper';
+import FireBaseContext from '../../../context/fireBaseProvider';
 
 const ListItem = ({item}) => {
   const [commentAuthor, setCommentAuthor] = useState();
@@ -53,6 +54,7 @@ const renderListItem = ({item}) => {
 };
 
 export default function DetailedPostScreen({route}) {
+  const {user} = useContext(FireBaseContext);
   const [postAuthor, setPostAuthor] = useState();
   const [comments, setComments] = useState([]);
   const [commentValue, setCommentValue] = useState('');
@@ -63,7 +65,7 @@ export default function DetailedPostScreen({route}) {
 
   async function addCommentToPost() {
     const commentId = await addComment({
-      commentAuthorId: getPostAuthorId(post),
+      commentAuthorId: user.uid, //getPostAuthorId(post),
       commentContent: commentValue,
       commentDate: new Date(),
     });

@@ -12,7 +12,9 @@ export async function getAllGroups(userId) {
   const response = await groupsAPI.get('');
   return response.data.data.filter(group => {
     const members = getGroupMembers(
-      group.groupMembers.concat(group.groupAdmin).concat(group.groupAssistants),
+      group.groupMembers
+        .concat([group.groupAdmin])
+        .concat(group.groupAssistants),
     );
     return members.includes(userId);
   });

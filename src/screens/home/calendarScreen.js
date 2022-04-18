@@ -39,9 +39,6 @@ const ListItem = ({item, navigation}) => (
         <DateCard date={getDateFromTimestamp(item.eventDate.seconds)} />
       </View>
       <View style={styles.listItemTextContainer}>
-        <Text numberOfLines={1} style={styles.itemTitle}>
-          {item.eventName}
-        </Text>
         <Text numberOfLines={1} style={styles.itemText}>
           {item.eventDescription}
         </Text>
@@ -49,7 +46,7 @@ const ListItem = ({item, navigation}) => (
     </View>
     <TouchableOpacity style={styles.eventRightView}>
       <Text numberOfLines={1} style={styles.eventGroupNameText}>
-        {item.eventPlace}
+        {item.organizerName}
       </Text>
     </TouchableOpacity>
   </TouchableOpacity>
@@ -137,7 +134,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   itemText: {
-    fontSize: 12,
+    fontSize: 15,
     marginLeft: 2,
     color: 'grey',
   },
@@ -147,6 +144,7 @@ const styles = StyleSheet.create({
   },
   listItemTextContainer: {
     marginLeft: 10,
+    justifyContent: 'center',
   },
   listItem: {
     height: 80,
@@ -164,6 +162,7 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 4,
     width: '25%',
+    alignSelf: 'center',
   },
   list: {
     borderTopWidth: 2,

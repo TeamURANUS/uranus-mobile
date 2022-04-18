@@ -9,13 +9,15 @@ const ListItem = ({item}) => (
   <View style={styles.newsBox}>
     <View style={styles.leftPanel}>
       <Text style={styles.notifTitle} numberOfLines={1}>
-        {item.notifTitle}
+        {item.notifTitle === item.notifGroupName
+          ? item.notifContent
+          : item.notifTitle}
       </Text>
       <Text style={styles.notifGroupName} numberOfLines={1}>
         {'( ' + item.notifGroupName + ' )'}
       </Text>
       <Text style={styles.notifContent} numberOfLines={1}>
-        {item.notifContent}
+        {item.notifTitle === item.notifGroupName ? '' : item.notifContent}
       </Text>
     </View>
     <View style={styles.rightPanel}>
