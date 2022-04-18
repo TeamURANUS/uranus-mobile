@@ -62,5 +62,12 @@ export function setEventListView({
 
 export async function getUserEvents(userid) {
   const response = await eventsAPI.get('userEventLog/' + userid);
-  return response.data;
+  const sorted = response.data.sort((a, b) =>
+    a.eventDate.seconds > b.eventDate.seconds
+      ? -1
+      : b.eventDate.seconds > a.eventDate.seconds
+      ? 1
+      : 0,
+  );
+  return sorted;
 }
