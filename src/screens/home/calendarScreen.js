@@ -67,7 +67,7 @@ export default function CalendarScreen({navigation}) {
     const eventData = await getUserEvents(user.uid);
     setEvents(eventData);
     setVisibleEventsData(eventData);
-    const datesToMark = getEventDayObjects(events);
+    const datesToMark = getEventDayObjects(eventData);
     setMarkedDates(datesToMark);
     setIsFetching(false);
   }
