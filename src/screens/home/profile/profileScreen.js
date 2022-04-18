@@ -1,18 +1,20 @@
 import * as React from 'react';
-import {useContext} from 'react';
+import {useContext, useRef} from 'react';
 import {
   Image,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  ScrollView,
   Dimensions,
+  TextInput,
 } from 'react-native';
 import DefaultBackground from '../../../shared/defaultBackground';
 import FireBaseContext from '../../../context/fireBaseProvider';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {launchImageLibrary} from 'react-native-image-picker';
+import BottomSheet from 'react-native-gesture-bottom-sheet';
+import email from 'react-native-email';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -20,8 +22,20 @@ function ProfileScreen({navigation}) {
   const {user, userDetails, logoutUser, linkGoogleAccount} =
     useContext(FireBaseContext);
   const [photo, setPhoto] = React.useState(null);
+  const [requestText, setRequestText] = React.useState('');
+
+  const bottomSheet = useRef();
 
   const initials = userDetails.userName ? userDetails.userName[0] : '';
+
+  const sendRequestText = () => {
+    console.log(requestText);
+    email('teamuranusproject@gmail.com', {
+      subject: 'User Request',
+      body: requestText,
+    });
+    bottomSheet.current.close();
+  };
 
   const handleChoosePhoto = () => {
     launchImageLibrary({noData: true}, response => {
@@ -53,10 +67,7 @@ function ProfileScreen({navigation}) {
       <View>
         <Text style={styles.header}>Profile & Settings</Text>
       </View>
-      <ScrollView
-        behavior={'position'}
-        keyboardVerticalOffset={70}
-        contentContainerStyle={styles.container}>
+      <View style={styles.container}>
         <View style={styles.upperView}>
           <View>
             {insertProfilePic()}
@@ -93,10 +104,35 @@ function ProfileScreen({navigation}) {
           />
         </TouchableOpacity>
 
+        <TouchableOpacity onPress={() => bottomSheet.current.show()}>
+          <Text style={styles.makeRequestText}>Make Request</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity onPress={() => logoutUser({navigation})}>
           <Text style={styles.signOutButtonText}>Sign Out</Text>
         </TouchableOpacity>
-      </ScrollView>
+      </View>
+
+      <BottomSheet
+        hasDraggableIcon
+        ref={bottomSheet}
+        height={600}
+        sheetBackgroundColor={'#e5e5e5'}>
+        <TextInput
+          placeholder="Enter your request"
+          placeholderTextColor="grey"
+          autoCorrect={false}
+          multiline={true}
+          numberOfLines={10}
+          value={requestText}
+          onChangeText={t => {
+            setRequestText(t);
+          }}
+          onSubmitEditing={sendRequestText}
+          style={styles.requestTextInput}
+          returnKeyType="go"
+        />
+      </BottomSheet>
     </DefaultBackground>
   );
 }
@@ -235,6 +271,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 10,
   },
+  makeRequestText: {
+    fontSize: 25,
+    fontWeight: '700',
+    color: '#d941ff',
+    marginTop: 10,
+    marginLeft: 10,
+  },
   passwordResetForm: {
     justifyContent: 'center',
     alignContent: 'center',
@@ -246,5 +289,20 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: 'white',
     textAlign: 'center',
+  },
+  requestTextInput: {
+    elevation: 11,
+    borderBottomWidth: 5,
+    borderColor: '#3B7AF9',
+    fontSize: 20,
+    height: 120,
+    padding: 10,
+    margin: 10,
+    width: '95%',
+    backgroundColor: '#eeeeee',
+    color: 'black',
+    shadowOffset: {height: 5},
+    shadowColor: 'black',
+    shadowOpacity: 0.2,
   },
 });
