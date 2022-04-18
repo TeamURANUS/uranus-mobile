@@ -151,17 +151,6 @@ export default function AssignmentsScreen({route, navigation}) {
               }}
               style={styles.input}
             />
-            <TextInput
-              placeholder="Event Link"
-              placeholderTextColor="grey"
-              autoCorrect={false}
-              autoCapitalize="none"
-              returnKeyType="next"
-              onChangeText={t => {
-                setEventLink(t);
-              }}
-              style={styles.input}
-            />
             <DatePicker date={eventDate} onDateChange={setEventDate} />
             <SignUpButton
               displayText="Add Assignment / Event"
