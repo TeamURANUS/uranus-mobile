@@ -4,6 +4,7 @@ import {Dimensions} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {LogBox} from 'react-native';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -116,6 +117,7 @@ function HomeContainer() {
 
 const App: () => Node = () => {
   useEffect(() => {
+    LogBox.ignoreAllLogs();
     firebase.messaging().onMessage(response => {
       handlePushNotifications(response);
     });
